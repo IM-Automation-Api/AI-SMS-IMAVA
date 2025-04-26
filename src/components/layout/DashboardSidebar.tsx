@@ -5,6 +5,7 @@ import {
   MessageSquare,
   Settings,
   Phone,
+  FileText,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
@@ -23,6 +24,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
   { icon: Users, label: 'Assistants', path: '/assistants' },
   { icon: MessageSquare, label: 'Messages', path: '/messages' },
+  { icon: FileText, label: 'Agent Builder', path: '/agent-builder' },
   { icon: Phone, label: 'Phone Numbers', path: '/phone-numbers' },
   { icon: Settings, label: 'Settings', path: '/settings' },
 ];
