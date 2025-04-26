@@ -10,8 +10,11 @@ import { FileText, Globe, HelpCircle, Upload } from "lucide-react";
 export default function AgentBuilder() {
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col justify-between items-start">
         <h1 className="text-3xl font-bold text-primary">Create new agent</h1>
+        <p className="text-sm text-muted-foreground mt-2">
+          Empower your AI assistant by importing files, text, company FAQs, website content, or custom knowledge to craft a uniquely tailored agent for your business.
+        </p>
       </div>
 
       <div className="grid grid-cols-[240px_1fr_300px] gap-6">
