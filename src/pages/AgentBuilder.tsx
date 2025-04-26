@@ -31,7 +31,7 @@ export default function AgentBuilder() {
           </Button>
           <Button variant="ghost" className="w-full justify-start" size="lg">
             <HelpCircle className="mr-2" />
-            Q&A
+            Agent FAQ
           </Button>
         </div>
 
