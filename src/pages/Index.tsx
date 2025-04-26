@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   return (
@@ -11,7 +12,9 @@ const Index = () => {
           Manage and automate your SMS communications with ease
         </p>
         <div className="flex justify-center space-x-4">
-          <Button variant="default">Send SMS</Button>
+          <Button variant="default" asChild>
+            <Link to="/dashboard">Go to Dashboard</Link>
+          </Button>
           <Button variant="outline">View History</Button>
         </div>
       </div>

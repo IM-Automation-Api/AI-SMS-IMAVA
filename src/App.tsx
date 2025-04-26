@@ -3,9 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import { DashboardLayout } from "./components/layout/DashboardLayout";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +19,11 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* Additional routes will be added here */}
+          <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
+          <Route path="/assistants" element={<DashboardLayout><div>Assistants Page</div></DashboardLayout>} />
+          <Route path="/messages" element={<DashboardLayout><div>Messages Page</div></DashboardLayout>} />
+          <Route path="/phone-numbers" element={<DashboardLayout><div>Phone Numbers Page</div></DashboardLayout>} />
+          <Route path="/settings" element={<DashboardLayout><div>Settings Page</div></DashboardLayout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
