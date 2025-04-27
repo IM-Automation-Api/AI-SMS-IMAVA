@@ -6,3 +6,7 @@ verify_jwt = false
 
 [functions.send-manual-sms]
 verify_jwt = false
+
+[functions.send-templated-email]
+verify_jwt = false
+
