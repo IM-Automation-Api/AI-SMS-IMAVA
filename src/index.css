@@ -79,6 +79,22 @@
     @apply bg-gradient-to-br from-card to-card/80;
   }
 
+  .sidebar-gradient {
+    @apply bg-gradient-to-b from-[#0D0D12] to-black border-r border-white/5 shadow-[inset_0px_2px_12px_rgba(0,0,0,0.7)] backdrop-blur-[6px];
+  }
+
+  .sidebar-item-base {
+    @apply px-4 py-3 rounded-xl transition-all duration-300;
+  }
+
+  .sidebar-item-hover {
+    @apply hover:bg-white/5 hover:translate-x-0.5 hover:text-indigo-100 active:bg-white/10;
+  }
+
+  .sidebar-item-active {
+    @apply bg-primary/20 text-primary;
+  }
+
   .sidebar-item-hover {
     @apply hover:bg-accent/50 hover:scale-[1.02] transition-all duration-200;
   }

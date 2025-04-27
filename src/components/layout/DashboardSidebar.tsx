@@ -45,7 +45,7 @@ export function DashboardSidebar() {
   const location = useLocation();
   
   return (
-    <Sidebar className="font-inter bg-sidebar border-r border-sidebar-border shadow-soft">
+    <Sidebar className="font-inter sidebar-gradient">
       <SidebarHeader className="p-6">
         <h2 className="text-lg font-medium text-gradient bg-gradient-to-r from-white to-white/80 bg-clip-text">AI SMS Platform</h2>
       </SidebarHeader>
@@ -57,7 +57,7 @@ export function DashboardSidebar() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton 
-                    className={`sidebar-item-hover rounded-xl ${location.pathname === item.path ? 'bg-white/10' : ''}`} 
+                    className={`sidebar-item-base sidebar-item-hover ${location.pathname === item.path ? 'sidebar-item-active' : ''}`} 
                     asChild
                   >
                     <Link to={item.path}>
