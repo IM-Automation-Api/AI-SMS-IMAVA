@@ -47,12 +47,12 @@ export function DashboardSidebar() {
   return (
     <Sidebar className="font-inter sidebar-gradient">
       <SidebarHeader className="p-6">
-        <h2 className="text-2xl font-bold text-white">AI SMS Platform</h2>
+        <h2 className="text-2xl font-bold text-white">Im Ava</h2>
       </SidebarHeader>
       <SidebarContent className="px-4">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-4"> {/* Added space-y-4 to increase vertical spacing */}
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton 
