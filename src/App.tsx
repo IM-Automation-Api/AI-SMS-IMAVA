@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import AgentBuilder from "./pages/AgentBuilder";
 import NotFound from "./pages/NotFound";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
+import { SettingsLayout } from "./components/layout/SettingsLayout";
 import MessagesPage from "./pages/MessagesPage";
 import Leads from "./pages/Leads";
 import AssistantsPage from "./pages/AssistantsPage";
@@ -28,7 +30,7 @@ const App = () => (
           <Route path="/messages" element={<DashboardLayout><MessagesPage /></DashboardLayout>} />
           <Route path="/leads" element={<DashboardLayout><Leads /></DashboardLayout>} />
           <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
-          <Route path="/settings" element={<DashboardLayout><SettingsPage /></DashboardLayout>} />
+          <Route path="/settings" element={<SettingsLayout><SettingsPage /></SettingsLayout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
