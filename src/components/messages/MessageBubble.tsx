@@ -48,7 +48,7 @@ export function MessageBubble({
           'rounded-2xl p-3 text-sm',
           isUser && 'bg-primary text-primary-foreground rounded-tr-none',
           isBot && 'bg-muted text-foreground rounded-tl-none',
-          isSystem && 'bg-accent text-accent-foreground text-center text-xs py-1.5'
+          isSystem && 'bg-accent text-accent-foreground text-center text-xs py-1.5 rounded-xl'
         )}>
           {content}
         </div>
@@ -74,3 +74,4 @@ export function MessageBubble({
     </div>
   );
 }
+
