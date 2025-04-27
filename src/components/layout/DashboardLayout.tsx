@@ -6,6 +6,7 @@ import { DashboardSidebar } from './DashboardSidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '../ui/button';
 import { BeamsBackground } from '../ui/beams-background';
+import { TopNavigation } from './TopNavigation';
 import { 
   Drawer,
   DrawerTrigger,
@@ -28,6 +29,7 @@ export function DashboardLayout({
         <div className="min-h-screen flex w-full">
           {!isMobile && <DashboardSidebar />}
           <main className="flex-1 overflow-auto bg-gradient-to-br from-background to-background/95 rounded-md px-0">
+            <TopNavigation />
             {isMobile && (
               <div className="sticky top-0 z-10 px-4 py-3 bg-background/80 backdrop-blur-md border-b">
                 <div className="flex items-center justify-between">
