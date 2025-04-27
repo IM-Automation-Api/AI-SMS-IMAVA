@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,7 +50,7 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-[#1a0b2e] via-[#2f1c4a] to-[#392960] min-h-screen text-foreground;
+    @apply bg-background text-foreground;
   }
 }
 
@@ -64,5 +65,9 @@
 
   .rainbow-text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#ff0000] via-[#00ff66] to-[#7f00ff];
+  }
+  
+  .dark-purple-overlay {
+    @apply before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#1a0b2e80] before:via-[#2f1c4a80] before:to-[#39296080] before:z-[-1] relative z-0;
   }
 }

@@ -11,7 +11,7 @@ export default function AgentBuilder() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between items-start">
-        <h1 className="text-3xl font-bold text-primary">Create new agent</h1>
+        <h1 className="text-3xl font-bold rainbow-text-gradient">Create new agent</h1>
         <p className="text-sm text-muted-foreground mt-2">
           Empower your AI assistant by importing files, text, company FAQs, website content, or custom knowledge to craft a uniquely tailored agent for your business.
         </p>
@@ -40,7 +40,7 @@ export default function AgentBuilder() {
 
         {/* Main Content */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Files</h2>
+          <h2 className="text-xl font-semibold rainbow-text-gradient mb-4">Files</h2>
           <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
             <div className="flex flex-col items-center gap-2">
               <Upload className="w-8 h-8 text-muted-foreground" />
@@ -60,16 +60,16 @@ export default function AgentBuilder() {
         {/* Right Sidebar */}
         <div className="space-y-6">
           <div className="bg-card border border-border p-4 rounded-lg">
-            <h3 className="font-semibold mb-4">SOURCES</h3>
+            <h3 className="font-semibold rainbow-text-gradient mb-4">SOURCES</h3>
             <div className="flex justify-between text-sm">
               <span>Total size:</span>
               <span>0 B / 400 KB</span>
             </div>
-            <Button className="w-full mt-4">Create agent</Button>
+            <Button className="rainbow-border-gradient w-full mt-4">Create agent</Button>
           </div>
           
           <div className="bg-card border border-border p-4 rounded-lg">
-            <h3 className="font-semibold mb-4">API Provider</h3>
+            <h3 className="font-semibold rainbow-text-gradient mb-4">API Provider</h3>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="api-key">API Key</Label>
