@@ -10,6 +10,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Eye, Edit, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface User {
   id: number;
@@ -72,9 +73,9 @@ const getInitials = (name: string) => {
 };
 
 const statusStyles = {
-  active: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
-  paused: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100",
-  vacation: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100",
+  active: "bg-neutral-700 text-neutral-300",
+  paused: "bg-neutral-600 text-neutral-200",
+  vacation: "bg-neutral-500 text-neutral-100",
 };
 
 export default function Leads() {
@@ -113,9 +114,12 @@ export default function Leads() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusStyles[user.status]}`}>
+                  <Badge 
+                    variant="outline" 
+                    className={`${statusStyles[user.status]} capitalize`}
+                  >
                     {user.status}
-                  </span>
+                  </Badge>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
