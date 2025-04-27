@@ -1,7 +1,8 @@
+
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from '@supabase/supabase-js';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -71,7 +72,7 @@ serve(async (req) => {
       {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${btoa(`${twilioCredentials.account_sid}:${twilioCredentials.auth_token}`) }`,
+          'Authorization': `Basic ${btoa(`${twilioCredentials.account_sid}:${twilioCredentials.auth_token}`)}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: formData.toString()
