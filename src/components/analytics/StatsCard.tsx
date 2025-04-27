@@ -13,7 +13,10 @@ interface StatsCardProps {
 
 export function StatsCard({ title, value, icon, className, trend, trendValue }: StatsCardProps) {
   return (
-    <Card className={cn("border-border bg-card transition-all hover:scale-105", className)}>
+    <Card className={cn(
+      "border-border bg-card transition-all hover:scale-105 rounded-2xl shadow-lg", 
+      className
+    )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium text-card-foreground">
           {title}

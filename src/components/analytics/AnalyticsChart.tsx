@@ -20,7 +20,10 @@ interface AnalyticsChartProps {
 
 export function AnalyticsChart({ title, className }: AnalyticsChartProps) {
   return (
-    <Card className={cn("border-border bg-card", className)}>
+    <Card className={cn(
+      "border-border bg-card rounded-2xl shadow-lg", 
+      className
+    )}>
       <CardHeader>
         <CardTitle className="text-card-foreground">{title}</CardTitle>
       </CardHeader>
