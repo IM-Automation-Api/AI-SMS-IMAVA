@@ -49,10 +49,10 @@ export function DashboardSidebar() {
     <Sidebar className="font-inter sidebar-gradient">
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 relative">
+          <div className="w-14 h-14 relative" style={{ background: 'transparent' }}>
             <Spline 
               scene="https://prod.spline.design/020y-uiAuUWrrEpj/scene.splinecode"
-              style={{ width: '100%', height: '100%' }}
+              style={{ width: '100%', height: '100%', background: 'transparent' }}
             />
           </div>
           <h2 className="text-2xl font-bold text-white">Im Ava</h2>
