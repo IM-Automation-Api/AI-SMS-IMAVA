@@ -7,9 +7,14 @@ import { CommunicationItem } from "@/components/analytics/CommunicationItem";
 import { CircleDot, TrendingUp, MessageSquare, Users, GaugeCircle, Mic } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useMessages } from "@/hooks/useMessages";
+import { format } from "date-fns";
 
 export default function Dashboard() {
-  return <div className="space-y-6 fade-in">
+  const { messages, newMessageCount } = useMessages(4);
+  
+  return (
+    <div className="space-y-6 fade-in">
       <h1 className="text-3xl font-bold tracking-tight text-gradient">Dashboard</h1>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -19,38 +24,30 @@ export default function Dashboard() {
         <StatsCard title="Avg. Response Time" value="1.2s" icon={<GaugeCircle className="h-4 w-4" />} trend="down" trendValue="3%" />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
-              <AnalyticsChart title="Message Volume" />
-            </Card>
-            <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
-              <AnalyticsChart title="User Growth" />
-            </Card>
-          </div>
-        </div>
-        <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card">
-          <ActivitiesCard />
-        </Card>
-      </div>
-
       <Card className="bg-card/50 border-border backdrop-blur-sm">
         <CardHeader className="pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-foreground flex items-center text-base">
             <MessageSquare className="mr-2 h-5 w-5 text-primary" />
             Communications Log
           </CardTitle>
-          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/50">
-            4 New Messages
-          </Badge>
+          {newMessageCount > 0 && (
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/50">
+              {newMessageCount} New {newMessageCount === 1 ? 'Message' : 'Messages'}
+            </Badge>
+          )}
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <CommunicationItem sender="System Administrator" time="15:42:12" message="Scheduled maintenance will occur at 02:00. All systems will be temporarily offline." avatar="/placeholder.svg?height=40&width=40" unread />
-            <CommunicationItem sender="Security Module" time="14:30:45" message="Unusual login attempt blocked from IP 192.168.1.45. Added to watchlist." avatar="/placeholder.svg?height=40&width=40" unread />
-            <CommunicationItem sender="Network Control" time="12:15:33" message="Bandwidth allocation adjusted for priority services during peak hours." avatar="/placeholder.svg?height=40&width=40" unread />
-            <CommunicationItem sender="Data Center" time="09:05:18" message="Backup verification complete. All data integrity checks passed." avatar="/placeholder.svg?height=40&width=40" unread />
+            {messages.map((message) => (
+              <CommunicationItem
+                key={message.id}
+                sender={message.direction === 'inbound' ? 'Customer' : 'System'}
+                time={format(new Date(message.created_at!), 'HH:mm:ss')}
+                message={message.content}
+                avatar="/placeholder.svg?height=40&width=40"
+                unread
+              />
+            ))}
           </div>
         </CardContent>
         <CardFooter className="border-t border-border pt-4">
@@ -129,5 +126,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
-    </div>;
+    </div>
+  );
 }
