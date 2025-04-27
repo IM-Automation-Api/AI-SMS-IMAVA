@@ -26,7 +26,7 @@ export function MessagesSidebar() {
         <ConversationItem name="Eva Green" message="Please review this ASAP" time="1w ago" />
       </div>
       <div className="p-4 border-t border-border">
-        <Button variant="outline" className="w-full px-[59px] py-[2px] rounded-lg">
+        <Button variant="outline" className="w-full py-[2px] rounded px-[25px] font-light">
           <MessageSquare className="mr-2 h-4 w-4" />
           New Conversation
         </Button>
