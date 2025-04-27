@@ -29,7 +29,7 @@ export function MessageBubble({
   
   return (
     <div className={cn(
-      'flex gap-3 mb-4 max-w-[85%] group',
+      'flex gap-3 mb-4 max-w-[85%] group fade-in',
       isUser ? 'self-end flex-row-reverse' : 'self-start',
       isSystem ? 'self-center' : ''
     )}>
@@ -45,10 +45,10 @@ export function MessageBubble({
         )}
         
         <div className={cn(
-          'rounded-2xl p-3 text-sm',
-          isUser && 'bg-primary text-primary-foreground rounded-tr-none',
-          isBot && 'bg-muted text-foreground rounded-tl-none',
-          isSystem && 'bg-accent text-accent-foreground text-center text-xs py-1.5 rounded-xl'
+          'rounded-2xl p-3 text-sm shadow-soft',
+          isUser && 'message-sent-gradient text-primary-foreground rounded-tr-none',
+          isBot && 'message-received-gradient text-foreground rounded-tl-none',
+          isSystem && 'glass-effect text-accent-foreground text-center text-xs py-1.5 rounded-xl'
         )}>
           {content}
         </div>
@@ -74,4 +74,3 @@ export function MessageBubble({
     </div>
   );
 }
-

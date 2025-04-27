@@ -56,7 +56,7 @@ export function MessageList() {
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 bg-background flex flex-col">
+    <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-background to-background/95 flex flex-col">
       <div className="flex-1" /> {/* Spacer to push content to the bottom */}
       {messages.map((message) => (
         <MessageBubble

@@ -7,14 +7,14 @@ import { MessageInput } from './MessageInput';
 
 export function MessagesLayout() {
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
+    <div className="flex h-[calc(100vh-4rem)] overflow-hidden rounded-xl shadow-soft">
       {/* Messages Sidebar */}
-      <div className="w-64 border-r border-border bg-card h-full overflow-auto hidden md:block">
+      <div className="w-72 border-r border-border bg-card/30 backdrop-blur-sm h-full overflow-auto hidden md:block">
         <MessagesSidebar />
       </div>
       
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="flex-1 flex flex-col h-full overflow-hidden bg-background">
         <MessagesHeader />
         <MessageList />
         <MessageInput />

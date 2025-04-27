@@ -80,19 +80,19 @@ export function ActivitiesCard() {
           <GripVertical className="h-4 w-4 text-gray-400 mr-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
           <CardTitle className="text-sm font-medium">Activities</CardTitle>
         </div>
-        <Button variant="ghost" size="icon" className="h-7 w-7">
+        <Button variant="ghost" size="icon" className="h-7 w-7 button-hover">
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </CardHeader>
       <CardContent className="px-4 pb-4 h-[350px] overflow-auto">
         <div className="relative pl-5">
-          <div className="absolute top-0 bottom-0 left-2 w-0.5 bg-gray-200"></div>
+          <div className="absolute top-0 bottom-0 left-2 w-0.5 bg-gray-600/40"></div>
 
           <div className="space-y-4">
             {activities.map((activity) => (
               <div key={activity.id} className="relative">
                 <div className="absolute -left-5 mt-1">
-                  <Avatar className="h-4 w-4 ring-2 ring-white">
+                  <Avatar className="h-4 w-4 ring-2 ring-background">
                     <AvatarImage src={activity.user.avatar} />
                     <AvatarFallback className={activity.user.color}>{activity.user.initials}</AvatarFallback>
                   </Avatar>
@@ -102,7 +102,7 @@ export function ActivitiesCard() {
                   <div className="flex items-center mb-1">
                     <span className="text-xs font-medium">{activity.user.name}</span>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">{activity.content}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400">{activity.content}</p>
                   <span className="text-[10px] text-gray-500">{activity.time}</span>
                 </div>
               </div>
