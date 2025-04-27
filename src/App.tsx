@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import AgentBuilder from "./pages/AgentBuilder";
 import NotFound from "./pages/NotFound";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
           <Route path="/assistants" element={<DashboardLayout><div>Assistants Page</div></DashboardLayout>} />
-          <Route path="/messages" element={<DashboardLayout><div>Messages Page</div></DashboardLayout>} />
+          <Route path="/messages" element={<DashboardLayout><Messages /></DashboardLayout>} />
           <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
           <Route path="/phone-numbers" element={<DashboardLayout><div>Phone Numbers Page</div></DashboardLayout>} />
           <Route path="/settings" element={<DashboardLayout><div>Settings Page</div></DashboardLayout>} />
