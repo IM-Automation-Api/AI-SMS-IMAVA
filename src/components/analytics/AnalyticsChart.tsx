@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { cn } from "@/lib/utils";
 
 const data = [
   { name: "Jan", value: 400 },
@@ -25,7 +26,7 @@ export function AnalyticsChart({ title, className }: AnalyticsChartProps) {
       </CardHeader>
       <CardContent>
         <div className="h-[200px]">
-          <ChartContainer config={{ line: { theme: { dark: "#3b82f6" } } }}>
+          <ChartContainer config={{ line: { theme: { light: "#3b82f6", dark: "#3b82f6" } } }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
                 <defs>
