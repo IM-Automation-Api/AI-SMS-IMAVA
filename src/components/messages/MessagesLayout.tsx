@@ -7,7 +7,7 @@ interface MessagesLayoutProps {
 
 export function MessagesLayout({ children }: MessagesLayoutProps) {
   return (
-    <div className="w-[1000px] bg-white inline-flex flex-col justify-start items-start">
+    <div className="w-[1000px] bg-background dark inline-flex flex-col justify-start items-start">
       {children}
     </div>
   );
