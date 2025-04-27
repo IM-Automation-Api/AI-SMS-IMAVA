@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -6,39 +7,39 @@
 
 @layer base {
   :root {
-    --background: 225 6% 4.5%;
+    --background: 251 30% 12%;
     --foreground: 0 0% 98%;
     
-    --card: 222 20% 7%;
+    --card: 248 24% 19%;
     --card-foreground: 0 0% 98%;
     
-    --popover: 225 6% 4.5%;
+    --popover: 251 30% 12%;
     --popover-foreground: 0 0% 98%;
     
-    --primary: 224 95% 66%;
+    --primary: 255 26% 46%;
     --primary-foreground: 0 0% 98%;
     
-    --secondary: 217 32% 17%;
+    --secondary: 247 26% 24%;
     --secondary-foreground: 0 0% 98%;
     
-    --muted: 223 20% 11%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 248 24% 19%;
+    --muted-foreground: 285 9% 85%;
     
-    --accent: 217 32% 17%;
+    --accent: 247 26% 24%;
     --accent-foreground: 0 0% 98%;
     
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 217 32% 17.5%;
-    --input: 217 32% 17.5%;
-    --ring: 224 95% 66%;
+    --border: 247 26% 24%;
+    --input: 247 26% 24%;
+    --ring: 255 26% 46%;
 
-    --sidebar-background: 222 47% 11%;
+    --sidebar-background: 251 32% 12%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-muted: 217 32% 17.5%;
-    --sidebar-accent: 224 95% 66%;
-    --sidebar-border: 222 47% 11%;
+    --sidebar-muted: 247 26% 24%;
+    --sidebar-accent: 255 26% 46%;
+    --sidebar-border: 251 32% 12%;
 
     --radius: 0.75rem;
   }

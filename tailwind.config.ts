@@ -61,6 +61,13 @@ export default {
           muted: "hsl(var(--sidebar-muted))",
           accent: "hsl(var(--sidebar-accent))",
           border: "hsl(var(--sidebar-border))"
+        },
+        purple: {
+          100: 'rgb(217, 206, 226)', // Lightest purple
+          200: 'rgb(97, 86, 147)',   // Medium purple
+          300: 'rgb(38, 36, 62)',    // Dark purple
+          400: 'rgb(25, 21, 41)',    // Darkest purple
+          gray: 'rgb(135, 135, 135)' // Gray
         }
       },
       borderRadius: {
