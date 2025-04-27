@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +13,7 @@ import MessagesPage from "./pages/MessagesPage";
 import Leads from "./pages/Leads";
 import AssistantsPage from "./pages/AssistantsPage";
 import SettingsPage from "./pages/SettingsPage";
+import AISettingsPage from "./pages/AISettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +31,7 @@ const App = () => (
           <Route path="/leads" element={<DashboardLayout><Leads /></DashboardLayout>} />
           <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
           <Route path="/settings" element={<SettingsLayout><SettingsPage /></SettingsLayout>} />
+          <Route path="/settings/ai-settings" element={<SettingsLayout><AISettingsPage /></SettingsLayout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
