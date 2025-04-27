@@ -1,12 +1,14 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
-import { Download, BellDot, MessageSquare, Search } from 'lucide-react';
+import { BellDot, MessageSquare, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
+
 export function MessagesSidebar() {
-  return <div className="flex flex-col h-full">
+  return (
+    <div className="flex flex-col h-full">
       <div className="p-4 border-b border-border flex items-center justify-between">
-        <h2 className="font-semibold text-lg">Messages</h2>
+        <h2 className="font-semibold text-lg rainbow-text-gradient">Messages</h2>
         <Button variant="ghost" size="icon" className="rounded-full">
           <BellDot className="h-5 w-5" />
         </Button>
@@ -26,19 +28,22 @@ export function MessagesSidebar() {
         <ConversationItem name="Eva Green" message="Please review this ASAP" time="1w ago" />
       </div>
       <div className="p-4 border-t border-border">
-        <Button variant="outline" className="w-full py-[2px] rounded px-[25px] font-light">
+        <Button variant="outline" className="rainbow-border-gradient w-full py-[2px] rounded px-[25px] font-light">
           <MessageSquare className="mr-2 h-4 w-4" />
           New Conversation
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 }
+
 interface ConversationItemProps {
   name: string;
   message: string;
   time: string;
   active?: boolean;
 }
+
 function ConversationItem({
   name,
   message,

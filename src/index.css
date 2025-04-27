@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,7 +49,20 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-br from-[#1a0b2e] via-[#2f1c4a] to-[#392960] min-h-screen text-foreground;
   }
 }
 
+@layer components {
+  .rainbow-border-gradient {
+    @apply relative inline-flex items-center justify-center;
+    background: linear-gradient(60deg, #ff0000, #ff8800, #ffd000, #00ff66, #0066ff, #7f00ff);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+  }
+
+  .rainbow-text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#ff0000] via-[#00ff66] to-[#7f00ff];
+  }
+}

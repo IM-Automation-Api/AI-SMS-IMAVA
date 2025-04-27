@@ -6,13 +6,13 @@ import { Avatar } from '@/components/ui/avatar';
 
 export function MessagesHeader() {
   return (
-    <div className="border-b border-border py-4 px-6 flex items-center justify-between bg-card">
+    <div className="border-b border-border py-4 px-6 flex items-center justify-between bg-card/50 backdrop-blur-sm">
       <div className="flex items-center gap-3">
         <Avatar className="h-8 w-8 bg-primary text-primary-foreground">
           <span>JS</span>
         </Avatar>
         <div>
-          <h3 className="font-semibold">John Smith</h3>
+          <h3 className="font-semibold rainbow-text-gradient">John Smith</h3>
           <span className="text-xs text-muted-foreground">Online</span>
         </div>
       </div>
