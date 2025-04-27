@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatsCard } from "@/components/analytics/StatsCard";
 import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
 import { CircleDot, TrendingUp, MessageSquare, Users, GaugeCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Dashboard() {
   return (
@@ -58,15 +59,15 @@ export default function Dashboard() {
             <ul className="space-y-2">
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Support</span>
-                <span className="text-primary">42%</span>
+                <Badge variant="outline" className="bg-neutral-700 text-neutral-300">42%</Badge>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Sales</span>
-                <span className="text-primary">28%</span>
+                <Badge variant="outline" className="bg-neutral-600 text-neutral-200">28%</Badge>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Billing</span>
-                <span className="text-primary">18%</span>
+                <Badge variant="outline" className="bg-neutral-500 text-neutral-100">18%</Badge>
               </li>
             </ul>
           </CardContent>
@@ -81,28 +82,28 @@ export default function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span className="text-xs text-muted-foreground">0-2 min</span>
-                  <span className="text-xs text-primary">45%</span>
+                  <Badge variant="outline" className="bg-neutral-700 text-neutral-300">45%</Badge>
                 </div>
                 <div className="w-full bg-muted rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '45%' }}></div>
+                  <div className="bg-muted-foreground h-1.5 rounded-full" style={{ width: '45%' }}></div>
                 </div>
               </div>
               <div>
                 <div className="flex justify-between mb-1">
                   <span className="text-xs text-muted-foreground">2-5 min</span>
-                  <span className="text-xs text-primary">30%</span>
+                  <Badge variant="outline" className="bg-neutral-600 text-neutral-200">30%</Badge>
                 </div>
                 <div className="w-full bg-muted rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '30%' }}></div>
+                  <div className="bg-muted-foreground h-1.5 rounded-full" style={{ width: '30%' }}></div>
                 </div>
               </div>
               <div>
                 <div className="flex justify-between mb-1">
                   <span className="text-xs text-muted-foreground">5+ min</span>
-                  <span className="text-xs text-primary">25%</span>
+                  <Badge variant="outline" className="bg-neutral-500 text-neutral-100">25%</Badge>
                 </div>
                 <div className="w-full bg-muted rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '25%' }}></div>
+                  <div className="bg-muted-foreground h-1.5 rounded-full" style={{ width: '25%' }}></div>
                 </div>
               </div>
             </div>
@@ -118,9 +119,9 @@ export default function Dashboard() {
               <div className="relative w-32 h-32">
                 <svg className="w-full h-full" viewBox="0 0 100 100">
                   <circle className="text-muted stroke-current" strokeWidth="10" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
-                  <circle className="text-primary stroke-current" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="25.12" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                  <circle className="text-muted-foreground stroke-current" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="25.12" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
                 </svg>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-primary">90%</div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-muted-foreground">90%</div>
               </div>
             </div>
           </CardContent>
@@ -129,3 +130,4 @@ export default function Dashboard() {
     </div>
   );
 }
+
