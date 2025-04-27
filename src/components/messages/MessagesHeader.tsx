@@ -12,7 +12,7 @@ export function MessagesHeader() {
           <span>JS</span>
         </Avatar>
         <div>
-          <h3 className="font-semibold rainbow-text-gradient">John Smith</h3>
+          <h3 className="font-semibold text-foreground">John Smith</h3>
           <span className="text-xs text-muted-foreground">Online</span>
         </div>
       </div>

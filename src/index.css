@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,23 +52,11 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
   }
 }
 
 @layer components {
-  .rainbow-border-gradient {
-    @apply relative inline-flex items-center justify-center;
-    background: linear-gradient(60deg, #ff0000, #ff8800, #ffd000, #00ff66, #0066ff, #7f00ff);
-    background-clip: padding-box;
-    border: 2px solid transparent;
-    border-radius: 0.5rem;
-  }
-
-  .rainbow-text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#ff0000] via-[#00ff66] to-[#7f00ff];
-  }
-  
   .dark-purple-overlay {
     @apply before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#1a0b2e80] before:via-[#2f1c4a80] before:to-[#39296080] before:z-[-1] relative z-0;
   }
