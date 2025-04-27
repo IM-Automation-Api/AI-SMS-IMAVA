@@ -11,6 +11,7 @@ import { DashboardLayout } from "./components/layout/DashboardLayout";
 import MessagesPage from "./pages/MessagesPage";
 import Leads from "./pages/Leads";
 import AssistantsPage from "./pages/AssistantsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -27,8 +28,7 @@ const App = () => (
           <Route path="/messages" element={<DashboardLayout><MessagesPage /></DashboardLayout>} />
           <Route path="/leads" element={<DashboardLayout><Leads /></DashboardLayout>} />
           <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
-          <Route path="/phone-numbers" element={<DashboardLayout><div>Phone Numbers Page</div></DashboardLayout>} />
-          <Route path="/settings" element={<DashboardLayout><div>Settings Page</div></DashboardLayout>} />
+          <Route path="/settings" element={<DashboardLayout><SettingsPage /></DashboardLayout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
