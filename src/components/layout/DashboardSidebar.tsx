@@ -31,7 +31,7 @@ const menuItems = [{
   path: '/settings'
 }];
 export function DashboardSidebar() {
-  return <Sidebar>
+  return <Sidebar className="font-bold text-center">
       <SidebarHeader className="p-4">
         <h2 className="text-lg font-semibold">AI SMS Platform</h2>
       </SidebarHeader>
