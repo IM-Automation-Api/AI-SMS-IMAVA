@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { BeamsBackground } from '../ui/beams-background';
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
@@ -7,8 +8,10 @@ interface SettingsLayoutProps {
 
 export function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <div className="container mx-auto py-8 px-4">
-      {children}
-    </div>
+    <BeamsBackground intensity="subtle">
+      <div className="container mx-auto py-8 px-4">
+        {children}
+      </div>
+    </BeamsBackground>
   );
 }
