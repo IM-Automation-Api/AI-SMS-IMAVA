@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatsCard } from "@/components/analytics/StatsCard";
@@ -8,11 +9,10 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Dashboard() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-primary">Dashboard</h1>
+    <div className="space-y-6 fade-in">
+      <h1 className="text-3xl font-bold tracking-tight text-gradient">Dashboard</h1>
       
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           title="Total Messages"
           value="54,231"
@@ -43,92 +43,112 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Charts and Activities Grid */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3">
         <div className="md:col-span-2">
-          <div className="grid gap-4 md:grid-cols-2">
-            <AnalyticsChart title="Message Volume" />
-            <AnalyticsChart title="User Growth" />
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
+              <AnalyticsChart title="Message Volume" />
+            </Card>
+            <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
+              <AnalyticsChart title="User Growth" />
+            </Card>
           </div>
         </div>
-        <Card className="border-border bg-card rounded-2xl shadow-lg">
+        <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card">
           <ActivitiesCard />
         </Card>
       </div>
 
-      {/* Additional Metrics */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-border bg-card rounded-2xl shadow-lg">
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
           <CardHeader>
-            <CardTitle className="text-card-foreground">Popular Topics</CardTitle>
+            <CardTitle>Popular Topics</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Support</span>
-                <Badge variant="outline" className="bg-neutral-700 text-neutral-300">42%</Badge>
+                <Badge variant="outline" className="bg-primary/10 text-primary">42%</Badge>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Sales</span>
-                <Badge variant="outline" className="bg-neutral-600 text-neutral-200">28%</Badge>
+                <Badge variant="outline" className="bg-primary/10 text-primary">28%</Badge>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Billing</span>
-                <Badge variant="outline" className="bg-neutral-500 text-neutral-100">18%</Badge>
+                <Badge variant="outline" className="bg-primary/10 text-primary">18%</Badge>
               </li>
             </ul>
           </CardContent>
         </Card>
         
-        <Card className="border-border bg-card rounded-2xl shadow-lg">
+        <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
           <CardHeader>
-            <CardTitle className="text-card-foreground">Conversation Length</CardTitle>
+            <CardTitle>Conversation Length</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-xs text-muted-foreground">0-2 min</span>
-                  <Badge variant="outline" className="bg-neutral-700 text-neutral-300">45%</Badge>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">0-2 min</span>
+                  <Badge variant="outline" className="bg-primary/10 text-primary">45%</Badge>
                 </div>
-                <div className="w-full bg-muted rounded-full h-1.5">
-                  <div className="bg-muted-foreground h-1.5 rounded-full" style={{ width: '45%' }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-xs text-muted-foreground">2-5 min</span>
-                  <Badge variant="outline" className="bg-neutral-600 text-neutral-200">30%</Badge>
-                </div>
-                <div className="w-full bg-muted rounded-full h-1.5">
-                  <div className="bg-muted-foreground h-1.5 rounded-full" style={{ width: '30%' }}></div>
+                <div className="w-full bg-muted/50 rounded-full h-1.5">
+                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '45%' }}></div>
                 </div>
               </div>
               <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-xs text-muted-foreground">5+ min</span>
-                  <Badge variant="outline" className="bg-neutral-500 text-neutral-100">25%</Badge>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">2-5 min</span>
+                  <Badge variant="outline" className="bg-primary/10 text-primary">30%</Badge>
                 </div>
-                <div className="w-full bg-muted rounded-full h-1.5">
-                  <div className="bg-muted-foreground h-1.5 rounded-full" style={{ width: '25%' }}></div>
+                <div className="w-full bg-muted/50 rounded-full h-1.5">
+                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '30%' }}></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">5+ min</span>
+                  <Badge variant="outline" className="bg-primary/10 text-primary">25%</Badge>
+                </div>
+                <div className="w-full bg-muted/50 rounded-full h-1.5">
+                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '25%' }}></div>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="border-border bg-card rounded-2xl shadow-lg">
+        <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
           <CardHeader>
-            <CardTitle className="text-card-foreground">User Satisfaction</CardTitle>
+            <CardTitle>User Satisfaction</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-center items-center h-full">
               <div className="relative w-32 h-32">
-                <svg className="w-full h-full" viewBox="0 0 100 100">
-                  <circle className="text-muted stroke-current" strokeWidth="10" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
-                  <circle className="text-muted-foreground stroke-current" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="25.12" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <circle 
+                    className="text-muted stroke-current" 
+                    strokeWidth="10" 
+                    fill="transparent" 
+                    r="40" 
+                    cx="50" 
+                    cy="50"
+                  />
+                  <circle 
+                    className="text-primary stroke-current" 
+                    strokeWidth="10" 
+                    strokeDasharray="251.2" 
+                    strokeDashoffset="25.12" 
+                    fill="transparent" 
+                    r="40" 
+                    cx="50" 
+                    cy="50"
+                  />
                 </svg>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-muted-foreground">90%</div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-primary">
+                  90%
+                </div>
               </div>
             </div>
           </CardContent>
