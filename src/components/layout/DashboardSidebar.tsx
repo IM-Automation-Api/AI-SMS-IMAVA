@@ -1,6 +1,7 @@
 
 import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import Spline from '@splinetool/react-spline';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
 const menuItems = [
@@ -47,7 +48,15 @@ export function DashboardSidebar() {
   return (
     <Sidebar className="font-inter sidebar-gradient">
       <SidebarHeader className="p-6">
-        <h2 className="text-2xl font-bold text-white">Im Ava</h2>
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 relative">
+            <Spline 
+              scene="https://prod.spline.design/020y-uiAuUWrrEpj/scene.splinecode"
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
+          <h2 className="text-2xl font-bold text-white">Im Ava</h2>
+        </div>
       </SidebarHeader>
       <SidebarContent className="px-4">
         <SidebarGroup>
