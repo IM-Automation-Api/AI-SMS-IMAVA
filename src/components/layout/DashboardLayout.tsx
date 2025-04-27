@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Menu } from 'lucide-react';
 import { SidebarProvider } from '@/components/ui/sidebar';
