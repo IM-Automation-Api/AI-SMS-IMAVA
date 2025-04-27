@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { download, moreHorizontal, bellDot } from "lucide-react";
+import { Download, MoreHorizontal, BellDot } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function MessageHeader() {
@@ -13,15 +13,15 @@ export function MessageHeader() {
       </div>
       <div className="flex-1 flex justify-center items-center gap-2">
         <Button variant="ghost" size="icon" className="w-10 h-10 rounded-full">
-          <bellDot className="w-5 h-5" />
+          <BellDot className="w-5 h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="w-10 h-10 rounded-full">
-          <moreHorizontal className="w-5 h-5" />
+          <MoreHorizontal className="w-5 h-5" />
         </Button>
       </div>
       <div className="flex-1 flex justify-end items-center gap-2">
         <Button variant="outline" size="icon" className="w-10 h-10 rounded-full">
-          <download className="w-5 h-5" />
+          <Download className="w-5 h-5" />
         </Button>
         <Avatar>
           <AvatarFallback>VA</AvatarFallback>
