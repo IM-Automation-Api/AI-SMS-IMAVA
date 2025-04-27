@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatsCard } from "@/components/analytics/StatsCard";
 import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
+import { ActivitiesCard } from "@/components/analytics/ActivitiesCard";
 import { CircleDot, TrendingUp, MessageSquare, Users, GaugeCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -43,10 +43,17 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Charts Grid */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <AnalyticsChart title="Message Volume" />
-        <AnalyticsChart title="User Growth" />
+      {/* Charts and Activities Grid */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <div className="grid gap-4 md:grid-cols-2">
+            <AnalyticsChart title="Message Volume" />
+            <AnalyticsChart title="User Growth" />
+          </div>
+        </div>
+        <Card className="border-border bg-card rounded-2xl shadow-lg">
+          <ActivitiesCard />
+        </Card>
       </div>
 
       {/* Additional Metrics */}
@@ -130,4 +137,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
