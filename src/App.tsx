@@ -14,6 +14,7 @@ import Leads from "./pages/Leads";
 import AssistantsPage from "./pages/AssistantsPage";
 import SettingsPage from "./pages/SettingsPage";
 import AISettingsPage from "./pages/AISettingsPage";
+import SignupPage from "./pages/SignupPage";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
           <Route path="/assistants" element={<DashboardLayout><AssistantsPage /></DashboardLayout>} />
           <Route path="/messages" element={<DashboardLayout><MessagesPage /></DashboardLayout>} />
