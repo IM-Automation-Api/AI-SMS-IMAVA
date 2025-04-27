@@ -1,5 +1,5 @@
 
-import { LayoutDashboard, Users, MessageSquare, Settings, Phone, FileText, UserSquare } from 'lucide-react';
+import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
@@ -8,32 +8,32 @@ const menuItems = [
     icon: LayoutDashboard,
     label: 'Dashboard',
     path: '/dashboard'
-  }, 
+  },
   {
-    icon: Users,
+    icon: Brain,
     label: 'Assistants',
     path: '/assistants'
-  }, 
+  },
   {
     icon: MessageSquare,
     label: 'Messages',
     path: '/messages'
-  }, 
+  },
   {
-    icon: UserSquare,
+    icon: ClipboardList,
     label: 'Leads',
     path: '/leads'
-  }, 
+  },
   {
-    icon: FileText,
+    icon: Wrench,
     label: 'Agent Builder',
     path: '/agent-builder'
-  }, 
+  },
   {
     icon: Phone,
     label: 'Phone Numbers',
     path: '/phone-numbers'
-  }, 
+  },
   {
     icon: Settings,
     label: 'Settings',
@@ -47,11 +47,10 @@ export function DashboardSidebar() {
   return (
     <Sidebar className="font-inter sidebar-gradient">
       <SidebarHeader className="p-6">
-        <h2 className="text-lg font-medium text-gradient bg-gradient-to-r from-white to-white/80 bg-clip-text">AI SMS Platform</h2>
+        <h2 className="text-2xl font-bold text-white">AI SMS Platform</h2>
       </SidebarHeader>
-      <SidebarContent className="mx-0 px-[16px]">
+      <SidebarContent className="px-4">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs text-white/60 font-medium">Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map(item => (
