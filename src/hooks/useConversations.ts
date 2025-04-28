@@ -44,9 +44,21 @@ export function useConversations(leadId?: string) {
 
         if (messagesError) throw messagesError;
 
+        // Apply type casting to ensure role is either 'user' or 'assistant'
+        const typedMessages = messages?.map(message => ({
+          ...message,
+          role: message.role === 'user' ? 'user' : 'assistant'
+        } as {
+          id: string;
+          conversation_id: string;
+          role: 'user' | 'assistant';
+          content: string;
+          created_at: string;
+        })) || [];
+
         conversationsWithMessages.push({
           ...conversation,
-          messages: messages || []
+          messages: typedMessages
         });
       }
 
