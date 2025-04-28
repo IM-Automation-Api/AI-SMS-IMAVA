@@ -132,30 +132,45 @@ export type Database = {
         Row: {
           avatar: string | null
           created_at: string
+          groq_model: string | null
           id: string
+          initial_prompt: string | null
+          max_tokens: number | null
           name: string
           role: string
           status: string
+          system_prompt: string | null
+          temperature: number | null
           updated_at: string
           user_id: string
         }
         Insert: {
           avatar?: string | null
           created_at?: string
+          groq_model?: string | null
           id?: string
+          initial_prompt?: string | null
+          max_tokens?: number | null
           name: string
           role: string
           status?: string
+          system_prompt?: string | null
+          temperature?: number | null
           updated_at?: string
           user_id: string
         }
         Update: {
           avatar?: string | null
           created_at?: string
+          groq_model?: string | null
           id?: string
+          initial_prompt?: string | null
+          max_tokens?: number | null
           name?: string
           role?: string
           status?: string
+          system_prompt?: string | null
+          temperature?: number | null
           updated_at?: string
           user_id?: string
         }
