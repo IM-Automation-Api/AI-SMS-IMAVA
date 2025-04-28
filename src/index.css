@@ -4,6 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Raleway';
+  src: url('/Raleway/Raleway-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url('/Raleway/Raleway-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
 @layer base {
   :root {
     --background: 251 30% 12%;
@@ -58,7 +72,7 @@
   }
 
   h1:not(.logo-text) {
-    font-family: "Agrandir";
+    font-family: "Raleway";
     letter-spacing: 30px;
   }
 }

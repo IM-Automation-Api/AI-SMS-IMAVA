@@ -21,7 +21,7 @@ export default {
       fontFamily: {
         inter: ['Inter', 'Poppins', 'Space Grotesk', 'sans-serif'],
         zag: ['Zag', 'sans-serif'],
-        agrandir: ['Agrandir', 'sans-serif'],
+        railway: ['Raleway', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
