@@ -4,6 +4,7 @@ import { AuthProvider } from "@/lib/supabase/auth/auth-context";
 import { SWRProvider } from "@/lib/swr-config";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/react-query/query-client";
+import { BrowserRouter } from "react-router-dom";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -14,9 +15,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
         enableSystem={false}
         disableTransitionOnChange
       >
-        <AuthProvider>
-          <SWRProvider>{children}</SWRProvider>
-        </AuthProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <SWRProvider>{children}</SWRProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
   );

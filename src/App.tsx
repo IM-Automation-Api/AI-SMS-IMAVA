@@ -2,7 +2,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AgentBuilder from "./pages/AgentBuilder";
@@ -22,22 +22,20 @@ const App = () => (
   <TooltipProvider>
     <Toaster />
     <Sonner />
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
-        <Route path="/assistants" element={<DashboardLayout><AssistantsPage /></DashboardLayout>} />
-        <Route path="/messages" element={<DashboardLayout><MessagesPage /></DashboardLayout>} />
-        <Route path="/leads" element={<DashboardLayout><Leads /></DashboardLayout>} />
-        <Route path="/campaigns" element={<DashboardLayout><SMSCampaignPage /></DashboardLayout>} />
-        <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
-        <Route path="/settings" element={<SettingsLayout><SettingsPage /></SettingsLayout>} />
-        <Route path="/settings/ai-settings" element={<SettingsLayout><AISettingsPage /></SettingsLayout>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
+      <Route path="/assistants" element={<DashboardLayout><AssistantsPage /></DashboardLayout>} />
+      <Route path="/messages" element={<DashboardLayout><MessagesPage /></DashboardLayout>} />
+      <Route path="/leads" element={<DashboardLayout><Leads /></DashboardLayout>} />
+      <Route path="/campaigns" element={<DashboardLayout><SMSCampaignPage /></DashboardLayout>} />
+      <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
+      <Route path="/settings" element={<SettingsLayout><SettingsPage /></SettingsLayout>} />
+      <Route path="/settings/ai-settings" element={<SettingsLayout><AISettingsPage /></SettingsLayout>} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   </TooltipProvider>
 );
 
