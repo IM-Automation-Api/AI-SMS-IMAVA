@@ -5,10 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 
 interface UserProfile {
+  id: string;
   full_name?: string;
   organization_name?: string;
   programming_level?: "beginner" | "proficient" | "advanced";
   onboarding_completed?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 type ExtendedUser = User & {
@@ -61,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return null;
     }
     
-    return data;
+    return data as UserProfile;
   };
   
   useEffect(() => {
