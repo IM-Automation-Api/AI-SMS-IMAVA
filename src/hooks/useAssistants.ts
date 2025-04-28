@@ -13,11 +13,6 @@ export interface Assistant {
   created_at: string;
   updated_at: string;
   user_id: string;
-  system_prompt?: string;
-  initial_prompt?: string;
-  groq_model?: string;
-  temperature?: number;
-  max_tokens?: number;
 }
 
 export function useAssistants() {

@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { useAssistants } from "@/hooks/useAssistants";
 import { Loader2 } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
@@ -38,35 +37,11 @@ export default function AssistantsPage() {
               </div>
             </div>
             
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>System Prompt</Label>
-                <Textarea 
-                  value={assistant.system_prompt || ''} 
-                  readOnly 
-                  className="min-h-[100px]"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Initial Prompt</Label>
-                <Textarea 
-                  value={assistant.initial_prompt || ''} 
-                  readOnly 
-                  className="min-h-[100px]"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Model</Label>
-                  <Input value={assistant.groq_model || 'mixtral-8x7b-32768'} readOnly />
-                </div>
-                <div className="space-y-2">
-                  <Label>Temperature</Label>
-                  <Input value={assistant.temperature || 0.7} readOnly />
-                </div>
-              </div>
+            <div className="space-y-2">
+              <Label>Description</Label>
+              <p className="text-sm text-muted-foreground">
+                {assistant.role || 'AI Assistant'}
+              </p>
             </div>
 
             <div className="flex items-center space-x-2">
