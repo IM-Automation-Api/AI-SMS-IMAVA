@@ -14,20 +14,20 @@ interface StatsCardProps {
 export function StatsCard({ title, value, icon, className, trend, trendValue }: StatsCardProps) {
   return (
     <Card className={cn(
-      "border-border bg-card transition-all hover:scale-105 rounded-2xl shadow-lg", 
+      "border-border bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F] transition-all duration-300 hover:scale-105 rounded-2xl shadow-lg shadow-purple-900/20", 
       className
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-card-foreground">
+        <CardTitle className="text-sm font-medium text-gray-400">
           {title}
         </CardTitle>
-        {icon && <div className="text-muted-foreground">{icon}</div>}
+        {icon && <div className="text-indigo-400">{icon}</div>}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold text-primary">{value}</div>
+        <div className="text-3xl font-bold text-indigo-400">{value}</div>
         {trend && trendValue && (
           <p className={cn("mt-1 text-xs", 
-            trend === "up" ? "text-green-500" : "text-red-500"
+            trend === "up" ? "text-green-400" : "text-red-400"
           )}>
             {trend === "up" ? "↑" : "↓"} {trendValue} from last month
           </p>

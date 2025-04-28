@@ -45,10 +45,10 @@ export function DashboardSidebar() {
   const location = useLocation();
   
   return (
-    <Sidebar className="font-inter sidebar-gradient">
+    <Sidebar className="font-inter bg-black/10 backdrop-blur-md border-r border-white/10">
       <SidebarHeader className="p-8">
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg">
+          <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
             <div className="text-4xl font-bold text-white">IA</div>
           </div>
           <h2 className="text-2xl font-bold text-white">Im Ava</h2>
@@ -57,11 +57,11 @@ export function DashboardSidebar() {
       <SidebarContent className="px-4">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-4"> {/* Added space-y-4 to increase vertical spacing */}
+            <SidebarMenu className="space-y-2">
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton 
-                    className={`sidebar-item-base sidebar-item-hover ${location.pathname === item.path ? 'sidebar-item-active' : ''}`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 hover:scale-105 transition-all duration-300 ${location.pathname === item.path ? 'bg-indigo-500/20 text-indigo-400' : ''}`} 
                     asChild
                   >
                     <Link to={item.path}>

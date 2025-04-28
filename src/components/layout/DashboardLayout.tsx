@@ -28,10 +28,10 @@ export function DashboardLayout({
       <SidebarProvider>
         <div className="min-h-screen flex w-full">
           {!isMobile && <DashboardSidebar />}
-          <main className="flex-1 overflow-auto bg-gradient-to-br from-background to-background/95 rounded-md px-0">
+          <main className="flex-1 overflow-auto backdrop-blur-md bg-gradient-to-br from-[#1B1B33]/80 to-[#0F0F0F]/90 rounded-md px-0">
             <TopNavigation />
             {isMobile && (
-              <div className="sticky top-0 z-10 px-4 py-3 bg-background/80 backdrop-blur-md border-b">
+              <div className="sticky top-0 z-10 px-4 py-3 bg-black/20 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-bold">Im Ava</h2>
                   <Drawer>
@@ -48,7 +48,7 @@ export function DashboardLayout({
                 </div>
               </div>
             )}
-            <div className="container mx-auto p-6 fade-in">
+            <div className="container mx-auto p-6 fade-in text-gray-100">
               {children}
             </div>
           </main>

@@ -61,15 +61,15 @@
 
 @layer components {
   .glass-effect {
-    @apply bg-white/5 backdrop-blur-sm border border-white/10;
+    @apply bg-black/10 backdrop-blur-md border border-white/10;
   }
 
   .message-sent-gradient {
-    @apply bg-gradient-to-br from-primary to-primary/80;
+    @apply bg-gradient-to-br from-indigo-500 to-indigo-600/80;
   }
   
   .message-received-gradient {
-    @apply bg-gradient-to-br from-muted to-muted/80;
+    @apply bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F];
   }
 
   .shadow-soft {
@@ -77,35 +77,31 @@
   }
   
   .card-gradient {
-    @apply bg-gradient-to-br from-card to-card/80;
+    @apply bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F];
   }
 
   .sidebar-gradient {
-    @apply bg-gradient-to-b from-[#0D0D12] to-black border-r border-white/5 shadow-[inset_0px_2px_12px_rgba(0,0,0,0.7)] backdrop-blur-[6px];
+    @apply bg-gradient-to-b from-black/80 to-black/90 border-r border-white/5 shadow-[inset_0px_2px_12px_rgba(0,0,0,0.7)] backdrop-blur-md;
   }
 
   .sidebar-item-base {
-    @apply flex items-center gap-3 px-4 py-2 rounded-lg text-white/60 transition-all duration-300;
+    @apply flex items-center gap-3 px-4 py-2 rounded-lg text-gray-400 transition-all duration-300;
   }
 
   .sidebar-item-hover {
-    @apply hover:bg-white/5 hover:text-white active:bg-indigo-500/20 active:text-indigo-400;
+    @apply hover:bg-white/5 hover:text-white hover:scale-105 active:bg-indigo-500/20 active:text-indigo-400;
   }
 
   .sidebar-item-active {
-    @apply bg-white/10 text-white;
-  }
-
-  .sidebar-item-hover {
-    @apply hover:bg-accent/50 hover:scale-[1.02] transition-all duration-200;
+    @apply bg-indigo-500/20 text-indigo-400;
   }
   
   .list-item-hover {
-    @apply hover:translate-y-[-2px] hover:shadow-lg transition-all duration-200;
+    @apply hover:translate-y-[-2px] hover:shadow-lg hover:scale-105 transition-all duration-300;
   }
   
   .button-hover {
-    @apply hover:scale-105 transition-transform duration-200;
+    @apply hover:scale-105 hover:brightness-110 transition-all duration-300;
   }
 
   .fade-in {
@@ -128,5 +124,13 @@
 
   .status-online {
     @apply relative pl-3 before:absolute before:w-2 before:h-2 before:rounded-full before:bg-green-500 before:left-0 before:top-1/2 before:transform before:-translate-y-1/2;
+  }
+
+  .glow-text {
+    @apply text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.5)];
+  }
+
+  .glow-box {
+    @apply shadow-lg shadow-purple-900/20;
   }
 }
