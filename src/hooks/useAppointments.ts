@@ -14,7 +14,7 @@ interface Lead {
   client_id: string;
   created_at: string | null;
   updated_at: string | null;
-  last_contacted: string | null; // Changed from status to last_contacted
+  last_contacted: string | null;
   notes: string | null;
   tags: Json | null;
 }

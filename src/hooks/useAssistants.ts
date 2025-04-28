@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import useSWR from "swr";
@@ -12,6 +11,11 @@ export interface Assistant {
   avatar?: string;
   created_at: string;
   updated_at: string;
+  system_prompt?: string;
+  initial_prompt?: string;
+  groq_model?: string;
+  temperature?: number;
+  max_tokens?: number;
 }
 
 export function useAssistants() {
