@@ -225,6 +225,38 @@ export type Database = {
           },
         ]
       }
+      lead_tags: {
+        Row: {
+          client_id: string
+          color: string
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          client_id: string
+          color?: string
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          client_id?: string
+          color?: string
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_tags_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           client_id: string
@@ -232,9 +264,11 @@ export type Database = {
           email: string | null
           first_name: string | null
           id: string
+          last_contacted: string | null
           last_name: string | null
+          notes: string | null
           phone: string
-          status: string | null
+          tags: Json | null
           updated_at: string | null
         }
         Insert: {
@@ -243,9 +277,11 @@ export type Database = {
           email?: string | null
           first_name?: string | null
           id?: string
+          last_contacted?: string | null
           last_name?: string | null
+          notes?: string | null
           phone: string
-          status?: string | null
+          tags?: Json | null
           updated_at?: string | null
         }
         Update: {
@@ -254,9 +290,11 @@ export type Database = {
           email?: string | null
           first_name?: string | null
           id?: string
+          last_contacted?: string | null
           last_name?: string | null
+          notes?: string | null
           phone?: string
-          status?: string | null
+          tags?: Json | null
           updated_at?: string | null
         }
         Relationships: [
