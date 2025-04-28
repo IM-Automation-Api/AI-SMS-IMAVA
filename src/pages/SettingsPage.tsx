@@ -44,7 +44,7 @@ export default function SettingsPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Settings</h1>
+        <h1 className="text-3xl tracking-[0.12em] font-zag">Settings</h1>
       </div>
 
       <Tabs defaultValue="account" className="w-full">

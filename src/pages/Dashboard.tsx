@@ -15,7 +15,7 @@ export default function Dashboard() {
   
   return (
     <div className="space-y-6 fade-in">
-      <h1 className="text-3xl font-bold tracking-tight text-gradient">Dashboard</h1>
+      <h1 className="text-3xl tracking-[0.12em] font-zag">Dashboard</h1>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard title="Total Messages" value="54,231" icon={<MessageSquare className="h-4 w-4" />} trend="up" trendValue="12%" />

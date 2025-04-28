@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -42,7 +41,7 @@ export default function AssistantsPage() {
   return (
     <div className="space-y-8 slide-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-medium bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Assistants</h1>
+        <h1 className="text-3xl tracking-[0.12em] font-zag">Assistants</h1>
         <Button className="rounded-full px-5 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-lg hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300" asChild>
           <Link to="/agent-builder">
             New Assistant

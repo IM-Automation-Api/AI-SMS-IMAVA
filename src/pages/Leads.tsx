@@ -81,7 +81,7 @@ const statusStyles = {
 export default function Leads() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-primary">Leads</h1>
+      <h1 className="text-3xl tracking-[0.12em] font-zag">Leads</h1>
       
       <div className="rounded-2xl border shadow-lg bg-card">
         <Table>

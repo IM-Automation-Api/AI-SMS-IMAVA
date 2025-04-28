@@ -1,26 +1,21 @@
 import React from 'react';
-import { BeamsBackground } from '../ui/beams-background';
-import { MessagesHeader } from './MessagesHeader';
-import { MessagesSidebar } from './MessagesSidebar';
-import { MessageList } from './MessageList';
-import { MessageInput } from './MessageInput';
 
 export function MessagesLayout() {
   return (
-    <BeamsBackground intensity="subtle">
-      <div className="flex h-[calc(100vh-4rem)] overflow-hidden rounded-xl shadow-soft">
-        {/* Messages Sidebar */}
-        <div className="w-72 border-r border-border bg-card/30 backdrop-blur-sm h-full overflow-auto hidden md:block">
-          <MessagesSidebar />
+    <div className="h-full flex">
+      <div className="flex-1 flex flex-col">
+        <div className="p-6">
+          <h1 className="text-3xl tracking-[0.12em] font-zag">Messages</h1>
         </div>
-        
-        {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-background">
-          <MessagesHeader />
-          <MessageList />
-          <MessageInput />
+        <div className="flex-1 overflow-y-auto p-6">
+          {/* Messages content will go here */}
+          <p>This is where the messages will be displayed.</p>
+        </div>
+        <div className="p-6 border-t border-border">
+          {/* Input and send area will go here */}
+          <p>This is where the input and send button will be.</p>
         </div>
       </div>
-    </BeamsBackground>
+    </div>
   );
 }

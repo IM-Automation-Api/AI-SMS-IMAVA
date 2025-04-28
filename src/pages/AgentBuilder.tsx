@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -62,8 +61,8 @@ export default function AgentBuilder() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between items-start">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-          {isEditMode ? `Edit ${agentName}` : "Create new agent"}
+        <h1 className="text-3xl tracking-[0.12em] font-zag">
+          {isEditMode ? `Edit ${agentName}` : "Agent Builder"}
         </h1>
         <p className="text-sm text-muted-foreground mt-2">
           Empower your AI assistant by importing files, text, company FAQs, website content, or custom knowledge to craft a uniquely tailored agent for your business.
