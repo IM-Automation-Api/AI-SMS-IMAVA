@@ -73,7 +73,7 @@
 
   h1:not(.logo-text) {
     font-family: "Raleway";
-    letter-spacing: 30px;
+    letter-spacing: 5px;
   }
 }
 
