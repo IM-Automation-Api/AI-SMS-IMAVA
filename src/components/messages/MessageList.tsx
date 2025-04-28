@@ -60,7 +60,7 @@ export function MessageList() {
       <div className="flex-1" /> {/* Spacer to push content to the bottom */}
       {messages.map((message) => (
         <MessageBubble
-          key={message.id}
+          key={message.id.toString()}
           content={message.content}
           type={message.type}
           timestamp={message.timestamp}
