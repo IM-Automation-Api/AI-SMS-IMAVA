@@ -48,10 +48,10 @@ export function DashboardSidebar() {
     <Sidebar className="font-inter bg-black/10 backdrop-blur-md border-r border-white/10">
       <SidebarHeader className="p-8">
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
-            <div className="text-4xl font-bold text-white">IA</div>
+          <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
+            <div className="text-3xl font-bold text-white">IA</div>
           </div>
-          <h2 className="text-[36px] font-zag tracking-[0.12em] text-white">IM AVA</h2>
+          <h2 className="text-[36px] font-zag tracking-[0.12em] text-white whitespace-nowrap">IM AVA</h2>
         </div>
       </SidebarHeader>
       <SidebarContent className="px-4">
