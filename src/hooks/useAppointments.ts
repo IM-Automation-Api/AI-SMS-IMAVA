@@ -3,6 +3,7 @@ import { useAuth } from "@/lib/supabase/auth/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import useSWR from "swr";
+import { Json } from "@/integrations/supabase/types";
 
 interface Lead {
   id: string;
@@ -10,10 +11,12 @@ interface Lead {
   last_name: string | null;
   email: string | null;
   phone: string;
-  status: string | null;
   client_id: string;
   created_at: string | null;
   updated_at: string | null;
+  last_contacted: string | null; // Changed from status to last_contacted
+  notes: string | null;
+  tags: Json | null;
 }
 
 interface Appointment {
