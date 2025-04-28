@@ -22,6 +22,7 @@ export default {
         inter: ['Inter', 'Poppins', 'Space Grotesk', 'sans-serif'],
         zag: ['Zag', 'sans-serif'],
         railway: ['Raleway', 'sans-serif'],
+        warp: ['__WarpSans_3502a2', '__WarpSans_Fallback_3502a2', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
