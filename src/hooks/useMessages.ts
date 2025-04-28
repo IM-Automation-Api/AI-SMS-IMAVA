@@ -5,22 +5,39 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Message = Database['public']['Tables']['sms_messages']['Row'];
 
-export function useMessages(limit = 4) {
+export function useMessages(limit = 30, leadId?: string) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessageCount, setNewMessageCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Initial fetch of messages
     const fetchMessages = async () => {
-      const { data } = await supabase
+      setIsLoading(true);
+      
+      let query = supabase
         .from('sms_messages')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(limit);
-
-      if (data) {
-        setMessages(data);
+      
+      // Filter by lead if specified
+      if (leadId) {
+        query = query.eq('lead_id', leadId);
       }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('Error fetching messages:', error);
+      }
+      
+      if (data) {
+        // Sort in ascending order for display (oldest first)
+        setMessages(data.reverse());
+      }
+      
+      setIsLoading(false);
     };
 
     fetchMessages();
@@ -33,10 +50,11 @@ export function useMessages(limit = 4) {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'sms_messages'
+          table: 'sms_messages',
+          ...(leadId ? { filter: `lead_id=eq.${leadId}` } : {})
         },
         (payload) => {
-          setMessages(prev => [payload.new as Message, ...prev.slice(0, limit - 1)]);
+          setMessages(prev => [...prev, payload.new as Message]);
           setNewMessageCount(prev => prev + 1);
         }
       )
@@ -45,9 +63,9 @@ export function useMessages(limit = 4) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [limit]);
+  }, [limit, leadId]);
 
   const resetNewMessageCount = () => setNewMessageCount(0);
 
-  return { messages, newMessageCount, resetNewMessageCount };
+  return { messages, newMessageCount, resetNewMessageCount, isLoading };
 }

@@ -1,5 +1,5 @@
 
-import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings } from 'lucide-react';
+import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings, MessageSquarePlus } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
@@ -18,6 +18,11 @@ const menuItems = [
     icon: MessageSquare,
     label: 'Messages',
     path: '/messages'
+  },
+  {
+    icon: MessageSquarePlus,
+    label: 'SMS Campaign',
+    path: '/campaigns'
   },
   {
     icon: ClipboardList,

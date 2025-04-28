@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings } from 'lucide-react';
+import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings, MessageSquarePlus } from 'lucide-react';
 
 const menuItems = [
   {
@@ -18,6 +18,11 @@ const menuItems = [
     icon: MessageSquare,
     label: 'Messages',
     path: '/messages'
+  },
+  {
+    icon: MessageSquarePlus,
+    label: 'SMS Campaign',
+    path: '/campaigns'
   },
   {
     icon: ClipboardList,

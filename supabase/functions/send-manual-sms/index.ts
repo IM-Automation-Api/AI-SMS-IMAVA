@@ -1,5 +1,4 @@
 
-// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
@@ -15,9 +14,9 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { leadId, message, userId } = await req.json();
+    const { leadId, message, clientId } = await req.json();
     
-    if (!leadId || !message || !userId) {
+    if (!leadId || !message || !clientId) {
       return new Response(
         JSON.stringify({ error: 'Missing required parameters' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -48,7 +47,7 @@ Deno.serve(async (req) => {
     const { data: twilioCredentials, error: twilioError } = await supabase
       .from('twilio_credentials')
       .select('account_sid, auth_token, phone_number')
-      .eq('user_id', userId)
+      .eq('client_id', clientId)
       .eq('is_active', true)
       .single();
       
@@ -107,25 +106,6 @@ Deno.serve(async (req) => {
       console.error('Error logging SMS message:', smsError);
       return new Response(
         JSON.stringify({ error: 'Failed to log SMS message' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-    
-    // Add message to conversation
-    const { error: convError } = await supabase
-      .from('conversations')
-      .insert([
-        {
-          lead_id: leadId,
-          role: 'assistant',
-          content: message
-        }
-      ]);
-      
-    if (convError) {
-      console.error('Error adding to conversation:', convError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to add to conversation' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

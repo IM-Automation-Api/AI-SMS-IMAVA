@@ -5,22 +5,42 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send, Paperclip, Smile } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/components/ui/use-toast';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useLeads } from '@/hooks/useLeads';
 
 export function MessageInput() {
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [selectedLeadId, setSelectedLeadId] = useState<string>('');
   const { toast } = useToast();
+  const { leads } = useLeads(1, 50);
 
   const handleSendMessage = async () => {
-    if (!message.trim()) return;
+    if (!message.trim() || !selectedLeadId) {
+      toast({
+        title: "Missing information",
+        description: selectedLeadId ? "Please enter a message" : "Please select a recipient",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsSending(true);
     try {
-      const { error: functionError, data } = await supabase.functions.invoke('send-manual-sms', {
+      const selectedLead = leads.find(lead => lead.id === selectedLeadId);
+      if (!selectedLead) throw new Error("Selected lead not found");
+      
+      const { error: functionError } = await supabase.functions.invoke('send-manual-sms', {
         body: {
-          leadId: '123', // TODO: Get actual lead ID from context
+          leadId: selectedLeadId,
           message: message.trim(),
-          userId: '456' // TODO: Get actual user ID from auth context
+          clientId: selectedLead.client_id
         }
       });
 
@@ -52,6 +72,20 @@ export function MessageInput() {
 
   return (
     <div className="border-t border-white/10 p-6 bg-black/20 backdrop-blur-md">
+      <div className="mb-4">
+        <Select value={selectedLeadId} onValueChange={setSelectedLeadId}>
+          <SelectTrigger className="bg-black/20">
+            <SelectValue placeholder="Select recipient..." />
+          </SelectTrigger>
+          <SelectContent>
+            {leads.map((lead) => (
+              <SelectItem key={lead.id} value={lead.id}>
+                {lead.first_name} {lead.last_name} ({lead.phone})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       <div className="flex items-end gap-3">
         <div className="relative flex-1">
           <Textarea 
@@ -60,6 +94,7 @@ export function MessageInput() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={!selectedLeadId}
           />
           <div className="absolute right-3 bottom-3 flex gap-1.5">
             <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-300 text-gray-400 hover:text-white">
@@ -74,7 +109,7 @@ export function MessageInput() {
           size="icon" 
           className="h-[60px] rounded-full hover:scale-105 transition-all duration-300 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-900/30"
           onClick={handleSendMessage}
-          disabled={isSending || !message.trim()}
+          disabled={isSending || !message.trim() || !selectedLeadId}
         >
           <Send className="h-5 w-5" />
         </Button>

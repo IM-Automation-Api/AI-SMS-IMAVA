@@ -16,6 +16,7 @@ import SettingsPage from "./pages/SettingsPage";
 import AISettingsPage from "./pages/AISettingsPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SMSCampaignPage from "./pages/SMSCampaignPage";
 
 const App = () => (
   <TooltipProvider>
@@ -30,6 +31,7 @@ const App = () => (
         <Route path="/assistants" element={<DashboardLayout><AssistantsPage /></DashboardLayout>} />
         <Route path="/messages" element={<DashboardLayout><MessagesPage /></DashboardLayout>} />
         <Route path="/leads" element={<DashboardLayout><Leads /></DashboardLayout>} />
+        <Route path="/campaigns" element={<DashboardLayout><SMSCampaignPage /></DashboardLayout>} />
         <Route path="/agent-builder" element={<DashboardLayout><AgentBuilder /></DashboardLayout>} />
         <Route path="/settings" element={<SettingsLayout><SettingsPage /></SettingsLayout>} />
         <Route path="/settings/ai-settings" element={<SettingsLayout><AISettingsPage /></SettingsLayout>} />

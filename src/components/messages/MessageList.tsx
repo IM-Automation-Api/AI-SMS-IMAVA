@@ -1,73 +1,56 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MessageBubble } from './MessageBubble';
+import type { Database } from "@/integrations/supabase/types";
 
-export function MessageList() {
-  // In a real app, you would fetch messages from an API
-  const messages = [
-    {
-      id: 1,
-      content: "Hello! How can I help you today?",
-      type: "bot" as const,
-      timestamp: "12:42 PM",
-      name: "Assistant"
-    },
-    {
-      id: 2,
-      content: "I need help with setting up my agent",
-      type: "user" as const,
-      timestamp: "12:43 PM",
-      status: "read" as const
-    },
-    {
-      id: 3,
-      content: "Sure, I can help with that. What specific part are you having trouble with?",
-      type: "bot" as const,
-      timestamp: "12:44 PM",
-      name: "Assistant"
-    },
-    {
-      id: 4,
-      content: "I'm not sure how to configure the API credentials",
-      type: "user" as const,
-      timestamp: "12:45 PM",
-      status: "read" as const
-    },
-    {
-      id: 5,
-      content: "John is typing...",
-      type: "system" as const,
-      timestamp: "12:45 PM"
-    },
-    {
-      id: 6,
-      content: "To configure API credentials, go to Settings > API and then enter your keys. Would you like me to walk you through it step by step?",
-      type: "bot" as const,
-      timestamp: "12:46 PM",
-      name: "Assistant"
-    },
-    {
-      id: 7,
-      content: "Yes, please. That would be helpful.",
-      type: "user" as const,
-      timestamp: "12:47 PM",
-      status: "delivered" as const
-    }
-  ];
+type Message = Database['public']['Tables']['sms_messages']['Row'];
+
+interface MessageListProps {
+  messages: Message[];
+}
+
+export function MessageList({ messages }: MessageListProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Scroll to bottom when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Transform database messages to display format
+  const displayMessages = messages.map(message => ({
+    id: message.id,
+    content: message.content,
+    type: message.direction === 'inbound' ? 'user' : 'bot',
+    timestamp: new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    name: message.direction === 'inbound' ? undefined : "Assistant",
+    status: message.status as "sent" | "delivered" | "read" | undefined
+  }));
 
   return (
     <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-background to-background/95 flex flex-col">
       <div className="flex-1" /> {/* Spacer to push content to the bottom */}
-      {messages.map((message) => (
-        <MessageBubble
-          key={message.id}
-          content={message.content}
-          type={message.type}
-          timestamp={message.timestamp}
-          name={message.name}
-          status={message.status}
-        />
-      ))}
+      
+      {messages.length === 0 ? (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-muted-foreground">No messages yet</p>
+        </div>
+      ) : (
+        <>
+          {displayMessages.map((message) => (
+            <MessageBubble
+              key={message.id}
+              content={message.content}
+              type={message.type}
+              timestamp={message.timestamp}
+              name={message.name}
+              status={message.status}
+            />
+          ))}
+        </>
+      )}
+      
+      <div ref={messagesEndRef} />
     </div>
   );
 }
