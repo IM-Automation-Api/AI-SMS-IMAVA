@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { MessageBubble } from './MessageBubble';
+import { MessageBubble, MessageType } from './MessageBubble';
 import type { Database } from "@/integrations/supabase/types";
 
 type Message = Database['public']['Tables']['sms_messages']['Row'];
@@ -21,8 +21,8 @@ export function MessageList({ messages }: MessageListProps) {
   const displayMessages = messages.map(message => ({
     id: message.id,
     content: message.content,
-    type: message.direction === 'inbound' ? 'user' : 'bot',
-    timestamp: new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    type: message.direction === 'inbound' ? 'user' as MessageType : 'bot' as MessageType,
+    timestamp: new Date(message.created_at || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     name: message.direction === 'inbound' ? undefined : "Assistant",
     status: message.status as "sent" | "delivered" | "read" | undefined
   }));
