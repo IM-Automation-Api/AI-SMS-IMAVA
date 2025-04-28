@@ -43,7 +43,7 @@ export default function AssistantsPage() {
     <div className="space-y-8 slide-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-medium bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Assistants</h1>
-        <Button className="rounded-full px-5 bg-gradient-to-r from-primary to-primary/80 button-hover shadow-soft" asChild>
+        <Button className="rounded-full px-5 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-lg hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300" asChild>
           <Link to="/agent-builder">
             New Assistant
           </Link>
