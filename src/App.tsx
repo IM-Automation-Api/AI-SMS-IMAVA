@@ -18,9 +18,29 @@ import AISettingsPage from "./pages/AISettingsPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SMSCampaignPage from "./pages/SMSCampaignPage";
+import OnboardingPage from "./pages/OnboardingPage";
 import { useAuth } from "./lib/supabase/auth/auth-context";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading, isOnboardingCompleted } = useAuth();
+  
+  if (loading) {
+    return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
+  }
+  
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+  
+  // If user hasn't completed onboarding, redirect them
+  if (!isOnboardingCompleted()) {
+    return <Navigate to="/onboarding" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   
   if (loading) {
@@ -47,7 +67,10 @@ const App = () => {
         <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         
-        {/* Protected routes */}
+        {/* Onboarding route - protected but doesn't require completed onboarding */}
+        <Route path="/onboarding" element={<OnboardingProtectedRoute><OnboardingPage /></OnboardingProtectedRoute>} />
+        
+        {/* Protected routes - require completed onboarding */}
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><Dashboard /></DashboardLayout></ProtectedRoute>} />
         <Route path="/assistants" element={<ProtectedRoute><DashboardLayout><AssistantsPage /></DashboardLayout></ProtectedRoute>} />
         <Route path="/messages" element={<ProtectedRoute><DashboardLayout><MessagesPage /></DashboardLayout></ProtectedRoute>} />

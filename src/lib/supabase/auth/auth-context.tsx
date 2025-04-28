@@ -4,9 +4,17 @@ import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 
+interface UserProfile {
+  full_name?: string;
+  organization_name?: string;
+  programming_level?: "beginner" | "proficient" | "advanced";
+  onboarding_completed?: boolean;
+}
+
 type ExtendedUser = User & {
   company_name?: string;
   phone?: string;
+  profile?: UserProfile;
 };
 
 interface AuthContextType {
@@ -14,9 +22,12 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signInWithGoogle: () => Promise<{ error: any }>;
   signUp: (email: string, password: string, userData: { company_name?: string; phone?: string }) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: any }>;
+  updateUserProfile: (profile: Partial<UserProfile>) => Promise<{ error: any }>;
+  isOnboardingCompleted: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -24,9 +35,12 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   loading: true,
   signIn: async () => ({ error: null }),
+  signInWithGoogle: async () => ({ error: null }),
   signUp: async () => ({ error: null }),
   signOut: async () => {},
   resetPassword: async () => ({ error: null }),
+  updateUserProfile: async () => ({ error: null }),
+  isOnboardingCompleted: () => false,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -35,6 +49,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const fetchUserProfile = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+      
+    if (error) {
+      console.error("Error fetching user profile:", error);
+      return null;
+    }
+    
+    return data;
+  };
+  
   useEffect(() => {
     // Set up auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -43,21 +72,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         if (event === "SIGNED_IN" && session) {
           const userData = session.user as ExtendedUser;
+          
+          // Fetch user profile
+          const profile = await fetchUserProfile(userData.id);
+          if (profile) {
+            userData.profile = profile;
+          }
+          
           setUser(userData);
           console.log("User logged in:", userData);
-          navigate('/dashboard');
+          
+          // Check if user needs onboarding
+          if (profile?.onboarding_completed) {
+            navigate('/dashboard');
+          } else {
+            navigate('/onboarding');
+          }
         } else if (event === "SIGNED_OUT") {
           setUser(null);
-          navigate('/');
         }
       }
     );
 
     // Then check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       if (session?.user) {
-        setUser(session.user as ExtendedUser);
+        const userData = session.user as ExtendedUser;
+        
+        // Fetch user profile
+        const profile = await fetchUserProfile(userData.id);
+        if (profile) {
+          userData.profile = profile;
+        }
+        
+        setUser(userData);
       }
       setLoading(false);
     });
@@ -71,9 +120,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
     });
 
-    if (!error) {
-      navigate('/dashboard');
-    }
+    return { error };
+  };
+
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/onboarding`,
+      },
+    });
 
     return { error };
   };
@@ -100,12 +156,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           },
         ]);
 
+      // Also initialize user_profiles table for onboarding
+      const { error: onboardingError } = await supabase
+        .from("user_profiles")
+        .insert([{
+          id: data.user.id,
+          onboarding_completed: false,
+        }]);
+
       if (profileError) {
         console.error("Error creating user profile:", profileError);
         return { error: profileError };
       }
 
-      navigate('/dashboard');
+      if (onboardingError) {
+        console.error("Error initializing onboarding:", onboardingError);
+      }
     }
 
     return { error };
@@ -124,6 +190,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return { error };
   };
+  
+  const updateUserProfile = async (profile: Partial<UserProfile>) => {
+    if (!user) return { error: new Error("No user logged in") };
+    
+    const { error } = await supabase
+      .from("user_profiles")
+      .upsert({
+        id: user.id,
+        ...profile,
+      });
+      
+    if (!error) {
+      // Update local user state
+      setUser(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          profile: {
+            ...prev.profile,
+            ...profile,
+          }
+        };
+      });
+    }
+      
+    return { error };
+  };
+  
+  const isOnboardingCompleted = () => {
+    return !!user?.profile?.onboarding_completed;
+  };
 
   return (
     <AuthContext.Provider
@@ -132,9 +229,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         session,
         loading,
         signIn,
+        signInWithGoogle,
         signUp,
         signOut,
         resetPassword,
+        updateUserProfile,
+        isOnboardingCompleted,
       }}
     >
       {children}
