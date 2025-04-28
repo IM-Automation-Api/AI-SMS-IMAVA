@@ -51,7 +51,7 @@ export function DashboardSidebar() {
           <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
             <div className="text-3xl font-bold text-white">IA</div>
           </div>
-          <h2 className="text-[36px] font-zag tracking-[0.12em] text-white whitespace-nowrap">IM AVA</h2>
+          <h2 className="text-[36px] font-zag tracking-[0.12em] text-white whitespace-nowrap logo-text">IM AVA</h2>
         </div>
       </SidebarHeader>
       <SidebarContent className="px-4">
