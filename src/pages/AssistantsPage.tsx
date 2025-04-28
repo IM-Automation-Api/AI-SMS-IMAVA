@@ -1,88 +1,47 @@
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
 
-const assistants = [
-  {
-    id: 1,
-    name: "Ava Solar",
-    role: "Solar Expert",
-    status: "active",
-    avatar: "AS"
-  },
-  {
-    id: 2,
-    name: "Ava Roofing",
-    role: "Roofing Specialist",
-    status: "active",
-    avatar: "AR"
-  },
-  {
-    id: 3,
-    name: "Ava Agency",
-    role: "Marketing Expert",
-    status: "active",
-    avatar: "AA"
-  },
-  {
-    id: 4,
-    name: "Ava Construction",
-    role: "Construction Specialist",
-    status: "active",
-    avatar: "AC"
-  }
-];
+import React from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { useAssistants } from "@/hooks/useAssistants";
+import { Loader2 } from "lucide-react";
 
 export default function AssistantsPage() {
-  return (
-    <div className="space-y-8 slide-in">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl tracking-[0.12em] font-zag">Assistants</h1>
-        <Button className="rounded-full px-5 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-lg hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300" asChild>
-          <Link to="/agent-builder">
-            New Assistant
-          </Link>
-        </Button>
+  const { assistants, isLoading } = useAssistants();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl tracking-[0.12em]">AI Assistants</h1>
       
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {assistants.map(assistant => (
-          <Card 
-            key={assistant.id} 
-            className="border-border bg-card/40 backdrop-blur-sm rounded-2xl shadow-soft card-gradient hover:shadow-lg transition-all duration-200 list-item-hover"
-          >
-            <CardHeader className="flex flex-row items-center gap-4">
-              <Avatar className="h-12 w-12 ring-2 ring-white/10">
-                <AvatarFallback className="bg-primary/20 text-primary-foreground">
-                  {assistant.avatar}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {assistants.map((assistant) => (
+          <Card key={assistant.id} className="p-6 space-y-4">
+            <div className="flex items-center space-x-4">
+              <Avatar className="h-12 w-12">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {assistant.avatar || assistant.name.substring(0, 2)}
                 </AvatarFallback>
               </Avatar>
-              <div className="space-y-2">
-                <CardTitle className="text-lg font-medium">{assistant.name}</CardTitle>
-                <Badge variant="outline" className="bg-white/5 text-white/80 border-white/10">
-                  {assistant.role}
-                </Badge>
+              <div>
+                <h3 className="font-semibold">{assistant.name}</h3>
+                <p className="text-sm text-muted-foreground">{assistant.role}</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-end gap-2 mt-2">
-                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full button-hover">
-                  <Eye className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full button-hover" asChild>
-                  <Link to={`/agent-builder?id=${assistant.id}`}>
-                    <Edit className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full opacity-80 hover:text-destructive button-hover">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${
+                assistant.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
+              }`} />
+              <span className="text-sm text-muted-foreground capitalize">
+                {assistant.status}
+              </span>
+            </div>
           </Card>
         ))}
       </div>
