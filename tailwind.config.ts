@@ -20,6 +20,7 @@ export default {
     extend: {
       fontFamily: {
         inter: ['Inter', 'Poppins', 'Space Grotesk', 'sans-serif'],
+        zag: ['Zag', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
