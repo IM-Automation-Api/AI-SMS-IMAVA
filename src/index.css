@@ -71,8 +71,8 @@
       hsl(var(--background));
   }
 
-  h1:not(.logo-text) {
-    font-family: "Raleway";
+  h1 {
+    font-family: "Zag";
     font-weight: 400;
     letter-spacing: 50px;
   }
