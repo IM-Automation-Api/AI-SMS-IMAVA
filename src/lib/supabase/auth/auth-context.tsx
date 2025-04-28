@@ -45,9 +45,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const userData = session.user as ExtendedUser;
           setUser(userData);
           console.log("User logged in:", userData);
+          navigate('/dashboard');
         } else if (event === "SIGNED_OUT") {
           setUser(null);
-          navigate('/login');
+          navigate('/');
         }
       }
     );
@@ -112,7 +113,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    navigate('/login');
+    setUser(null);
+    navigate('/');
   };
 
   const resetPassword = async (email: string) => {

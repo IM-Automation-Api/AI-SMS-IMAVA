@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/lib/supabase/auth/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,15 +14,13 @@ import { BeamsBackground } from "@/components/ui/beams-background";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  companyName: z.string().min(1, "Company name is required"),
-  phone: z.string().optional(),
+  password: z.string().min(1, "Password is required"),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function SignupPage() {
-  const { signUp } = useAuth();
+export default function LoginPage() {
+  const { signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormData>({
@@ -31,8 +28,6 @@ export default function SignupPage() {
     defaultValues: {
       email: "",
       password: "",
-      companyName: "",
-      phone: "",
     },
   });
 
@@ -40,28 +35,25 @@ export default function SignupPage() {
     setIsLoading(true);
     
     try {
-      const { error } = await signUp(data.email, data.password, {
-        company_name: data.companyName,
-        phone: data.phone,
-      });
+      const { error } = await signIn(data.email, data.password);
 
       if (error) {
         toast({
-          title: "Sign up failed",
-          description: error.message || "Something went wrong. Please try again.",
+          title: "Login failed",
+          description: error.message || "Invalid email or password",
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Account created",
-          description: "Welcome to the platform!",
+          title: "Login successful",
+          description: "Welcome back!",
         });
         // Redirect is handled in auth context
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Login error:", error);
       toast({
-        title: "Sign up failed",
+        title: "Login failed",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
@@ -76,7 +68,7 @@ export default function SignupPage() {
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-bold tracking-[0.12em] text-center">AI SMS AUTOMATION</CardTitle>
-            <CardDescription className="text-center">Create your account to get started</CardDescription>
+            <CardDescription className="text-center">Sign in to your account</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -111,7 +103,7 @@ export default function SignupPage() {
                           placeholder="••••••••" 
                           type="password" 
                           {...field} 
-                          autoComplete="new-password"
+                          autoComplete="current-password"
                         />
                       </FormControl>
                       <FormMessage />
@@ -119,59 +111,25 @@ export default function SignupPage() {
                   )}
                 />
                 
-                <FormField
-                  control={form.control}
-                  name="companyName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company Name</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Your Company" 
-                          {...field} 
-                          autoComplete="organization"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone (Optional)</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="+1 (555) 123-4567" 
-                          type="tel" 
-                          {...field} 
-                          autoComplete="tel"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="flex items-center justify-end">
+                  <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                    Forgot password?
+                  </Link>
+                </div>
                 
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating account..." : "Create account"}
+                  {isLoading ? "Signing in..." : "Sign in"}
                 </Button>
               </form>
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-center text-sm">
-              Already have an account?{" "}
-              <Link to="/" className="text-primary hover:underline">
-                Sign in
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-primary hover:underline">
+                Sign up
               </Link>
             </div>
-            <p className="text-center text-xs text-muted-foreground">
-              By signing up, you agree to our Terms of Service and Privacy Policy.
-            </p>
           </CardFooter>
         </Card>
       </div>
