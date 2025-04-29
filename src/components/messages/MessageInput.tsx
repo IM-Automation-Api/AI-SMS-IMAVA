@@ -71,13 +71,13 @@ export function MessageInput() {
   };
 
   return (
-    <div className="border-t border-white/10 p-6 bg-black/20 backdrop-blur-md">
+    <div className="px-6 pb-6 pt-3 glass-effect">
       <div className="mb-4">
         <Select value={selectedLeadId} onValueChange={setSelectedLeadId}>
-          <SelectTrigger className="bg-black/20">
+          <SelectTrigger className="bg-black/20 border-white/10 focus:ring-2 focus:ring-purple-500/30 hover:border-white/20 transition-all">
             <SelectValue placeholder="Select recipient..." />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-black/80 backdrop-blur-lg border-white/10">
             {leads.map((lead) => (
               <SelectItem key={lead.id} value={lead.id}>
                 {lead.first_name} {lead.last_name} ({lead.phone})
@@ -86,28 +86,28 @@ export function MessageInput() {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex items-end gap-3">
+      <div className="flex items-end gap-3 relative">
         <div className="relative flex-1">
           <Textarea 
             placeholder="Type a message..." 
-            className="min-h-[60px] max-h-[120px] resize-none py-3 pr-12 bg-black/20 border-white/10 focus:ring focus:ring-indigo-500/30 focus:outline-none rounded-xl text-gray-100 placeholder-gray-400 shadow-lg shadow-purple-900/10"
+            className="min-h-[60px] max-h-[120px] resize-none py-3 pr-14 bg-black/20 border-white/10 focus:ring-2 focus:ring-purple-500/30 focus:border-white/20 rounded-xl text-gray-100 placeholder-gray-400 shadow-lg shadow-purple-900/10"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={!selectedLeadId}
           />
           <div className="absolute right-3 bottom-3 flex gap-1.5">
-            <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-300 text-gray-400 hover:text-white">
+            <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/10">
               <Paperclip className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-300 text-gray-400 hover:text-white">
+            <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/10">
               <Smile className="h-4 w-4" />
             </Button>
           </div>
         </div>
         <Button 
           size="icon" 
-          className="h-[60px] rounded-full hover:scale-105 transition-all duration-300 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-900/30"
+          className="h-[60px] w-[60px] rounded-full hover:scale-110 transition-all duration-300 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-900/30 hover:shadow-xl hover:shadow-purple-900/40"
           onClick={handleSendMessage}
           disabled={isSending || !message.trim() || !selectedLeadId}
         >

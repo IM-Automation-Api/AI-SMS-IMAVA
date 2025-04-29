@@ -28,7 +28,7 @@ export function DashboardLayout({
       <SidebarProvider>
         <div className="min-h-screen flex w-full">
           {!isMobile && <DashboardSidebar />}
-          <main className="flex-1 overflow-auto backdrop-blur-md bg-gradient-to-br from-[#1B1B33]/80 to-[#0F0F0F]/90 rounded-md px-0">
+          <main className="flex-1 overflow-auto backdrop-blur-md bg-gradient-to-br from-[#1B1B33]/80 to-[#0F0F0F]/90 rounded-2xl mx-4 my-4 shadow-lg">
             <TopNavigation />
             {isMobile && (
               <div className="sticky top-0 z-10 px-4 py-3 bg-black/20 backdrop-blur-md border-b border-white/5">
@@ -41,7 +41,7 @@ export function DashboardLayout({
                         <span className="sr-only">Menu</span>
                       </Button>
                     </DrawerTrigger>
-                    <DrawerContent>
+                    <DrawerContent className="glass-effect">
                       <MobileNavigation />
                     </DrawerContent>
                   </Drawer>

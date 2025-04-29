@@ -50,7 +50,7 @@ export function DashboardSidebar() {
   const location = useLocation();
   
   return (
-    <Sidebar className="font-warp bg-black/10 backdrop-blur-md border-r border-white/10">
+    <Sidebar className="font-warp glass-effect my-4 ml-4 rounded-2xl shadow-lg">
       <SidebarHeader className="p-8">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
@@ -66,16 +66,16 @@ export function DashboardSidebar() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton 
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F] hover:scale-105 transition-all duration-300 ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 transition-all duration-300 hover:bg-white/10 hover:shadow-md hover:shadow-purple-500/20 hover:text-white hover:translate-x-1 ${
                       location.pathname === item.path 
-                        ? 'bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] text-gray-100 shadow-lg shadow-purple-900/20' 
+                        ? 'bg-gradient-to-br from-purple-500/20 to-indigo-500/10 text-white shadow-lg shadow-purple-900/20 border-l-2 border-purple-500' 
                         : ''
                     }`} 
                     asChild
                   >
                     <Link to={item.path}>
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.label}</span>
+                      <item.icon className="w-5 h-5" />
+                      <span className="font-medium">{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
