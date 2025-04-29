@@ -10,7 +10,7 @@ export const StatsSection = memo(() => {
       <StatsCard 
         title="Total Messages" 
         value="54,231" 
-        icon={<MessageSquare className="h-4 w-4" />} 
+        icon={<MessageSquare className="h-4 w-4 text-purple-500" />} 
         trend="up" 
         trendValue="12%" 
         className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
@@ -18,7 +18,7 @@ export const StatsSection = memo(() => {
       <StatsCard 
         title="Active Users" 
         value="2,431" 
-        icon={<Users className="h-4 w-4" />} 
+        icon={<Users className="h-4 w-4 text-purple-500" />} 
         trend="up" 
         trendValue="8%" 
         className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
@@ -26,7 +26,7 @@ export const StatsSection = memo(() => {
       <StatsCard 
         title="Success Rate" 
         value="95%" 
-        icon={<TrendingUp className="h-4 w-4" />} 
+        icon={<TrendingUp className="h-4 w-4 text-purple-500" />} 
         trend="up" 
         trendValue="2%" 
         className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
@@ -34,7 +34,7 @@ export const StatsSection = memo(() => {
       <StatsCard 
         title="Avg. Response Time" 
         value="1.2s" 
-        icon={<GaugeCircle className="h-4 w-4" />} 
+        icon={<GaugeCircle className="h-4 w-4 text-purple-500" />} 
         trend="down" 
         trendValue="3%" 
         className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"

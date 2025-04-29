@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { MessageSquare } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -94,7 +95,7 @@ export const CommunicationsLogCard = () => {
   return <Card className="glass-panel shadow-glow">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <CardTitle className="font-warp text-xl font-medium text-gray-300">
-          <MessageSquare className="mr-2 h-5 w-5 text-purple-400" />
+          <MessageCircle className="mr-2 h-5 w-5 text-purple-500" />
           Communications Log
         </CardTitle>
         {newThreadCount > 0 && <Badge variant="outline" className="bg-primary/10 text-primary border-primary/50 hover-glow cursor-pointer" onClick={resetNewThreadCount}>
@@ -103,7 +104,7 @@ export const CommunicationsLogCard = () => {
       </CardHeader>
       <CardContent>
         {isLoading ? <ThreadSkeleton /> : conversationThreads.length === 0 ? <div className="h-64 flex flex-col items-center justify-center text-center">
-            <MessageSquare className="h-12 w-12 text-muted-foreground mb-4 opacity-40" />
+            <MessageCircle className="h-12 w-12 text-muted-foreground mb-4 opacity-40" />
             <p className="text-muted-foreground">No conversation threads yet</p>
           </div> : <div className="space-y-3">
             {conversationThreads.map(thread => <ConversationThread key={thread.id} thread={thread} />)}

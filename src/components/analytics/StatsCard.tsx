@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 interface StatsCardProps {
@@ -21,7 +22,7 @@ export function StatsCard({
         <CardTitle className="font-warp text-sm font-normal text-gray-300">
           {title}
         </CardTitle>
-        {icon && <div className="text-purple-400">{icon}</div>}
+        {icon && <div className="text-purple-500">{icon}</div>}
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold text-gradient-primary">{value}</div>

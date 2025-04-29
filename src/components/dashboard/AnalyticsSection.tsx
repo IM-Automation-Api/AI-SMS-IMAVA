@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { UserSatisfactionCard } from './UserSatisfactionCard';
 import { ConversationLengthCard } from './ConversationLengthCard';
@@ -40,7 +41,7 @@ export const TotalMessagesSentCard = () => {
   } = useMessages(500);
   const outboundMessages = messages.filter(msg => msg.direction === 'outbound');
   const count = outboundMessages.length;
-  return <StatsCard title="Total Messages Sent" value={count.toLocaleString()} icon={<MessageCircle size={20} />} trendValue="12%" trend="up" className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
+  return <StatsCard title="Total Messages Sent" value={count.toLocaleString()} icon={<MessageCircle size={20} className="text-purple-500" />} trendValue="12%" trend="up" className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
 };
 export const TotalRepliesCard = () => {
   const {
@@ -50,7 +51,7 @@ export const TotalRepliesCard = () => {
   const outboundMessages = messages.filter(msg => msg.direction === 'outbound');
   const count = inboundMessages.length;
   const responseRate = outboundMessages.length > 0 ? Math.round(inboundMessages.length / outboundMessages.length * 100) : 0;
-  return <StatsCard title="Total Replies Received" value={count.toLocaleString()} icon={<Reply size={20} />} trendValue={`${responseRate}% response rate`} className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
+  return <StatsCard title="Total Replies Received" value={count.toLocaleString()} icon={<Reply size={20} className="text-purple-500" />} trendValue={`${responseRate}% response rate`} className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
 };
 export const ResponseRateCard = () => {
   const {
@@ -59,7 +60,7 @@ export const ResponseRateCard = () => {
   const inboundMessages = messages.filter(msg => msg.direction === 'inbound');
   const outboundMessages = messages.filter(msg => msg.direction === 'outbound');
   const responseRate = outboundMessages.length > 0 ? Math.round(inboundMessages.length / outboundMessages.length * 100) : 0;
-  return <StatsCard title="Response Rate" value={`${responseRate}%`} icon={<Share2 size={20} />} trend="up" trendValue="3.2%" className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
+  return <StatsCard title="Response Rate" value={`${responseRate}%`} icon={<Share2 size={20} className="text-purple-500" />} trend="up" trendValue="3.2%" className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
 };
 const conversionData = [{
   name: "Leads",
@@ -75,7 +76,7 @@ export const ConversionFunnelCard = () => {
   return <Card className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="font-warp text-sm font-normal text-gray-300">Conversion Funnel</CardTitle>
-        <BarChart2 className="h-4 w-4 text-purple-400" />
+        <BarChart2 className="h-4 w-4 text-purple-500" />
       </CardHeader>
       <CardContent>
         <div className="h-[180px]">
@@ -111,7 +112,7 @@ export const ConversionFunnelCard = () => {
     </Card>;
 };
 export const AppointmentsBookedCard = () => {
-  return <StatsCard title="Appointments Booked" value="30" icon={<Calendar size={20} />} trend="up" trendValue="12%" className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
+  return <StatsCard title="Appointments Booked" value="30" icon={<Calendar size={20} className="text-purple-500" />} trend="up" trendValue="12%" className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
 };
 export const MessageActivityCard = () => {
   return <Card className="glass-panel shadow-glow hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
@@ -124,7 +125,7 @@ export const MessageActivityCard = () => {
             <BarChart data={messageActivityData}>
               <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
               <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={value => `${value}`} />
-              <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-primary" />
+              <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-purple-500" />
             </BarChart>
           </ResponsiveContainer>
         </div>
