@@ -13,7 +13,7 @@ export const StatsSection = memo(() => {
         icon={<MessageSquare className="h-4 w-4 text-purple-500" />} 
         trend="up" 
         trendValue="12%" 
-        className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
+        className="tech-glass-panel hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
       />
       <StatsCard 
         title="Active Users" 
@@ -21,7 +21,7 @@ export const StatsSection = memo(() => {
         icon={<Users className="h-4 w-4 text-purple-500" />} 
         trend="up" 
         trendValue="8%" 
-        className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
+        className="tech-glass-panel hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
       />
       <StatsCard 
         title="Success Rate" 
@@ -29,7 +29,7 @@ export const StatsSection = memo(() => {
         icon={<TrendingUp className="h-4 w-4 text-purple-500" />} 
         trend="up" 
         trendValue="2%" 
-        className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
+        className="tech-glass-panel hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
       />
       <StatsCard 
         title="Avg. Response Time" 
@@ -37,7 +37,7 @@ export const StatsSection = memo(() => {
         icon={<GaugeCircle className="h-4 w-4 text-purple-500" />} 
         trend="down" 
         trendValue="3%" 
-        className="glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
+        className="tech-glass-panel hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
       />
     </div>
   );

@@ -17,7 +17,7 @@ export function StatsCard({
   trend,
   trendValue
 }: StatsCardProps) {
-  return <Card className={cn("glass-panel shadow-glow card-hover", className)}>
+  return <Card className={cn("tech-glass-panel shadow-md shadow-black/40 card-hover", className)}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="font-warp text-sm font-normal text-gray-300">
           {title}
