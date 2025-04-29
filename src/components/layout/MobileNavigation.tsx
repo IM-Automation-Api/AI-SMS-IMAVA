@@ -66,8 +66,8 @@ export function MobileNavigation({ onNavigate }: MobileNavigationProps) {
                 onClick={handleNavigate}
                 className={`flex items-center gap-3 p-3 rounded-md transition-colors ${
                   location.pathname === item.path
-                    ? 'bg-primary/10 text-primary font-medium'
-                    : 'hover:bg-secondary/20'
+                    ? 'bg-white/10 text-gray-100'
+                    : 'hover:bg-white/10 hover:text-gray-100'
                 }`}
               >
                 <item.icon className="h-5 w-5" />
