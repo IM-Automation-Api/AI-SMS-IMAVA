@@ -107,9 +107,6 @@ export const ConversionFunnelCard = () => {
             </BarChart>
           </ChartContainer>
         </div>
-        <div className="text-xs text-muted-foreground text-center mt-2">
-          1,000 leads → 200 replies → 30 appointments (3%)
-        </div>
       </CardContent>
     </Card>;
 };
