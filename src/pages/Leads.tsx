@@ -2,25 +2,12 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { useLeads } from "@/hooks/useLeads";
+import { useLeads, Lead } from "@/hooks/useLeads";
 import { useLeadTags } from "@/hooks/useLeadTags";
 import { CSVImportDialog } from "@/components/leads/CSVImportDialog";
 import { LeadDetails } from "@/components/leads/LeadDetails";
 import { LeadsTable } from "@/components/leads/LeadsTable";
 import { HeroCard } from "@/components/ui/hero-card";
-
-interface Lead {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  notes: string;
-  last_contacted: string | null;
-  tags: string[];
-  client_id: string;
-}
 
 export default function Leads() {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
