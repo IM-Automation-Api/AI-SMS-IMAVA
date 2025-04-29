@@ -3,7 +3,6 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { BellDot, Plus, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Avatar } from '@/components/ui/avatar';
 
 export function MessagesSidebar() {
   return (
@@ -30,7 +29,7 @@ export function MessagesSidebar() {
       </div>
       <div className="flex-1 overflow-auto p-2">
         {/* Sample conversations */}
-        <ConversationItem name="Alice Johnson" message="Hey, can you check the latest updates?" time="12:45 PM" active={true} unread={true} />
+        <ConversationItem name="Alice Johnson" message="Hey, can you check the latest updates?" time="12:45 PM" unread={true} active={true} />
         <ConversationItem name="Bob Smith" message="I've sent you the report" time="Yesterday" />
         <ConversationItem name="Carol White" message="Thanks for your help!" time="2d ago" />
         <ConversationItem name="David Brown" message="When is the next meeting?" time="3d ago" unread={true} />
@@ -61,10 +60,8 @@ function ConversationItem({
         ? 'bg-gradient-to-br from-indigo-500/20 to-purple-600/10 shadow-md shadow-purple-900/10' 
         : 'hover:bg-white/5 hover:shadow-md hover:translate-x-1'}`}
     >
-      <div className="relative">
-        <Avatar className={`h-10 w-10 border ${unread ? 'border-primary' : 'border-white/10'} bg-gradient-to-br from-indigo-500/30 to-purple-600/30`}>
-          <span className="text-white font-medium">{name.charAt(0)}</span>
-        </Avatar>
+      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500/30 to-purple-600/30 rounded-full flex items-center justify-center relative">
+        <span className="text-white font-medium">{name.charAt(0)}</span>
         {unread && <span className="absolute -top-0.5 -right-0.5 h-3 w-3 bg-primary rounded-full ring-2 ring-black"></span>}
       </div>
       <div className="flex-1 min-w-0">

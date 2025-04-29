@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -49,18 +48,10 @@ const ContentLoader = () => (
 
 // Mobile message contacts page wrapper
 const MessagesContactsPage = () => {
-  const isMobile = useIsMobile();
-  
   return (
-    <DashboardLayout>
-      <Suspense fallback={<ContentLoader />}>
-        <div className="max-w-7xl mx-auto h-[calc(100vh-10rem)]">
-          <div className={`${isMobile ? 'w-full' : 'w-72'} h-full overflow-hidden rounded-2xl`}>
-            <MessagesSidebar />
-          </div>
-        </div>
-      </Suspense>
-    </DashboardLayout>
+    <div className="h-[calc(100vh-5rem)]">
+      <MessagesSidebar />
+    </div>
   );
 };
 

@@ -13,21 +13,19 @@ export interface ConversationThreadProps {
 
 export const ConversationThread = ({ thread }: { thread: ConversationThreadProps }) => (
   <div 
-    className="flex items-start space-x-3 p-3 rounded-lg transition-all hover:bg-white/5 hover:scale-[1.02] hover:shadow-md hover:shadow-purple-900/10"
+    className="flex items-center space-x-3 p-3 rounded-lg transition-all hover:bg-white/5 hover:scale-[1.02]"
   >
-    <div className="relative w-6 flex items-center justify-center mt-1">
-      {thread.unread ? (
-        <div className="relative">
-          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-primary rounded-full"></span>
-        </div>
-      ) : null}
-    </div>
     <div className="flex-1 space-y-1">
       <div className="flex items-center justify-between">
-        <p className={cn(
-          "text-sm font-medium",
-          thread.unread ? "text-white" : "text-white/80"
-        )}>{thread.lead_name}</p>
+        <div className="flex items-center">
+          {thread.unread && (
+            <span className="h-2.5 w-2.5 bg-primary rounded-full mr-2"></span>
+          )}
+          <p className={cn(
+            "text-sm font-medium",
+            thread.unread ? "text-white" : "text-white/80"
+          )}>{thread.lead_name}</p>
+        </div>
         <span className="text-xs text-white/60">
           {format(new Date(thread.timestamp), 'HH:mm')}
         </span>

@@ -43,7 +43,7 @@ export function MessagesLayout() {
   };
 
   return (
-    <div className="h-[calc(100vh-5.5rem)] flex">
+    <div className="h-full flex">
       {/* Left sidebar - hidden on mobile when viewing a conversation */}
       {(!isMobile || !conversationId) && (
         <div className={`${isMobile ? 'w-full' : 'w-72'} h-full overflow-hidden ${!isMobile ? 'rounded-l-2xl' : 'rounded-2xl'}`}>
@@ -65,8 +65,6 @@ export function MessagesLayout() {
                 <ChevronLeft className="mr-1 h-4 w-4" /> Back
               </Button>
             )}
-            
-            <h1 className="text-2xl text-gradient font-warp tracking-wide mb-4">Messages</h1>
             
             <Tabs 
               defaultValue="messages" 

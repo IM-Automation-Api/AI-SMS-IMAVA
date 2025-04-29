@@ -6,7 +6,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 
 const MessagesLoadingSkeleton = () => (
-  <div className="w-full h-full flex glass-effect rounded-2xl shadow-lg mx-auto my-4 max-w-7xl">
+  <div className="w-full h-[calc(100vh-5rem)] flex glass-effect rounded-2xl shadow-lg">
     <div className="w-72 glass-effect rounded-l-2xl p-4 space-y-4">
       <Skeleton className="w-48 h-6 bg-white/10" />
       <Skeleton className="w-full h-10 bg-white/5" />
@@ -45,7 +45,7 @@ export default function MessagesPage() {
 
   return (
     <Suspense fallback={<MessagesLoadingSkeleton />}>
-      <div className="max-w-7xl mx-auto">
+      <div className="h-[calc(100vh-5rem)]">
         <MessagesLayout />
       </div>
     </Suspense>
