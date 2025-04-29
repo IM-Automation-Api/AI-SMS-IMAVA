@@ -1,69 +1,52 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, ChevronDown, Home, LogOut, Menu, Settings } from 'lucide-react';
 import { useAuth } from '@/lib/supabase/auth/auth-context';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '../ui/button';
-
 interface TopNavigationProps {
   drawerOpen?: boolean;
   setDrawerOpen?: (open: boolean) => void;
 }
-
-export function TopNavigation({ drawerOpen, setDrawerOpen }: TopNavigationProps) {
-  const { user, signOut } = useAuth();
+export function TopNavigation({
+  drawerOpen,
+  setDrawerOpen
+}: TopNavigationProps) {
+  const {
+    user,
+    signOut
+  } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  
   const handleSettingsClick = () => {
     navigate('/settings');
   };
-  
   const handleLogout = async () => {
     await signOut();
   };
 
   // Display name logic - use profile name, email, or fallback
-  const displayName = user?.profile?.full_name || 
-                      user?.email?.split('@')[0] || 
-                      'Account';
-
+  const displayName = user?.profile?.full_name || user?.email?.split('@')[0] || 'Account';
   const toggleDrawer = () => {
     if (setDrawerOpen) {
       setDrawerOpen(!drawerOpen);
     }
   };
-
-  return (
-    <div className="h-16 px-4">
+  return <div className="h-16 px-4">
       <div className="h-full flex items-center justify-between">
         <div className="flex-1 flex items-center gap-3">
-          {!isMobile && (
-            <Link 
-              to="/dashboard" 
-              className="text-gray-400 hover:text-white hover:brightness-110 transition-all duration-300"
-            >
+          {!isMobile && <Link to="/dashboard" className="text-gray-400 hover:text-white hover:brightness-110 transition-all duration-300">
               <Home className="h-5 w-5" />
-            </Link>
-          )}
-          {isMobile && (
-            <Button variant="ghost" size="icon" onClick={toggleDrawer}>
+            </Link>}
+          {isMobile && <Button variant="ghost" size="icon" onClick={toggleDrawer}>
               <Menu className="h-5 w-5" />
               <span className="sr-only">Menu</span>
-            </Button>
-          )}
+            </Button>}
         </div>
         
         <div className="flex-1 flex justify-center items-center">
-          <h2 className="font-mono text-sm tracking-wider bg-gradient-to-r from-indigo-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text drop-shadow-[0_0_5px_rgba(129,140,248,0.5)]">IM AVA</h2>
+          <h2 className="font-mono tracking-wider bg-gradient-to-r from-indigo-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text drop-shadow-[0_0_5px_rgba(129,140,248,0.5)] font-medium mx-0 px-0 my-0 py-0 text-3xl">IM AVA</h2>
         </div>
         
         <div className="flex-1 flex items-center justify-end space-x-6">
@@ -93,6 +76,5 @@ export function TopNavigation({ drawerOpen, setDrawerOpen }: TopNavigationProps)
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
