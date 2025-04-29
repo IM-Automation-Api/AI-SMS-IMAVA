@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, ChevronDown, Home, LogOut, Menu, Settings } from 'lucide-react';
@@ -26,8 +27,11 @@ export function TopNavigation({
     await signOut();
   };
 
-  // Display name logic - use profile name, email, or fallback
-  const displayName = user?.profile?.full_name || user?.email?.split('@')[0] || 'Account';
+  // Updated display name logic to show only first name
+  const displayName = user?.profile?.full_name 
+    ? user.profile.full_name.split(' ')[0]  // Get only first name
+    : user?.email?.split('@')[0] || 'Account';
+    
   const toggleDrawer = () => {
     if (setDrawerOpen) {
       setDrawerOpen(!drawerOpen);
@@ -52,7 +56,7 @@ export function TopNavigation({
         <div className="flex-1 flex items-center justify-end space-x-6">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-md hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300">
+              <button className="flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300">
                 <span className="bg-green-500 rounded-full w-1.75 h-1.75" />
                 <span className="text-gray-200 text-sm hidden sm:inline">{displayName}</span>
                 <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
