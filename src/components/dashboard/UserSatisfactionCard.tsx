@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export const UserSatisfactionCard = () => {
   return (
     <Card className="modern-glass-card md:col-span-2">
-      <CardHeader>
-        <CardTitle>User Satisfaction</CardTitle>
+      <CardHeader className="p-0 mb-4">
+        <CardTitle className="text-white">User Satisfaction</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <div className="flex justify-center items-center h-full">
           <div className="relative w-32 h-32">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">

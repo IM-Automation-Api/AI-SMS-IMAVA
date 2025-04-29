@@ -73,11 +73,11 @@ const conversionData = [{
 }];
 export const ConversionFunnelCard = () => {
   return <Card className="modern-glass-card cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0 mb-2">
         <CardTitle className="font-warp text-sm font-normal text-gray-300">Conversion Funnel</CardTitle>
         <BarChart2 className="h-4 w-4 text-purple-500" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <div className="h-[180px]">
           <ChartContainer config={{
           leads: {
@@ -115,10 +115,10 @@ export const AppointmentsBookedCard = () => {
 };
 export const MessageActivityCard = () => {
   return <Card className="modern-glass-card cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0 mb-2">
         <CardTitle className="font-warp text-sm font-normal text-gray-300">Message Activity</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <div className="h-[180px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={messageActivityData}>

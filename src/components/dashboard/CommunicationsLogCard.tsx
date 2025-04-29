@@ -95,8 +95,8 @@ export const CommunicationsLogCard = () => {
   const resetNewThreadCount = () => setNewThreadCount(0);
   
   return <Card className="modern-glass-card">
-      <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle className="font-warp text-xl font-medium text-gray-300">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between p-0 mb-4">
+        <CardTitle className="font-warp text-xl font-medium text-white flex items-center">
           <MessageCircle className="mr-2 h-5 w-5 text-purple-500" />
           Communications Log
         </CardTitle>
@@ -104,15 +104,15 @@ export const CommunicationsLogCard = () => {
             {newThreadCount} New {newThreadCount === 1 ? 'Thread' : 'Threads'}
           </Badge>}
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         {isLoading ? <ThreadSkeleton /> : conversationThreads.length === 0 ? <div className="h-64 flex flex-col items-center justify-center text-center">
-            <MessageCircle className="h-12 w-12 text-muted-foreground mb-4 opacity-40" />
-            <p className="text-muted-foreground">No conversation threads yet</p>
+            <MessageCircle className="h-12 w-12 text-gray-400 mb-4 opacity-40" />
+            <p className="text-gray-400">No conversation threads yet</p>
           </div> : <div className="space-y-3">
             {conversationThreads.map(thread => <ConversationThread key={thread.id} thread={thread} />)}
           </div>}
       </CardContent>
-      <CardFooter className="border-t border-[#4B2A78]/40 pt-4">
+      <CardFooter className="border-t border-[#4B2A78]/40 pt-4 p-0 mt-4">
         <Button className="w-full premium-button">
           View All Messages
         </Button>

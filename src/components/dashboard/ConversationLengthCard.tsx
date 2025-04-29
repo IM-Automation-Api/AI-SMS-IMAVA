@@ -6,14 +6,14 @@ import { Badge } from "@/components/ui/badge";
 export const ConversationLengthCard = () => {
   return (
     <Card className="modern-glass-card">
-      <CardHeader>
-        <CardTitle>Conversation Length</CardTitle>
+      <CardHeader className="p-0 mb-4">
+        <CardTitle className="text-white">Conversation Length</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <div className="space-y-4">
           <div>
             <div className="flex justify-between mb-2">
-              <span className="text-sm text-muted-foreground">0-2 min</span>
+              <span className="text-sm text-gray-400">0-2 min</span>
               <Badge variant="outline" className="bg-primary/10 text-primary">45%</Badge>
             </div>
             <div className="w-full bg-muted/50 rounded-full h-1.5">
@@ -22,7 +22,7 @@ export const ConversationLengthCard = () => {
           </div>
           <div>
             <div className="flex justify-between mb-2">
-              <span className="text-sm text-muted-foreground">2-5 min</span>
+              <span className="text-sm text-gray-400">2-5 min</span>
               <Badge variant="outline" className="bg-primary/10 text-primary">30%</Badge>
             </div>
             <div className="w-full bg-muted/50 rounded-full h-1.5">
@@ -31,7 +31,7 @@ export const ConversationLengthCard = () => {
           </div>
           <div>
             <div className="flex justify-between mb-2">
-              <span className="text-sm text-muted-foreground">5+ min</span>
+              <span className="text-sm text-gray-400">5+ min</span>
               <Badge variant="outline" className="bg-primary/10 text-primary">25%</Badge>
             </div>
             <div className="w-full bg-muted/50 rounded-full h-1.5">

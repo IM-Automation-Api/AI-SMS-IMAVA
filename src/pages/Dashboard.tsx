@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { StatsSection } from "@/components/dashboard/StatsSection";
 import { CommunicationsLogCard } from "@/components/dashboard/CommunicationsLogCard";
