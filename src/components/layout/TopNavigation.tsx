@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, ChevronDown, Home, LogOut, Settings } from 'lucide-react';
+import { Bell, ChevronDown, Home, LogOut, Menu, Settings } from 'lucide-react';
 import { useAuth } from '@/lib/supabase/auth/auth-context';
 import { 
   DropdownMenu,
@@ -11,8 +11,14 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '../ui/button';
 
-export function TopNavigation() {
+interface TopNavigationProps {
+  drawerOpen?: boolean;
+  setDrawerOpen?: (open: boolean) => void;
+}
+
+export function TopNavigation({ drawerOpen, setDrawerOpen }: TopNavigationProps) {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -30,10 +36,16 @@ export function TopNavigation() {
                       user?.email?.split('@')[0] || 
                       'Account';
 
+  const toggleDrawer = () => {
+    if (setDrawerOpen) {
+      setDrawerOpen(!drawerOpen);
+    }
+  };
+
   return (
     <div className="h-16 px-4">
       <div className="h-full flex items-center justify-between">
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-center gap-3">
           {!isMobile && (
             <Link 
               to="/dashboard" 
@@ -41,6 +53,12 @@ export function TopNavigation() {
             >
               <Home className="h-5 w-5" />
             </Link>
+          )}
+          {isMobile && (
+            <Button variant="ghost" size="icon" onClick={toggleDrawer}>
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Menu</span>
+            </Button>
           )}
         </div>
         
