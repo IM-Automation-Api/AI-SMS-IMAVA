@@ -35,7 +35,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
-  signUp: (email: string, password: string, userData: { company_name?: string; phone?: string }) => Promise<{ error: AuthError | null }>;
+  signUp: (email: string, password: string, userData: { company_name?: string; phone?: string; full_name?: string }) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
   updateUserProfile: (profile: Partial<UserProfile>) => Promise<{ error: AuthError | null }>;
@@ -95,7 +95,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const isAuthRoute = location.pathname === '/' || 
                         location.pathname === '/signup' || 
                         location.pathname === '/forgot-password';
-    const isOnboardingRoute = location.pathname === '/onboarding';
     
     if (!user) {
       // If no user and not on auth route, redirect to login
@@ -104,21 +103,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         navigate('/', { replace: true });
       }
     } else {
-      // User exists
-      const onboardingCompleted = isOnboardingCompleted();
-      
-      if (!onboardingCompleted) {
-        // If onboarding is not completed and not on onboarding route, redirect to onboarding
-        if (!isOnboardingRoute) {
-          console.log("Auth context: Onboarding not completed, redirecting to onboarding");
-          navigate('/onboarding', { replace: true });
-        }
-      } else if (isOnboardingRoute || isAuthRoute) {
-        // If onboarding is completed and on onboarding or auth routes, redirect to dashboard
-        console.log("Auth context: Onboarding completed, redirecting from auth/onboarding to dashboard");
+      // User exists, send to dashboard
+      if (isAuthRoute) {
+        console.log("Auth context: User authenticated, redirecting to dashboard");
         navigate('/dashboard', { replace: true });
       }
-      // Otherwise, stay on the current route (non-auth routes for authenticated users with completed onboarding)
+      // Otherwise, stay on the current route
     }
   }, [user, loading, profileLoaded, location.pathname, navigate]);
 
@@ -223,7 +213,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string, userData: { company_name?: string; phone?: string }) => {
+  const signUp = async (
+    email: string, 
+    password: string, 
+    userData: { 
+      company_name?: string; 
+      phone?: string; 
+      full_name?: string 
+    }
+  ) => {
     console.log("Auth context: Signing up with email:", email);
     const { error } = await signUpWithEmail(email, password, userData);
     return { error };

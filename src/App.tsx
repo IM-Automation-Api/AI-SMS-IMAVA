@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,7 +18,6 @@ import AISettingsPage from "./pages/AISettingsPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SMSCampaignPage from "./pages/SMSCampaignPage";
-import OnboardingPage from "./pages/OnboardingPage";
 import { useAuth } from "./lib/supabase/auth/auth-context";
 import { Suspense, lazy } from "react";
 import { Skeleton } from "./components/ui/skeleton";
@@ -75,8 +75,6 @@ const App = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
   
-  // Let auth provider handle complex redirection logic now
-  
   return (
     <TooltipProvider>
       <Toaster />
@@ -86,9 +84,6 @@ const App = () => {
         <Route path="/" element={loading ? <PageLoader /> : <LoginPage />} />
         <Route path="/signup" element={loading ? <PageLoader /> : <SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        
-        {/* Onboarding route */}
-        <Route path="/onboarding" element={loading ? <PageLoader /> : <OnboardingPage />} />
         
         {/* Protected routes */}
         <Route

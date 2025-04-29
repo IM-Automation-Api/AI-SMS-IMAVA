@@ -13,6 +13,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { BeamsBackground } from "@/components/ui/beams-background";
 
 const formSchema = z.object({
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
+  companyName: z.string().min(1, "Company name is required"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
@@ -27,6 +29,8 @@ export default function SignupPage() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      fullName: "",
+      companyName: "",
       email: "",
       password: "",
     },
@@ -36,7 +40,10 @@ export default function SignupPage() {
     setIsLoading(true);
     
     try {
-      const { error } = await signUp(data.email, data.password, {});
+      const { error } = await signUp(data.email, data.password, {
+        full_name: data.fullName,
+        company_name: data.companyName
+      });
 
       if (error) {
         toast({
@@ -134,6 +141,46 @@ export default function SignupPage() {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="fullName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white/80">Full Name</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Jane Doe" 
+                          type="text" 
+                          {...field} 
+                          autoComplete="name"
+                          className="premium-input bg-black/20 border-white/10 text-white placeholder-white/40"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="companyName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white/80">Company Name</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Acme Inc." 
+                          type="text" 
+                          {...field} 
+                          autoComplete="organization"
+                          className="premium-input bg-black/20 border-white/10 text-white placeholder-white/40"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
                 <FormField
                   control={form.control}
                   name="email"

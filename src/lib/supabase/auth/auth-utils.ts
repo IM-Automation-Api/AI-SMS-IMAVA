@@ -1,4 +1,3 @@
-
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -79,7 +78,11 @@ export async function signInWithGoogle(): Promise<{
 export async function signUpWithEmail(
   email: string, 
   password: string, 
-  userData: { company_name?: string; phone?: string }
+  userData: { 
+    company_name?: string; 
+    phone?: string; 
+    full_name?: string;
+  }
 ): Promise<{
   error: AuthError | null;
 }> {
@@ -110,6 +113,7 @@ export async function signUpWithEmail(
         id: data.user.id,
         email,
         company_name: userData.company_name,
+        full_name: userData.full_name,
         phone: userData.phone,
       }]);
 
@@ -118,7 +122,9 @@ export async function signUpWithEmail(
       .from("user_profiles")
       .insert([{
         id: data.user.id,
-        onboarding_completed: false,
+        full_name: userData.full_name,
+        organization_name: userData.company_name,
+        onboarding_completed: true, // Set to true since we're skipping onboarding
       }]);
 
     if (profileError) {
@@ -127,7 +133,7 @@ export async function signUpWithEmail(
     }
 
     if (onboardingError) {
-      console.error("Auth utility: Error initializing onboarding:", onboardingError);
+      console.error("Auth utility: Error initializing profile:", onboardingError);
       // We don't return an error here since the user was still created
     }
 
