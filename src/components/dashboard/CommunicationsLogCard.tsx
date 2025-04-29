@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ThreadSkeleton } from './ThreadSkeleton';
 import { ConversationThread, ConversationThreadProps } from './ConversationThread';
-
 export const CommunicationsLogCard = () => {
   const [conversationThreads, setConversationThreads] = useState<ConversationThreadProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,46 +91,28 @@ export const CommunicationsLogCard = () => {
     }
   };
   const resetNewThreadCount = () => setNewThreadCount(0);
-  return (
-    <Card className="glass-panel shadow-glow">
+  return <Card className="glass-panel shadow-glow">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle className="text-foreground flex items-center text-base font-mono">
+        <CardTitle className="font-warp text-xl font-medium text-gray-300">
           <MessageSquare className="mr-2 h-5 w-5 text-purple-400" />
           Communications Log
         </CardTitle>
-        {newThreadCount > 0 && (
-          <Badge 
-            variant="outline" 
-            className="bg-primary/10 text-primary border-primary/50 hover-glow cursor-pointer"
-            onClick={resetNewThreadCount}
-          >
+        {newThreadCount > 0 && <Badge variant="outline" className="bg-primary/10 text-primary border-primary/50 hover-glow cursor-pointer" onClick={resetNewThreadCount}>
             {newThreadCount} New {newThreadCount === 1 ? 'Thread' : 'Threads'}
-          </Badge>
-        )}
+          </Badge>}
       </CardHeader>
       <CardContent>
-        {isLoading ? (
-          <ThreadSkeleton />
-        ) : conversationThreads.length === 0 ? (
-          <div className="h-64 flex flex-col items-center justify-center text-center">
+        {isLoading ? <ThreadSkeleton /> : conversationThreads.length === 0 ? <div className="h-64 flex flex-col items-center justify-center text-center">
             <MessageSquare className="h-12 w-12 text-muted-foreground mb-4 opacity-40" />
             <p className="text-muted-foreground">No conversation threads yet</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {conversationThreads.map(thread => (
-              <ConversationThread key={thread.id} thread={thread} />
-            ))}
-          </div>
-        )}
+          </div> : <div className="space-y-3">
+            {conversationThreads.map(thread => <ConversationThread key={thread.id} thread={thread} />)}
+          </div>}
       </CardContent>
       <CardFooter className="border-t border-border pt-4">
-        <Button 
-          className="w-full premium-button"
-        >
+        <Button className="w-full premium-button">
           View All Messages
         </Button>
       </CardFooter>
-    </Card>
-  );
+    </Card>;
 };
