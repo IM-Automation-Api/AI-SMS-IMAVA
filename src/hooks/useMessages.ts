@@ -12,10 +12,10 @@ export function useMessages(limit = 30, leadId?: string) {
   const [error, setError] = useState<Error | null>(null);
 
   const fetchMessages = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    
     try {
+      setIsLoading(true);
+      setError(null);
+      
       let query = supabase
         .from('sms_messages')
         .select('*')
@@ -43,7 +43,10 @@ export function useMessages(limit = 30, leadId?: string) {
       console.error('Exception fetching messages:', err);
       setError(err instanceof Error ? err : new Error('Unknown error fetching messages'));
     } finally {
-      setIsLoading(false);
+      // Small delay before removing loading state to prevent UI flicker
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
     }
   }, [limit, leadId]);
 

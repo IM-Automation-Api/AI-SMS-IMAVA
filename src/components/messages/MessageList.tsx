@@ -13,14 +13,18 @@ export function MessageList({ messages }: MessageListProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Scroll to bottom when messages change
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll to bottom when messages change, with a small delay
+    const timer = setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [messages]);
 
   // Transform database messages to display format
   const displayMessages = messages.map(message => ({
     id: message.id,
-    content: message.content,
+    content: message.content || '',
     type: message.direction === 'inbound' ? 'user' as MessageType : 'bot' as MessageType,
     timestamp: new Date(message.created_at || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     name: message.direction === 'inbound' ? undefined : "Assistant",

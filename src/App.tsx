@@ -48,23 +48,18 @@ const ContentLoader = () => (
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isOnboardingCompleted } = useAuth();
   
-  // Show consistent loader during auth checks
   if (loading) {
     return <PageLoader />;
   }
   
   if (!user) {
-    console.log("Protected route: No user, redirecting to login");
     return <Navigate to="/" replace />;
   }
   
-  // If user hasn't completed onboarding, redirect them
   if (!isOnboardingCompleted()) {
-    console.log("Protected route: Onboarding not completed, redirecting to onboarding");
     return <Navigate to="/onboarding" replace />;
   }
   
-  // Use Suspense with a more immediate fallback for smoother transitions
   return <>{children}</>;
 };
 
@@ -76,13 +71,10 @@ const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) =
   }
   
   if (!user) {
-    console.log("Onboarding route: No user, redirecting to login");
     return <Navigate to="/" replace />;
   }
   
-  // If user has completed onboarding, redirect to dashboard
   if (isOnboardingCompleted()) {
-    console.log("Onboarding route: Onboarding already completed, redirecting to dashboard");
     return <Navigate to="/dashboard" replace />;
   }
   
@@ -98,129 +90,110 @@ const App = () => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   
-  if (loading) {
-    return (
-      <TooltipProvider>
-        <div className="flex min-h-screen items-center justify-center">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-12 h-12 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
-            <p className="text-sm text-muted-foreground animate-pulse">Loading application...</p>
-          </div>
-        </div>
-      </TooltipProvider>
-    );
-  }
-  
   return (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* Public routes with simpler Suspense boundary */}
-          <Route path="/" element={
-            user ? <Navigate to="/dashboard" replace /> : <LoginPage />
-          } />
-          
-          <Route path="/signup" element={
-            user ? <Navigate to="/dashboard" replace /> : <SignupPage />
-          } />
-          
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          
-          {/* Onboarding route - protected but doesn't require completed onboarding */}
-          <Route path="/onboarding" element={
-            <OnboardingProtectedRoute>
-              <Suspense fallback={<PageLoader />}>
-                <OnboardingPage />
-              </Suspense>
-            </OnboardingProtectedRoute>
-          } />
-          
-          {/* Protected routes - require completed onboarding */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={
+          loading ? <PageLoader /> : (user ? <Navigate to="/dashboard" replace /> : <LoginPage />)
+        } />
+        
+        <Route path="/signup" element={
+          loading ? <PageLoader /> : (user ? <Navigate to="/dashboard" replace /> : <SignupPage />)
+        } />
+        
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        
+        {/* Onboarding route - protected but doesn't require completed onboarding */}
+        <Route path="/onboarding" element={
+          <OnboardingProtectedRoute>
+            <OnboardingPage />
+          </OnboardingProtectedRoute>
+        } />
+        
+        {/* Protected routes - require completed onboarding */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <DashboardLayout>
               <Suspense fallback={<ContentLoader />}>
-                <DashboardLayout>
-                  <Dashboard />
-                </DashboardLayout>
+                <Dashboard />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/assistants" element={
-            <ProtectedRoute>
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/assistants" element={
+          <ProtectedRoute>
+            <DashboardLayout>
               <Suspense fallback={<ContentLoader />}>
-                <DashboardLayout>
-                  <AssistantsPage />
-                </DashboardLayout>
+                <AssistantsPage />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/messages" element={
-            <ProtectedRoute>
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/messages" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <MessagesPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/leads" element={
+          <ProtectedRoute>
+            <DashboardLayout>
               <Suspense fallback={<ContentLoader />}>
-                <DashboardLayout>
-                  <MessagesPage />
-                </DashboardLayout>
+                <Leads />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/leads" element={
-            <ProtectedRoute>
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/campaigns" element={
+          <ProtectedRoute>
+            <DashboardLayout>
               <Suspense fallback={<ContentLoader />}>
-                <DashboardLayout>
-                  <Leads />
-                </DashboardLayout>
+                <SMSCampaignPage />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/campaigns" element={
-            <ProtectedRoute>
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/agent-builder" element={
+          <ProtectedRoute>
+            <DashboardLayout>
               <Suspense fallback={<ContentLoader />}>
-                <DashboardLayout>
-                  <SMSCampaignPage />
-                </DashboardLayout>
+                <AgentBuilder />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/agent-builder" element={
-            <ProtectedRoute>
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/settings" element={
+          <ProtectedRoute>
+            <SettingsLayout>
               <Suspense fallback={<ContentLoader />}>
-                <DashboardLayout>
-                  <AgentBuilder />
-                </DashboardLayout>
+                <SettingsPage />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/settings" element={
-            <ProtectedRoute>
+            </SettingsLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/settings/ai-settings" element={
+          <ProtectedRoute>
+            <SettingsLayout>
               <Suspense fallback={<ContentLoader />}>
-                <SettingsLayout>
-                  <SettingsPage />
-                </SettingsLayout>
+                <AISettingsPage />
               </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/settings/ai-settings" element={
-            <ProtectedRoute>
-              <Suspense fallback={<ContentLoader />}>
-                <SettingsLayout>
-                  <AISettingsPage />
-                </SettingsLayout>
-              </Suspense>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+            </SettingsLayout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </TooltipProvider>
   );
 };

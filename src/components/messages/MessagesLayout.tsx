@@ -6,13 +6,11 @@ import { useMessages } from '@/hooks/useMessages';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Bell, Loader2 } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import { Skeleton } from '../ui/skeleton';
 import { toast } from '../ui/use-toast';
 
 export function MessagesLayout() {
   const { messages, newMessageCount, resetNewMessageCount, isLoading } = useMessages(50);
   const [activeTab, setActiveTab] = useState("messages");
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     // Reset new message count when the messages tab is active
@@ -20,13 +18,6 @@ export function MessagesLayout() {
       resetNewMessageCount();
     }
   }, [activeTab, resetNewMessageCount, messages]);
-
-  // Handle initial load state
-  useEffect(() => {
-    if (!isLoading && isInitialLoad) {
-      setIsInitialLoad(false);
-    }
-  }, [isLoading, isInitialLoad]);
 
   // Notify on new messages when not on messages tab
   useEffect(() => {
@@ -66,7 +57,7 @@ export function MessagesLayout() {
           </TabsList>
           
           <TabsContent value="messages" className="flex-1 flex flex-col h-[calc(100vh-18rem)]">
-            {isInitialLoad ? (
+            {isLoading ? (
               <div className="flex-1 flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               </div>
