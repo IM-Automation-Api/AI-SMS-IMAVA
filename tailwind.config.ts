@@ -70,7 +70,11 @@ export default {
           200: 'rgb(97, 86, 147)',   // Medium purple
           300: 'rgb(38, 36, 62)',    // Dark purple
           400: 'rgb(25, 21, 41)',    // Darkest purple
-          gray: 'rgb(135, 135, 135)' // Gray
+          500: 'rgb(138, 43, 226)',  // Neon purple (BlueViolet)
+          600: 'rgb(147, 112, 219)', // Medium Orchid
+          700: 'rgb(123, 104, 238)', // Medium Slate Blue
+          800: 'rgb(106, 90, 205)',  // Slate Blue
+          glow: 'rgba(138, 43, 226, 0.5)' // Purple glow
         }
       },
       borderRadius: {
