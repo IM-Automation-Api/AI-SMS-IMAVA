@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { DashboardSidebar } from './DashboardSidebar';
@@ -22,6 +22,11 @@ export function DashboardLayout({
   children
 }: DashboardLayoutProps) {
   const isMobile = useIsMobile();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+  };
   
   return (
     <BeamsBackground intensity="subtle">
@@ -41,7 +46,7 @@ export function DashboardLayout({
                     />
                     <h2 className="text-xl font-mono tracking-normal">IM AVA</h2>
                   </div>
-                  <Drawer>
+                  <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
                     <DrawerTrigger asChild>
                       <Button variant="ghost" size="icon">
                         <Menu />
@@ -49,7 +54,7 @@ export function DashboardLayout({
                       </Button>
                     </DrawerTrigger>
                     <DrawerContent className="glass-effect">
-                      <MobileNavigation />
+                      <MobileNavigation onNavigate={handleCloseDrawer} />
                     </DrawerContent>
                   </Drawer>
                 </div>

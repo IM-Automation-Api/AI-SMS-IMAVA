@@ -3,6 +3,10 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Settings, MessageSquarePlus } from 'lucide-react';
 
+interface MobileNavigationProps {
+  onNavigate?: () => void;
+}
+
 const menuItems = [
   {
     icon: LayoutDashboard,
@@ -41,8 +45,14 @@ const menuItems = [
   }
 ];
 
-export function MobileNavigation() {
+export function MobileNavigation({ onNavigate }: MobileNavigationProps) {
   const location = useLocation();
+  
+  const handleNavigate = () => {
+    if (onNavigate) {
+      onNavigate();
+    }
+  };
   
   return (
     <div className="p-4">
@@ -53,6 +63,7 @@ export function MobileNavigation() {
             <li key={item.path}>
               <Link 
                 to={item.path}
+                onClick={handleNavigate}
                 className={`flex items-center gap-3 p-3 rounded-md transition-colors ${
                   location.pathname === item.path
                     ? 'bg-primary/10 text-primary font-medium'
