@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
@@ -87,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     console.log("Auth context: Setting up auth state listener");
+    let isInitialLoad = true;
     
     // Set up auth state listener first to avoid missing events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -109,20 +109,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               const profile = await loadUserProfile(currentUser.id);
               console.log("Auth context: Profile loaded:", profile ? "success" : "not found");
               
-              if (profile?.onboarding_completed) {
-                console.log("Auth context: User has completed onboarding, redirecting to dashboard");
-                navigate('/dashboard', { replace: true });
-              } else {
-                console.log("Auth context: User needs onboarding, redirecting to onboarding");
-                navigate('/onboarding', { replace: true });
+              // Only handle navigation during initial load or explicit sign-in
+              if (isInitialLoad || event === "SIGNED_IN") {
+                if (profile?.onboarding_completed) {
+                  console.log("Auth context: User has completed onboarding, redirecting to dashboard");
+                  navigate('/dashboard', { replace: true });
+                } else {
+                  console.log("Auth context: User needs onboarding, redirecting to onboarding");
+                  navigate('/onboarding', { replace: true });
+                }
+                isInitialLoad = false;
               }
             } catch (error) {
               console.error("Auth context: Error loading user profile:", error);
+            } finally {
+              // Ensure loading is set to false after profile is fetched
+              setLoading(false);
             }
           }, 300);
         } else if (event === "SIGNED_OUT") {
           console.log("Auth context: User signed out");
           setUser(null);
+          setLoading(false);
         }
       }
     );
@@ -143,14 +151,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Set user immediately without profile
           setUser(currentUser);
           
-          // Fetch profile separately
+          // Fetch profile separately but don't navigate here
+          // The onAuthStateChange will handle navigation
           try {
-            const profile = await loadUserProfile(currentUser.id);
-            console.log("Auth context: Profile for existing session:", profile ? "loaded" : "not found");
+            await loadUserProfile(currentUser.id);
           } catch (error) {
             console.error("Auth context: Error loading existing user profile:", error);
           } finally {
-            setLoading(false);
+            // If no auth state change event is fired, ensure loading is false
+            setTimeout(() => {
+              setLoading(false);
+            }, 500);
           }
         } else {
           console.log("Auth context: No existing user session found");
@@ -166,6 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       console.log("Auth context: Cleaning up auth state listener");
+      isInitialLoad = false;
       subscription.unsubscribe();
     };
   }, [navigate]);

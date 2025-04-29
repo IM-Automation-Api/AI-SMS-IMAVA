@@ -25,7 +25,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isOnboardingCompleted } = useAuth();
   
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+          <p className="text-lg">Loading your profile...</p>
+        </div>
+      </div>
+    );
   }
   
   if (!user) {
@@ -46,7 +53,14 @@ const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) =
   const { user, loading, isOnboardingCompleted } = useAuth();
   
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+          <p className="text-lg">Loading your profile...</p>
+        </div>
+      </div>
+    );
   }
   
   if (!user) {
@@ -64,7 +78,21 @@ const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) =
 };
 
 const App = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  
+  // Show proper loading state for the whole app
+  if (loading) {
+    return (
+      <TooltipProvider>
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+            <p className="text-lg">Loading application...</p>
+          </div>
+        </div>
+      </TooltipProvider>
+    );
+  }
   
   return (
     <TooltipProvider>
@@ -72,8 +100,8 @@ const App = () => {
       <Sonner />
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
-        <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignupPage />} />
+        <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
+        <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         
         {/* Onboarding route - protected but doesn't require completed onboarding */}

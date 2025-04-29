@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/supabase/auth/auth-context";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
@@ -21,6 +20,7 @@ export default function OnboardingPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>('name');
   const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
   const [redirecting, setRedirecting] = useState(false);
 
   // Form states
@@ -29,18 +29,23 @@ export default function OnboardingPage() {
   const [programmingLevel, setProgrammingLevel] = useState<'beginner' | 'proficient' | 'advanced'>('beginner');
   const [subdomainAvailable, setSubdomainAvailable] = useState(true);
 
-  // Check onboarding status only once when component mounts
+  // Check onboarding status when component mounts
   useEffect(() => {
-    console.log("Onboarding: Checking if onboarding is completed");
+    console.log("Onboarding: Initial check if onboarding is needed");
     
     const checkOnboardingStatus = () => {
-      const completed = isOnboardingCompleted();
-      console.log("Onboarding: Onboarding completed status:", completed);
-      
-      if (completed) {
-        console.log("Onboarding: Redirecting to dashboard");
-        setRedirecting(true);
-        navigate('/dashboard', { replace: true });
+      try {
+        const completed = isOnboardingCompleted();
+        console.log("Onboarding: Initial check - onboarding completed status:", completed);
+        
+        if (completed) {
+          console.log("Onboarding: Initial check found onboarding completed, redirecting to dashboard");
+          setRedirecting(true);
+          navigate('/dashboard', { replace: true });
+        }
+      } finally {
+        // Always set initializing to false after check completes, regardless of result
+        setInitializing(false);
       }
     };
     
@@ -245,16 +250,26 @@ export default function OnboardingPage() {
     }
   };
   
-  // Don't render if redirecting to prevent flickering
-  if (redirecting) {
-    return <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="text-center">
-        <p className="text-xl font-mono">Redirecting to dashboard...</p>
-      </div>
-    </div>;
+  // Show loading screen during initial check and redirecting
+  if (initializing || redirecting) {
+    return (
+      <BeamsBackground>
+        <div className="flex min-h-screen items-center justify-center p-4">
+          <div className="text-center bg-card/70 backdrop-blur-sm p-8 rounded-lg">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+              <p className="text-xl font-mono">
+                {initializing ? "Checking your profile..." : "Redirecting to dashboard..."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </BeamsBackground>
+    );
   }
 
-  return <BeamsBackground>
+  return (
+    <BeamsBackground>
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
           <CardContent className="pt-6 font-mono">
@@ -262,5 +277,6 @@ export default function OnboardingPage() {
           </CardContent>
         </Card>
       </div>
-    </BeamsBackground>;
+    </BeamsBackground>
+  );
 }
