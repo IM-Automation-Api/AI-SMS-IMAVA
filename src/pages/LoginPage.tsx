@@ -133,7 +133,7 @@ export default function LoginPage() {
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-4">
-              <img alt="Company Logo" src="/lovable-uploads/ee6adf79-8c4c-4f35-850e-7ec0b80ceb23.png" className="h-50 w-auto object-fill" />
+              <img alt="Company Logo" src="/lovable-uploads/ee6adf79-8c4c-4f35-850e-7ec0b80ceb23.png" className="h-20 w-auto object-fill" />
             </div>
             <CardTitle className="text-3xl font-bold font-warp text-center">
               AI SMS AUTOMATION
