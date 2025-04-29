@@ -74,7 +74,7 @@ const conversionData = [{
 export const ConversionFunnelCard = () => {
   return <Card className="col-span-1 my-[3px] mx-[29px]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Conversion Funnel</CardTitle>
+        <CardTitle className="text-sm font-medium mx-0 py-0 my-[2px]">Conversion Funnel</CardTitle>
         <BarChart2 className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
@@ -121,7 +121,7 @@ export const MessageActivityCard = () => {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Message Activity</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="my-[6px] px-0 py-[6px] mx-small">
         <div className="h-[180px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={messageActivityData}>
