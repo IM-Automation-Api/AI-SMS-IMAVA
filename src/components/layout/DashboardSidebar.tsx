@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
@@ -18,7 +19,8 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
 export function DashboardSidebar() {
-  const { expanded, toggleSidebar } = useSidebar();
+  const { state, toggleSidebar } = useSidebar();
+  const expanded = state === "expanded";
   const [activeItem, setActiveItem] = useState<string>("dashboard");
   const navigate = useNavigate();
   

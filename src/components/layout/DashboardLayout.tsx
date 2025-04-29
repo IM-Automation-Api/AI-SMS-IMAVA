@@ -26,12 +26,12 @@ export function DashboardLayout({
   return (
     <BeamsBackground intensity="subtle">
       <SidebarProvider>
-        <div className="min-h-screen flex w-full">
+        <div className="min-h-screen h-screen flex w-full overflow-hidden">
           {!isMobile && <DashboardSidebar />}
           <main className="flex-1 overflow-auto backdrop-blur-md bg-gradient-to-br from-[#1B1B33]/80 to-[#0F0F0F]/90 rounded-2xl mx-4 my-4 shadow-lg">
             <TopNavigation />
             {isMobile && (
-              <div className="sticky top-0 z-10 px-4 py-3 bg-black/20 backdrop-blur-md border-b border-white/5">
+              <div className="sticky top-0 z-10 px-4 py-3 bg-transparent backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <img 
@@ -39,7 +39,7 @@ export function DashboardLayout({
                       alt="Company Logo" 
                       className="h-10 w-auto"
                     />
-                    <h2 className="text-xl font-warp tracking-normal">IM AVA</h2>
+                    <h2 className="text-xl font-mono tracking-normal">IM AVA</h2>
                   </div>
                   <Drawer>
                     <DrawerTrigger asChild>
