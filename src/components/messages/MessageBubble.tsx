@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { MessageCircle } from 'lucide-react';
+import { Avatar } from '@/components/ui/avatar';
 import { Check } from 'lucide-react';
 
 export type MessageType = 'user' | 'bot' | 'system';
@@ -10,18 +10,18 @@ interface MessageBubbleProps {
   content: string;
   type: MessageType;
   timestamp?: string;
+  avatar?: string;
   name?: string;
   status?: 'sent' | 'delivered' | 'read';
-  unread?: boolean;
 }
 
 export function MessageBubble({
   content,
   type,
   timestamp = '12:45 PM',
+  avatar,
   name,
   status = 'read',
-  unread = false,
 }: MessageBubbleProps) {
   const isUser = type === 'user';
   const isBot = type === 'bot';
@@ -33,11 +33,10 @@ export function MessageBubble({
       isUser ? 'self-end flex-row-reverse' : 'self-start',
       isSystem ? 'self-center' : ''
     )}>
-      {!isUser && !isSystem && unread && (
-        <div className="relative mt-1">
-          <MessageCircle className="h-5 w-5 text-primary animate-pulse" />
-          <span className="absolute -top-1 -right-1 h-2 w-2 bg-primary rounded-full"></span>
-        </div>
+      {!isUser && !isSystem && (
+        <Avatar className="h-8 w-8 mt-1">
+          {avatar ? <img src={avatar} alt={name} /> : <span>{name?.charAt(0) || 'A'}</span>}
+        </Avatar>
       )}
       
       <div className="flex flex-col">
