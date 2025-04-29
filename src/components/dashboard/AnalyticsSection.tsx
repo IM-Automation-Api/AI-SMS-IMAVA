@@ -10,6 +10,17 @@ import { MessageCircle, Reply, Share2, BarChart2, Calendar } from 'lucide-react'
 import { useMessages } from '@/hooks/useMessages';
 import { ChartContainer, ChartTooltipContent, ChartTooltip } from "@/components/ui/chart";
 
+// Define the missing messageActivityData
+const messageActivityData = [
+  { name: "Mon", total: 24 },
+  { name: "Tue", total: 38 },
+  { name: "Wed", total: 42 },
+  { name: "Thu", total: 35 },
+  { name: "Fri", total: 26 },
+  { name: "Sat", total: 18 },
+  { name: "Sun", total: 15 }
+];
+
 // Components for the new analytics cards
 export const TotalMessagesSentCard = () => {
   const { messages } = useMessages(500);
