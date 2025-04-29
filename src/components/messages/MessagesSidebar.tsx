@@ -3,6 +3,46 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { BellDot, Plus, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ConversationThread } from '@/components/dashboard/ConversationThread';
+
+// Sample conversation data - in a real app this would come from an API or database
+const sampleConversations = [
+  {
+    id: '1',
+    lead_name: 'Alice Johnson',
+    last_message: 'Hey, can you check the latest updates?',
+    timestamp: new Date().toISOString(),
+    unread: true
+  },
+  {
+    id: '2',
+    lead_name: 'Bob Smith',
+    last_message: 'I've sent you the report',
+    timestamp: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+    unread: false
+  },
+  {
+    id: '3',
+    lead_name: 'Carol White',
+    last_message: 'Thanks for your help!',
+    timestamp: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+    unread: false
+  },
+  {
+    id: '4',
+    lead_name: 'David Brown',
+    last_message: 'When is the next meeting?',
+    timestamp: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+    unread: true
+  },
+  {
+    id: '5',
+    lead_name: 'Eva Green',
+    last_message: 'Please review this ASAP',
+    timestamp: new Date(Date.now() - 604800000).toISOString(), // 1 week ago
+    unread: false
+  }
+];
 
 export function MessagesSidebar() {
   return (
@@ -28,48 +68,10 @@ export function MessagesSidebar() {
         </div>
       </div>
       <div className="flex-1 overflow-auto p-2">
-        {/* Sample conversations */}
-        <ConversationItem name="Alice Johnson" message="Hey, can you check the latest updates?" time="12:45 PM" unread={true} active={true} />
-        <ConversationItem name="Bob Smith" message="I've sent you the report" time="Yesterday" />
-        <ConversationItem name="Carol White" message="Thanks for your help!" time="2d ago" />
-        <ConversationItem name="David Brown" message="When is the next meeting?" time="3d ago" unread={true} />
-        <ConversationItem name="Eva Green" message="Please review this ASAP" time="1w ago" />
-      </div>
-    </div>
-  );
-}
-
-interface ConversationItemProps {
-  name: string;
-  message: string;
-  time: string;
-  active?: boolean;
-  unread?: boolean;
-}
-
-function ConversationItem({
-  name,
-  message,
-  time,
-  active = false,
-  unread = false
-}: ConversationItemProps) {
-  return (
-    <div className={`flex items-center gap-3 p-3 cursor-pointer rounded-xl transition-all duration-300 mb-1
-      ${active 
-        ? 'bg-gradient-to-br from-indigo-500/20 to-purple-600/10 shadow-md shadow-purple-900/10' 
-        : 'hover:bg-white/5 hover:shadow-md hover:translate-x-1'}`}
-    >
-      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500/30 to-purple-600/30 rounded-full flex items-center justify-center relative">
-        <span className="text-white font-medium">{name.charAt(0)}</span>
-        {unread && <span className="absolute -top-0.5 -right-0.5 h-3 w-3 bg-primary rounded-full ring-2 ring-black"></span>}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex justify-between items-center">
-          <p className={`${unread ? 'font-semibold' : 'font-medium'} text-white/90 truncate`}>{name}</p>
-          <span className="text-xs text-white/50 whitespace-nowrap">{time}</span>
-        </div>
-        <p className={`text-sm ${unread ? 'text-white/90' : 'text-white/70'} truncate`}>{message}</p>
+        {/* Render conversations using ConversationThread component */}
+        {sampleConversations.map((conversation) => (
+          <ConversationThread key={conversation.id} thread={conversation} />
+        ))}
       </div>
     </div>
   );

@@ -43,9 +43,16 @@ export default function MessagesPage() {
     }
   }, [isMobile, conversationId, navigate, location]);
 
+  // If on mobile and viewing a specific conversation, stay on messages page
+  useEffect(() => {
+    if (isMobile && conversationId && location.pathname === '/messages/contacts') {
+      navigate(`/messages?id=${conversationId}`);
+    }
+  }, [isMobile, conversationId, navigate, location]);
+
   return (
     <Suspense fallback={<MessagesLoadingSkeleton />}>
-      <div className="h-[calc(100vh-5rem)]">
+      <div className="h-[calc(100vh-5rem)] w-full">
         <MessagesLayout />
       </div>
     </Suspense>

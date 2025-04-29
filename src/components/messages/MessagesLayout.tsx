@@ -43,7 +43,7 @@ export function MessagesLayout() {
   };
 
   return (
-    <div className="h-full flex">
+    <div className="h-full w-full flex">
       {/* Left sidebar - hidden on mobile when viewing a conversation */}
       {(!isMobile || !conversationId) && (
         <div className={`${isMobile ? 'w-full' : 'w-72'} h-full overflow-hidden ${!isMobile ? 'rounded-l-2xl' : 'rounded-2xl'}`}>
