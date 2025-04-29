@@ -24,6 +24,7 @@ export default function LoginPage() {
   const { signIn, signInWithGoogle } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   // Pre-initialize form with resolver and default values
   const form = useForm<FormData>({
@@ -36,25 +37,35 @@ export default function LoginPage() {
 
   const onSubmit = async (data: FormData) => {
     if (isLoading) return; // Prevent multiple submissions
+    
+    // Reset any previous errors
+    setLoginError(null);
     setIsLoading(true);
+    
+    console.log("Login attempt with email:", data.email);
     
     try {
       const { error } = await signIn(data.email, data.password);
 
       if (error) {
+        console.error("Login error from Supabase:", error);
+        setLoginError(error.message || "Invalid email or password");
         toast({
           title: "Login failed",
           description: error.message || "Invalid email or password",
           variant: "destructive",
         });
       } else {
+        console.log("Login successful");
         toast({
           title: "Login successful",
           description: "Welcome back!",
         });
+        // Auth context handles the redirect
       }
     } catch (error) {
       console.error("Login error:", error);
+      setLoginError("An unexpected error occurred. Please try again.");
       toast({
         title: "Login failed",
         description: "Something went wrong. Please try again.",
@@ -72,6 +83,7 @@ export default function LoginPage() {
     try {
       const { error } = await signInWithGoogle();
       if (error) {
+        console.error("Google sign in error:", error);
         toast({
           title: "Google Sign in failed",
           description: error.message || "Could not sign in with Google",
@@ -128,6 +140,12 @@ export default function LoginPage() {
                 <span className="bg-card/70 px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
+            
+            {loginError && (
+              <div className="p-3 text-sm bg-red-50 text-red-600 rounded-md">
+                {loginError}
+              </div>
+            )}
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
