@@ -10,10 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export function TopNavigation() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   
   const handleSettingsClick = () => {
     navigate('/settings');
@@ -31,25 +33,27 @@ export function TopNavigation() {
   return (
     <div className="h-16 px-4">
       <div className="h-full flex items-center justify-between">
-        <div className="flex-1"></div>
+        <div className="flex-1 flex items-center">
+          {!isMobile && (
+            <Link 
+              to="/dashboard" 
+              className="text-gray-400 hover:text-white hover:brightness-110 transition-all duration-300"
+            >
+              <Home className="h-5 w-5" />
+            </Link>
+          )}
+        </div>
         
         <div className="flex-1 flex justify-center items-center">
           <h2 className="font-mono text-sm tracking-wider bg-gradient-to-r from-indigo-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text drop-shadow-[0_0_5px_rgba(129,140,248,0.5)]">IM AVA</h2>
         </div>
         
         <div className="flex-1 flex items-center justify-end space-x-6">
-          <Link 
-            to="/dashboard" 
-            className="text-gray-400 hover:text-white hover:brightness-110 transition-all duration-300"
-          >
-            <Home className="h-5 w-5" />
-          </Link>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-md hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300">
                 <span className="bg-green-500 rounded-full w-1.75 h-1.75" />
-                <span className="text-gray-200 text-sm">{displayName}</span>
+                <span className="text-gray-200 text-sm hidden sm:inline">{displayName}</span>
                 <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
               </button>
             </DropdownMenuTrigger>
