@@ -12,6 +12,7 @@ import * as z from "zod";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { BeamsBackground } from "@/components/ui/beams-background";
 
+// Define the form schema outside component to prevent recreation on each render
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
@@ -24,6 +25,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
+  // Pre-initialize form with resolver and default values
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,6 +35,7 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: FormData) => {
+    if (isLoading) return; // Prevent multiple submissions
     setIsLoading(true);
     
     try {
@@ -63,7 +66,9 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
+    if (isGoogleLoading) return; // Prevent multiple submissions
     setIsGoogleLoading(true);
+    
     try {
       const { error } = await signInWithGoogle();
       if (error) {
