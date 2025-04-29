@@ -1,0 +1,28 @@
+
+@layer components {
+  .list-item-hover {
+    @apply hover:translate-y-[-2px] hover:shadow-lg hover:scale-105 transition-all duration-300;
+  }
+  
+  .button-hover {
+    @apply hover:scale-105 hover:brightness-110 transition-all duration-300;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .slide-in {
+    animation: slideIn 0.3s ease-in-out;
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}

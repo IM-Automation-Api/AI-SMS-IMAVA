@@ -1,0 +1,38 @@
+
+@layer components {
+  .glass-effect {
+    @apply bg-black/10 backdrop-blur-md border border-white/10;
+  }
+
+  .message-sent-gradient {
+    @apply bg-gradient-to-br from-indigo-500 to-indigo-600/80;
+  }
+  
+  .message-received-gradient {
+    @apply bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F];
+  }
+
+  .shadow-soft {
+    @apply shadow-[0_4px_20px_-2px_rgba(0,0,0,0.3)];
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F];
+  }
+
+  .sidebar-gradient {
+    @apply bg-gradient-to-b from-black/80 to-black/90 border-r border-white/5 shadow-[inset_0px_2px_12px_rgba(0,0,0,0.7)] backdrop-blur-md;
+  }
+
+  .sidebar-item-base {
+    @apply flex items-center gap-3 px-4 py-2 rounded-lg text-gray-400 transition-all duration-300;
+  }
+
+  .sidebar-item-hover {
+    @apply hover:bg-white/5 hover:text-white hover:scale-105 active:bg-indigo-500/20 active:text-indigo-400;
+  }
+
+  .sidebar-item-active {
+    @apply bg-indigo-500/20 text-indigo-400;
+  }
+}

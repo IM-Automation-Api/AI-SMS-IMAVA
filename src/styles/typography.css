@@ -1,0 +1,31 @@
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-warp antialiased;
+    background: 
+      radial-gradient(circle at 75% 25%, rgba(147, 112, 219, 0.25), transparent 60%),
+      radial-gradient(circle at 20% 80%, rgba(138, 43, 226, 0.2), transparent 50%),
+      hsl(var(--background));
+    text-decoration: none solid rgba(250, 249, 246, 0.7);
+    letter-spacing: normal;
+    text-transform: none;
+    vertical-align: baseline;
+  }
+
+  h1 {
+    font-family: "__WarpSans_3502a2", "__WarpSans_Fallback_3502a2", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    @apply bg-gradient-to-r from-indigo-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text drop-shadow-[0_0_5px_rgba(129,140,248,0.5)];
+  }
+  
+  /* Add mono font styling for h2, h3, and h4 elements */
+  h2, h3, h4 {
+    @apply font-mono;
+    letter-spacing: 0;
+  }
+}
