@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const UserSatisfactionCard = () => {
   return (
-    <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow md:col-span-2">
+    <Card className="modern-glass-card md:col-span-2">
       <CardHeader>
         <CardTitle>User Satisfaction</CardTitle>
       </CardHeader>

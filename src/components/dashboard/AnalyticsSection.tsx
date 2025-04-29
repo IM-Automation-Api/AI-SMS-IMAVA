@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { UserSatisfactionCard } from './UserSatisfactionCard';
 import { ConversationLengthCard } from './ConversationLengthCard';
@@ -73,7 +72,7 @@ const conversionData = [{
   value: 30
 }];
 export const ConversionFunnelCard = () => {
-  return <Card className="tech-glass-panel shadow-md shadow-black/40 hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
+  return <Card className="modern-glass-card cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="font-warp text-sm font-normal text-gray-300">Conversion Funnel</CardTitle>
         <BarChart2 className="h-4 w-4 text-purple-500" />
@@ -115,7 +114,7 @@ export const AppointmentsBookedCard = () => {
   return <StatsCard title="Appointments Booked" value="30" icon={<Calendar size={20} className="text-purple-500" />} trend="up" trendValue="12%" className="tech-glass-panel shadow-md shadow-black/40 hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" />;
 };
 export const MessageActivityCard = () => {
-  return <Card className="tech-glass-panel shadow-md shadow-black/40 hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
+  return <Card className="modern-glass-card cursor-pointer transition-all duration-300 hover:-translate-y-1 col-span-1">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="font-warp text-sm font-normal text-gray-300">Message Activity</CardTitle>
       </CardHeader>

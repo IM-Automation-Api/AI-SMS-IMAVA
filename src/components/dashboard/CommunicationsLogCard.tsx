@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -16,6 +15,7 @@ export const CommunicationsLogCard = () => {
   const {
     toast
   } = useToast();
+  
   useEffect(() => {
     // Immediately start fetching data
     fetchConversationThreads();
@@ -93,7 +93,8 @@ export const CommunicationsLogCard = () => {
     }
   };
   const resetNewThreadCount = () => setNewThreadCount(0);
-  return <Card className="tech-glass-panel shadow-md shadow-black/40">
+  
+  return <Card className="modern-glass-card">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <CardTitle className="font-warp text-xl font-medium text-gray-300">
           <MessageCircle className="mr-2 h-5 w-5 text-purple-500" />
@@ -111,7 +112,7 @@ export const CommunicationsLogCard = () => {
             {conversationThreads.map(thread => <ConversationThread key={thread.id} thread={thread} />)}
           </div>}
       </CardContent>
-      <CardFooter className="border-t border-border pt-4">
+      <CardFooter className="border-t border-[#4B2A78]/40 pt-4">
         <Button className="w-full premium-button">
           View All Messages
         </Button>
