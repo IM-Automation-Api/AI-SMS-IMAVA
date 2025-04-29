@@ -74,7 +74,7 @@ export default function SMSCampaignPage() {
   };
   return <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-warp text-gradient">SMS Campaign</h1>
+        <h1 className="text-xl font-warp text-gradient font-medium">SMS Campaign</h1>
         <Button onClick={() => setImportDialogOpen(true)}>
           <Upload className="mr-2 h-4 w-4" />
           Import Leads
@@ -84,7 +84,7 @@ export default function SMSCampaignPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Lead Selection */}
         <Card className="p-6 col-span-1 md:col-span-2">
-          <h2 className="text-xl font-semibold mb-4 text-zinc-300">Select Leads</h2>
+          <h2 className="text-xl mb-4 text-zinc-300 font-normal">Select Leads</h2>
           <div className="space-y-4">
             <Input type="text" placeholder="Search leads..." className="mb-4" />
             <div className="max-h-96 overflow-y-auto space-y-2">
@@ -110,7 +110,7 @@ export default function SMSCampaignPage() {
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <ListOrdered className="h-5 w-5" />
-              <h2 className="font-semibold text-gray-300 text-lg">Queue ({selectedLeads.length})</h2>
+              <h2 className="text-gray-300 text-lg font-normal">Queue ({selectedLeads.length})</h2>
             </div>
             
             {selectedLeads.length > 0 ? <div className="space-y-2 max-h-48 overflow-y-auto mb-4">
@@ -131,7 +131,7 @@ export default function SMSCampaignPage() {
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <UserCircle className="h-5 w-5" />
-              <h2 className="font-semibold text-gray-300 text-lg">Select Assistant</h2>
+              <h2 className="text-gray-300 text-lg font-normal">Select Assistant</h2>
             </div>
             
             <Select value={selectedAssistant} onValueChange={setSelectedAssistant}>
