@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ThreadSkeleton } from './ThreadSkeleton';
 import { ConversationThread, ConversationThreadProps } from './ConversationThread';
+
 export const CommunicationsLogCard = () => {
   const [conversationThreads, setConversationThreads] = useState<ConversationThreadProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
