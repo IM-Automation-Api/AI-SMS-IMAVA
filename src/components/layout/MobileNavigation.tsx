@@ -51,7 +51,7 @@ export function MobileNavigation() {
   
   return (
     <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">Navigation</h2>
+      <h2 className="text-lg font-semibold mb-4 font-mono">Navigation</h2>
       <nav>
         <ul className="space-y-2">
           {menuItems.map((item) => (

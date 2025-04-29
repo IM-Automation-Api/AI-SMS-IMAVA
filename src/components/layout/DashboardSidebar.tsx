@@ -2,17 +2,16 @@
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
-  Users, 
-  BarChart, 
+  Brain, 
+  MessageSquare, 
   Settings, 
   HelpCircle, 
   ChevronLeft, 
   ChevronRight,
-  Plus,
-  MessagesSquare,
-  KanbanSquare,
-  File,
-  Calendar
+  MessageSquarePlus,
+  ClipboardList,
+  Wrench,
+  Phone
 } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSidebar } from '@/components/ui/sidebar';
@@ -67,7 +66,7 @@ export function DashboardSidebar() {
         </NavLink>
 
         <NavLink
-          to="/users"
+          to="/assistants"
           className={({ isActive }) =>
             cn(
               "sidebar-item-base",
@@ -76,64 +75,8 @@ export function DashboardSidebar() {
             )
           }
         >
-          <Users className="h-5 w-5" />
-          {expanded && <span>Users</span>}
-        </NavLink>
-
-        <NavLink
-          to="/analytics"
-          className={({ isActive }) =>
-            cn(
-              "sidebar-item-base",
-              "sidebar-item-hover",
-              isActive && "sidebar-item-active"
-            )
-          }
-        >
-          <BarChart className="h-5 w-5" />
-          {expanded && <span>Analytics</span>}
-        </NavLink>
-
-        <NavLink
-          to="/projects"
-          className={({ isActive }) =>
-            cn(
-              "sidebar-item-base",
-              "sidebar-item-hover",
-              isActive && "sidebar-item-active"
-            )
-          }
-        >
-          <KanbanSquare className="h-5 w-5" />
-          {expanded && <span>Projects</span>}
-        </NavLink>
-
-        <NavLink
-          to="/documents"
-          className={({ isActive }) =>
-            cn(
-              "sidebar-item-base",
-              "sidebar-item-hover",
-              isActive && "sidebar-item-active"
-            )
-          }
-        >
-          <File className="h-5 w-5" />
-          {expanded && <span>Documents</span>}
-        </NavLink>
-
-        <NavLink
-          to="/calendar"
-          className={({ isActive }) =>
-            cn(
-              "sidebar-item-base",
-              "sidebar-item-hover",
-              isActive && "sidebar-item-active"
-            )
-          }
-        >
-          <Calendar className="h-5 w-5" />
-          {expanded && <span>Calendar</span>}
+          <Brain className="h-5 w-5" />
+          {expanded && <span>Assistants</span>}
         </NavLink>
 
         <NavLink
@@ -146,26 +89,86 @@ export function DashboardSidebar() {
             )
           }
         >
-          <MessagesSquare className="h-5 w-5" />
+          <MessageSquare className="h-5 w-5" />
           {expanded && <span>Messages</span>}
+        </NavLink>
+
+        <NavLink
+          to="/campaigns"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <MessageSquarePlus className="h-5 w-5" />
+          {expanded && <span>SMS Campaign</span>}
+        </NavLink>
+
+        <NavLink
+          to="/leads"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <ClipboardList className="h-5 w-5" />
+          {expanded && <span>Leads</span>}
+        </NavLink>
+
+        <NavLink
+          to="/agent-builder"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <Wrench className="h-5 w-5" />
+          {expanded && <span>Agent Builder</span>}
+        </NavLink>
+
+        <NavLink
+          to="/phone-numbers"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <Phone className="h-5 w-5" />
+          {expanded && <span>Phone Numbers</span>}
         </NavLink>
       </nav>
 
       <div className="mt-auto p-4">
-        <Link to="/new" className="sidebar-item-base sidebar-item-hover">
-          <Plus className="h-5 w-5" />
-          {expanded && <span>New Task</span>}
-        </Link>
-        
-        <Link to="/settings" className="sidebar-item-base sidebar-item-hover">
+        <NavLink 
+          to="/settings" 
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
           <Settings className="h-5 w-5" />
           {expanded && <span>Settings</span>}
-        </Link>
+        </NavLink>
         
-        <Link to="/help" className="sidebar-item-base sidebar-item-hover">
+        <div className="sidebar-item-base sidebar-item-hover">
           <HelpCircle className="h-5 w-5" />
           {expanded && <span>Help</span>}
-        </Link>
+        </div>
       </div>
     </aside>
   );
