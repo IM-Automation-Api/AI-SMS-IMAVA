@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { MessageBubble, MessageType } from './MessageBubble';
 import type { Database } from "@/integrations/supabase/types";
@@ -58,7 +57,7 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
             Start a new conversation or select an existing one to see your messages here
           </p>
           <button className="premium-button mt-4">
-            <MessageSquare className="h-4 w-4 mr-2" /> Start Conversation
+            Start Conversation
           </button>
         </div>
       ) : (
