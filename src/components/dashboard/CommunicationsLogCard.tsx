@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ThreadSkeleton } from './ThreadSkeleton';
 import { ConversationThread, ConversationThreadProps } from './ConversationThread';
+
 export const CommunicationsLogCard = () => {
   const [conversationThreads, setConversationThreads] = useState<ConversationThreadProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,7 +112,8 @@ export const CommunicationsLogCard = () => {
       </CardContent>
       <CardFooter className="border-t border-[#4B2A78]/40 pt-4 p-0 mt-4">
         <Button 
-          className="flex items-center gap-1.5 rounded-full px-4 py-2 bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300 w-full"
+          className="flex items-center justify-center gap-1.5 rounded-full px-8 py-2.5 bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300 w-full overflow-hidden"
+          radius="full"
         >
           View All Messages
         </Button>
