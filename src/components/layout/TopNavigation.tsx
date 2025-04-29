@@ -47,10 +47,10 @@ export function TopNavigation() {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 rounded-full px-2 py-1 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-sm hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300">
-                <span className="bg-green-500 rounded-full w-1.5 h-1.5" />
-                <span className="text-gray-200 text-xs">{displayName}</span>
-                <ChevronDown className="h-3 w-3 text-gray-400" />
+              <button className="flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] border border-white/5 shadow-md hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300">
+                <span className="bg-green-500 rounded-full w-1.75 h-1.75" />
+                <span className="text-gray-200 text-sm">{displayName}</span>
+                <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#1B1B33]/95 backdrop-blur-md border border-white/10 text-gray-200 shadow-lg">
