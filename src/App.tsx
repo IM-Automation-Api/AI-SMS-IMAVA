@@ -2,7 +2,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
@@ -20,19 +20,23 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SMSCampaignPage from "./pages/SMSCampaignPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import { useAuth } from "./lib/supabase/auth/auth-context";
+import { Suspense, lazy, useEffect } from "react";
+import { Skeleton } from "./components/ui/skeleton";
+
+// Loading component that's smaller and cleaner than the current loading UI
+const PageLoader = () => (
+  <div className="flex min-h-[80vh] items-center justify-center">
+    <div className="flex flex-col items-center space-y-4">
+      <div className="w-10 h-10 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+    </div>
+  </div>
+);
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isOnboardingCompleted } = useAuth();
   
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
-          <p className="text-lg">Loading your profile...</p>
-        </div>
-      </div>
-    );
+    return <PageLoader />;
   }
   
   if (!user) {
@@ -46,21 +50,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/onboarding" replace />;
   }
   
-  return <>{children}</>;
+  return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
 };
 
 const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isOnboardingCompleted } = useAuth();
   
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
-          <p className="text-lg">Loading your profile...</p>
-        </div>
-      </div>
-    );
+    return <PageLoader />;
   }
   
   if (!user) {
@@ -74,20 +71,24 @@ const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) =
     return <Navigate to="/dashboard" replace />;
   }
   
-  return <>{children}</>;
+  return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
 };
 
 const App = () => {
   const { user, loading } = useAuth();
+  const location = useLocation();
   
-  // Show proper loading state for the whole app
+  // Use effect to scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+  
   if (loading) {
     return (
       <TooltipProvider>
         <div className="flex min-h-screen items-center justify-center">
           <div className="flex flex-col items-center space-y-4">
-            <div className="w-16 h-16 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
-            <p className="text-lg">Loading application...</p>
+            <div className="w-10 h-10 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
           </div>
         </div>
       </TooltipProvider>
@@ -99,10 +100,24 @@ const App = () => {
       <Toaster />
       <Sonner />
       <Routes>
-        {/* Public routes */}
-        <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
-        <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        {/* Public routes - wrapped in Suspense for code splitting benefits */}
+        <Route path="/" element={
+          <Suspense fallback={<PageLoader />}>
+            {user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+          </Suspense>
+        } />
+        
+        <Route path="/signup" element={
+          <Suspense fallback={<PageLoader />}>
+            {user ? <Navigate to="/dashboard" replace /> : <SignupPage />}
+          </Suspense>
+        } />
+        
+        <Route path="/forgot-password" element={
+          <Suspense fallback={<PageLoader />}>
+            <ForgotPasswordPage />
+          </Suspense>
+        } />
         
         {/* Onboarding route - protected but doesn't require completed onboarding */}
         <Route path="/onboarding" element={<OnboardingProtectedRoute><OnboardingPage /></OnboardingProtectedRoute>} />

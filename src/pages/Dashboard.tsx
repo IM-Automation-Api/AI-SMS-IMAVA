@@ -1,15 +1,16 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { StatsCard } from "@/components/analytics/StatsCard";
 import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
-import { CircleDot, TrendingUp, MessageSquare, Users, GaugeCircle, Mic } from "lucide-react";
+import { CircleDot, TrendingUp, MessageSquare, Users, GaugeCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Avatar } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ConversationThread {
   id: string;
@@ -19,6 +20,24 @@ interface ConversationThread {
   unread: boolean;
 }
 
+// Memoized components to prevent unnecessary re-renders
+const MemoizedStatsCard = memo(StatsCard);
+
+// Loading skeleton for communication threads
+const ThreadSkeleton = () => (
+  <div className="space-y-3">
+    {[...Array(3)].map((_, i) => (
+      <div key={i} className="flex items-start space-x-3 p-3">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-4 w-1/3" />
+          <Skeleton className="h-3 w-full" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 export default function Dashboard() {
   const [conversationThreads, setConversationThreads] = useState<ConversationThread[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +45,7 @@ export default function Dashboard() {
   const { toast } = useToast();
   
   useEffect(() => {
+    // Immediately start fetching data
     fetchConversationThreads();
     
     // Set up real-time subscription for new messages
@@ -38,7 +58,8 @@ export default function Dashboard() {
           schema: 'public',
           table: 'sms_messages',
         },
-        () => {
+        (payload) => {
+          console.log('New message received:', payload);
           fetchConversationThreads();
           setNewThreadCount(prev => prev + 1);
           
@@ -58,6 +79,7 @@ export default function Dashboard() {
   
   // Function to fetch most recent conversation threads
   const fetchConversationThreads = async () => {
+    console.log('Fetching conversation threads...');
     setIsLoading(true);
     
     try {
@@ -70,8 +92,11 @@ export default function Dashboard() {
       
       if (error) {
         console.error('Error fetching messages:', error);
+        setIsLoading(false);
         return;
       }
+      
+      console.log('Fetched messages:', messages?.length);
       
       // Process messages to get unique conversation threads
       const threads: Record<string, ConversationThread> = {};
@@ -93,6 +118,8 @@ export default function Dashboard() {
         if (Object.keys(threads).length >= 5) break;
       }
       
+      console.log('Processed threads:', Object.keys(threads).length);
+      
       setConversationThreads(Object.values(threads));
       
       // Count unread threads
@@ -113,10 +140,10 @@ export default function Dashboard() {
       <h1 className="text-3xl tracking-[0.12em] font-zag">Dashboard</h1>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <StatsCard title="Total Messages" value="54,231" icon={<MessageSquare className="h-4 w-4" />} trend="up" trendValue="12%" />
-        <StatsCard title="Active Users" value="2,431" icon={<Users className="h-4 w-4" />} trend="up" trendValue="8%" />
-        <StatsCard title="Success Rate" value="95%" icon={<TrendingUp className="h-4 w-4" />} trend="up" trendValue="2%" />
-        <StatsCard title="Avg. Response Time" value="1.2s" icon={<GaugeCircle className="h-4 w-4" />} trend="down" trendValue="3%" />
+        <MemoizedStatsCard title="Total Messages" value="54,231" icon={<MessageSquare className="h-4 w-4" />} trend="up" trendValue="12%" />
+        <MemoizedStatsCard title="Active Users" value="2,431" icon={<Users className="h-4 w-4" />} trend="up" trendValue="8%" />
+        <MemoizedStatsCard title="Success Rate" value="95%" icon={<TrendingUp className="h-4 w-4" />} trend="up" trendValue="2%" />
+        <MemoizedStatsCard title="Avg. Response Time" value="1.2s" icon={<GaugeCircle className="h-4 w-4" />} trend="down" trendValue="3%" />
       </div>
 
       <Card className="bg-card/50 border-border backdrop-blur-sm">
@@ -134,9 +161,7 @@ export default function Dashboard() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="h-64 flex items-center justify-center">
-              <div className="animate-spin h-6 w-6 border-t-2 border-primary border-r-2 rounded-full"></div>
-            </div>
+            <ThreadSkeleton />
           ) : conversationThreads.length === 0 ? (
             <div className="h-64 flex flex-col items-center justify-center text-center">
               <MessageSquare className="h-12 w-12 text-muted-foreground mb-4 opacity-40" />
@@ -177,6 +202,7 @@ export default function Dashboard() {
       </Card>
 
       <div className="grid gap-6 md:grid-cols-3">
+        {/* Continue with other analytics cards... */}
         <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow md:col-span-2">
           <CardHeader>
             <CardTitle>User Satisfaction</CardTitle>
