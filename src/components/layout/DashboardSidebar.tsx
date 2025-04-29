@@ -10,8 +10,7 @@ import {
   ChevronRight,
   MessageSquarePlus,
   ClipboardList,
-  Wrench,
-  Phone
+  Wrench
 } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSidebar } from '@/components/ui/sidebar';
@@ -133,20 +132,6 @@ export function DashboardSidebar() {
         >
           <Wrench className="h-5 w-5" />
           {expanded && <span>Agent Builder</span>}
-        </NavLink>
-
-        <NavLink
-          to="/phone-numbers"
-          className={({ isActive }) =>
-            cn(
-              "sidebar-item-base",
-              "sidebar-item-hover",
-              isActive && "sidebar-item-active"
-            )
-          }
-        >
-          <Phone className="h-5 w-5" />
-          {expanded && <span>Phone Numbers</span>}
         </NavLink>
       </nav>
 
