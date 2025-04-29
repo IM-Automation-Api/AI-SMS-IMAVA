@@ -21,7 +21,7 @@ export const ConversationThread = ({ thread }: { thread: ConversationThreadProps
 
   return (
     <div 
-      className="flex items-center space-x-3 p-3 rounded-lg transition-all hover:bg-white/5 hover:scale-[1.02] cursor-pointer"
+      className="flex items-center space-x-3 p-3 rounded-lg transition-all hover:bg-white/5 menu-item cursor-pointer"
       onClick={handleClick}
     >
       <div className="flex-1 space-y-1">
