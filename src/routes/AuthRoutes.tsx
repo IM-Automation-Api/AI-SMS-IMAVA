@@ -7,12 +7,8 @@ import SignupPage from '@/pages/SignupPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import { PageLoader } from './PageLoader';
 
-interface AuthRoutesProps {
-  loading: boolean;
-}
-
-export function AuthRoutes({ loading }: AuthRoutesProps) {
-  const { user } = useAuth();
+export function AuthRoutes() {
+  const { user, loading } = useAuth();
   
   return (
     <>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { format } from "date-fns";
 import { Badge } from '@/components/ui/badge';
@@ -11,17 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Mail, Phone, Calendar, X } from 'lucide-react';
 import { LeadTag } from '@/hooks/useLeadTags';
-
-interface Lead {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  notes: string;
-  last_contacted: string | null;
-  tags: string[];
-}
+import { Lead } from '@/hooks/useLeads';
 
 interface LeadDetailsProps {
   lead: Lead | null;
@@ -86,7 +75,7 @@ export function LeadDetails({ lead, tags, onClose }: LeadDetailsProps) {
           <h3 className="text-sm font-medium text-gray-400">Tags</h3>
           {lead.tags && lead.tags.length > 0 ? (
             <div className="flex flex-wrap gap-2">
-              {(lead.tags as string[]).map(tagId => {
+              {lead.tags.map(tagId => {
                 const tag = tags.find(t => t.id === tagId);
                 if (!tag) return null;
                 return (

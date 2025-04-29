@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -8,17 +7,7 @@ import { LeadTag } from "@/hooks/useLeadTags";
 import { format } from "date-fns";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/components/ui/use-toast';
-
-interface Lead {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  notes: string;
-  last_contacted: string | null;
-  tags: string[];
-}
+import { Lead } from '@/hooks/useLeads';
 
 interface LeadsTableProps {
   leads: Lead[];
