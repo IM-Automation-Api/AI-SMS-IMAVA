@@ -30,8 +30,14 @@ export function TopNavigation() {
 
   return (
     <div className="h-16 px-4">
-      <div className="h-full flex items-center justify-end">
-        <div className="flex items-center justify-end space-x-6">
+      <div className="h-full flex items-center justify-between">
+        <div className="flex-1"></div>
+        
+        <div className="flex-1 flex justify-center items-center">
+          <h2 className="font-mono text-sm tracking-wider text-gray-200">IM AVA</h2>
+        </div>
+        
+        <div className="flex-1 flex items-center justify-end space-x-6">
           <Link 
             to="/dashboard" 
             className="text-gray-400 hover:text-white hover:brightness-110 transition-all duration-300"
