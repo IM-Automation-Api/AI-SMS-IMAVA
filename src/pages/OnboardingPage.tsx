@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/supabase/auth/auth-context";
@@ -9,209 +8,166 @@ import { toast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BeamsBackground } from "@/components/ui/beams-background";
 import { CheckCircle } from "lucide-react";
-
 type OnboardingStep = 'name' | 'organization' | 'experience';
-
 export default function OnboardingPage() {
-  const { user, updateUserProfile, isOnboardingCompleted } = useAuth();
+  const {
+    user,
+    updateUserProfile,
+    isOnboardingCompleted
+  } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>('name');
   const [loading, setLoading] = useState(false);
-  
+
   // Form states
   const [fullName, setFullName] = useState('');
   const [organizationName, setOrganizationName] = useState('');
   const [programmingLevel, setProgrammingLevel] = useState<'beginner' | 'proficient' | 'advanced'>('beginner');
   const [subdomainAvailable, setSubdomainAvailable] = useState(true);
-  
   useEffect(() => {
     // If onboarding is completed, redirect to dashboard
     if (isOnboardingCompleted()) {
       navigate('/dashboard');
     }
   }, [isOnboardingCompleted, navigate]);
-
   const handleNameStep = async () => {
     if (!fullName.trim()) {
       toast({
         title: "Required Field",
         description: "Please enter your full name",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-    
     setLoading(true);
-    
     try {
-      const { error } = await updateUserProfile({
-        full_name: fullName,
+      const {
+        error
+      } = await updateUserProfile({
+        full_name: fullName
       });
-      
       if (error) throw error;
-      
       setCurrentStep('organization');
     } catch (error) {
       console.error("Failed to update name:", error);
       toast({
         title: "Update failed",
         description: "Could not save your name. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
   };
-  
   const checkSubdomainAvailability = (subdomain: string) => {
     // Simulate checking availability - in a real app, this would be an API call
     // For this example, we'll say the subdomain is available
     setSubdomainAvailable(true);
   };
-  
   const handleOrganizationStep = async () => {
     if (!organizationName.trim()) {
       toast({
         title: "Required Field",
         description: "Please enter your organization name",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-    
     setLoading(true);
-    
     try {
-      const { error } = await updateUserProfile({
-        organization_name: organizationName,
+      const {
+        error
+      } = await updateUserProfile({
+        organization_name: organizationName
       });
-      
       if (error) throw error;
-      
       setCurrentStep('experience');
     } catch (error) {
       console.error("Failed to update organization:", error);
       toast({
         title: "Update failed",
         description: "Could not save your organization. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
   };
-  
   const handleExperienceStep = async () => {
     setLoading(true);
-    
     try {
-      const { error } = await updateUserProfile({
+      const {
+        error
+      } = await updateUserProfile({
         programming_level: programmingLevel,
-        onboarding_completed: true,
+        onboarding_completed: true
       });
-      
       if (error) throw error;
-      
       toast({
         title: "Setup complete!",
-        description: "Welcome to the platform.",
+        description: "Welcome to the platform."
       });
-      
       navigate('/dashboard');
     } catch (error) {
       console.error("Failed to update experience:", error);
       toast({
         title: "Update failed",
         description: "Could not save your experience level. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
   };
-
   const renderNameStep = () => {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-semibold">Hi, {user?.email?.split('@')[0]}</h2>
           <p className="text-muted-foreground">What's your full name?</p>
         </div>
         
-        <Input 
-          type="text" 
-          placeholder="Grace Hopper"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="w-full"
-          disabled={loading}
-        />
+        <Input type="text" placeholder="Grace Hopper" value={fullName} onChange={e => setFullName(e.target.value)} className="w-full" disabled={loading} />
         
-        <Button 
-          className="w-full" 
-          onClick={handleNameStep} 
-          disabled={loading || !fullName.trim()}>
+        <Button className="w-full" onClick={handleNameStep} disabled={loading || !fullName.trim()}>
           {loading ? "Saving..." : "Continue"}
         </Button>
-      </div>
-    );
+      </div>;
   };
-  
   const renderOrganizationStep = () => {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-semibold">What's the name of your organization?</h2>
         </div>
         
         <div className="flex items-center gap-0">
           <div className="relative flex-grow">
-            <Input 
-              type="text" 
-              placeholder="myorganization"
-              value={organizationName}
-              onChange={(e) => {
-                setOrganizationName(e.target.value);
-                if (e.target.value.length > 2) {
-                  checkSubdomainAvailability(e.target.value);
-                }
-              }}
-              className="w-full rounded-r-none"
-              disabled={loading}
-            />
-            {organizationName.length > 2 && (
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+            <Input type="text" placeholder="myorganization" value={organizationName} onChange={e => {
+            setOrganizationName(e.target.value);
+            if (e.target.value.length > 2) {
+              checkSubdomainAvailability(e.target.value);
+            }
+          }} className="w-full rounded-r-none" disabled={loading} />
+            {organizationName.length > 2 && <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                 {subdomainAvailable && <CheckCircle className="h-5 w-5 text-green-500" />}
-              </div>
-            )}
+              </div>}
           </div>
-          <div className="bg-muted text-muted-foreground px-3 py-2 border border-l-0 border-input rounded-r-md">
-            .retool.com
-          </div>
+          
         </div>
         
         <p className="text-xs text-muted-foreground">Letters and numbers only</p>
         
-        {organizationName.length > 2 && subdomainAvailable && (
-          <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 text-sm rounded-md p-2 flex items-center">
+        {organizationName.length > 2 && subdomainAvailable && <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 text-sm rounded-md p-2 flex items-center">
             <CheckCircle className="h-4 w-4 mr-2" />
             Subdomain available
-          </div>
-        )}
+          </div>}
         
-        <Button 
-          className="w-full" 
-          onClick={handleOrganizationStep} 
-          disabled={loading || !organizationName.trim() || !subdomainAvailable}>
+        <Button className="w-full" onClick={handleOrganizationStep} disabled={loading || !organizationName.trim() || !subdomainAvailable}>
           {loading ? "Saving..." : "Continue"}
         </Button>
-      </div>
-    );
+      </div>;
   };
-  
   const renderExperienceStep = () => {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-semibold">How familiar are you with programming?</h2>
           <p className="text-muted-foreground">Your answer here will help us craft the best setup experience</p>
@@ -232,16 +188,11 @@ export default function OnboardingPage() {
           </label>
         </RadioGroup>
         
-        <Button 
-          className="w-full" 
-          onClick={handleExperienceStep} 
-          disabled={loading}>
+        <Button className="w-full" onClick={handleExperienceStep} disabled={loading}>
           {loading ? "Saving..." : "Continue"}
         </Button>
-      </div>
-    );
+      </div>;
   };
-  
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 'name':
@@ -254,9 +205,7 @@ export default function OnboardingPage() {
         return null;
     }
   };
-  
-  return (
-    <BeamsBackground>
+  return <BeamsBackground>
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
           <CardContent className="pt-6">
@@ -264,6 +213,5 @@ export default function OnboardingPage() {
           </CardContent>
         </Card>
       </div>
-    </BeamsBackground>
-  );
+    </BeamsBackground>;
 }
