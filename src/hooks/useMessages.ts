@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -9,12 +9,13 @@ export function useMessages(limit = 30, leadId?: string) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessageCount, setNewMessageCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    // Initial fetch of messages
-    const fetchMessages = async () => {
-      setIsLoading(true);
-      
+  const fetchMessages = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
       let query = supabase
         .from('sms_messages')
         .select('*')
@@ -26,20 +27,28 @@ export function useMessages(limit = 30, leadId?: string) {
         query = query.eq('lead_id', leadId);
       }
 
-      const { data, error } = await query;
+      const { data, error: fetchError } = await query;
 
-      if (error) {
-        console.error('Error fetching messages:', error);
+      if (fetchError) {
+        console.error('Error fetching messages:', fetchError);
+        setError(new Error(fetchError.message));
+        return;
       }
       
       if (data) {
         // Sort in ascending order for display (oldest first)
         setMessages(data.reverse());
       }
-      
+    } catch (err) {
+      console.error('Exception fetching messages:', err);
+      setError(err instanceof Error ? err : new Error('Unknown error fetching messages'));
+    } finally {
       setIsLoading(false);
-    };
+    }
+  }, [limit, leadId]);
 
+  useEffect(() => {
+    // Initial fetch of messages
     fetchMessages();
 
     // Subscribe to new messages
@@ -63,9 +72,20 @@ export function useMessages(limit = 30, leadId?: string) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [limit, leadId]);
+  }, [fetchMessages, leadId]);
 
-  const resetNewMessageCount = () => setNewMessageCount(0);
+  const resetNewMessageCount = useCallback(() => setNewMessageCount(0), []);
+  
+  const refreshMessages = useCallback(() => {
+    fetchMessages();
+  }, [fetchMessages]);
 
-  return { messages, newMessageCount, resetNewMessageCount, isLoading };
+  return { 
+    messages, 
+    newMessageCount, 
+    resetNewMessageCount, 
+    isLoading, 
+    error,
+    refreshMessages
+  };
 }

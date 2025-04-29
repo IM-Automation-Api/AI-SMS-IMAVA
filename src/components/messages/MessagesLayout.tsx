@@ -4,12 +4,15 @@ import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
 import { useMessages } from '@/hooks/useMessages';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Bell } from 'lucide-react';
+import { Bell, Loader2 } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { Skeleton } from '../ui/skeleton';
+import { toast } from '../ui/use-toast';
 
 export function MessagesLayout() {
-  const { messages, newMessageCount, resetNewMessageCount } = useMessages(50);
+  const { messages, newMessageCount, resetNewMessageCount, isLoading } = useMessages(50);
   const [activeTab, setActiveTab] = useState("messages");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     // Reset new message count when the messages tab is active
@@ -17,6 +20,23 @@ export function MessagesLayout() {
       resetNewMessageCount();
     }
   }, [activeTab, resetNewMessageCount, messages]);
+
+  // Handle initial load state
+  useEffect(() => {
+    if (!isLoading && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [isLoading, isInitialLoad]);
+
+  // Notify on new messages when not on messages tab
+  useEffect(() => {
+    if (newMessageCount > 0 && activeTab !== "messages") {
+      toast({
+        title: `${newMessageCount} new message${newMessageCount > 1 ? 's' : ''}`,
+        description: "You have unread messages in your inbox",
+      });
+    }
+  }, [newMessageCount, activeTab]);
 
   return (
     <div className="h-[calc(100vh-10rem)] flex flex-col">
@@ -46,7 +66,13 @@ export function MessagesLayout() {
           </TabsList>
           
           <TabsContent value="messages" className="flex-1 flex flex-col h-[calc(100vh-18rem)]">
-            <MessageList messages={messages} />
+            {isInitialLoad ? (
+              <div className="flex-1 flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <MessageList messages={messages} />
+            )}
             <MessageInput />
           </TabsContent>
           
