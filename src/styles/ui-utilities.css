@@ -22,7 +22,7 @@
   }
   
   .premium-input {
-    @apply bg-black/20 border-white/10 focus:ring focus:ring-purple-500/30 focus:border-purple-500/50 rounded-lg shadow-inner outline-none;
+    @apply bg-black/20 border-white/10 focus:ring focus:ring-purple-500/30 focus:border-purple-500/50 rounded-lg shadow-inner outline-none transition-all duration-300;
   }
   
   .hover-glow {
@@ -43,5 +43,13 @@
   
   .text-gradient {
     @apply bg-gradient-to-r from-white via-indigo-200 to-white bg-clip-text text-transparent;
+  }
+
+  .bubble-unread {
+    @apply relative after:absolute after:top-0 after:right-0 after:h-2.5 after:w-2.5 after:rounded-full after:bg-primary;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-purple-900/20;
   }
 }

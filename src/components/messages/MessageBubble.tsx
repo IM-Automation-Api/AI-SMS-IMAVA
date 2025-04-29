@@ -28,13 +28,13 @@ export function MessageBubble({
   
   return (
     <div className={cn(
-      'flex gap-3 mb-4 max-w-[85%] group fade-in',
+      'flex gap-3 mb-4 max-w-[85%] group transition-all duration-300 animate-fade-in',
       isUser ? 'self-end flex-row-reverse' : 'self-start',
       isSystem ? 'self-center' : ''
     )}>
       {!isUser && !isSystem && (
         <div className="relative mt-1">
-          {unread && <span className="absolute -top-1 -right-1 h-3 w-3 bg-primary rounded-full animate-pulse"></span>}
+          {unread && <span className="absolute -top-1 -right-1 h-3 w-3 bg-primary rounded-full"></span>}
         </div>
       )}
       
@@ -44,10 +44,10 @@ export function MessageBubble({
         )}
         
         <div className={cn(
-          'rounded-2xl p-3 text-sm shadow-soft',
-          isUser && 'message-sent-gradient text-primary-foreground rounded-tr-none',
-          isBot && 'message-received-gradient text-foreground rounded-tl-none',
-          isSystem && 'glass-effect text-accent-foreground text-center text-xs py-1.5 rounded-xl'
+          'rounded-xl p-3 text-sm shadow-soft',
+          isUser && 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-tr-none',
+          isBot && 'glass-effect text-foreground rounded-tl-none border border-white/10',
+          isSystem && 'glass-effect text-accent-foreground text-center text-xs py-1.5 rounded-xl border border-white/5'
         )}>
           {content}
         </div>

@@ -89,7 +89,7 @@ export default function SignupPage() {
   return (
     <BeamsBackground>
       <div className="flex min-h-screen items-center justify-center p-4">
-        <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
+        <Card className="w-full max-w-md glass-panel border-white/10">
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-4">
               <img 
@@ -98,8 +98,8 @@ export default function SignupPage() {
                 className="h-14 w-auto"
               />
             </div>
-            <CardTitle className="text-3xl font-bold font-warp tracking-normal text-center">IM AVA</CardTitle>
-            <CardDescription className="text-center">Create a new organization to get started</CardDescription>
+            <CardTitle className="text-3xl font-bold text-gradient text-center">IM AVA</CardTitle>
+            <CardDescription className="text-center text-white/70">Create a new organization to get started</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
@@ -107,7 +107,7 @@ export default function SignupPage() {
               type="button" 
               disabled={isGoogleLoading} 
               onClick={handleGoogleSignUp}
-              className="w-full flex items-center justify-center gap-2"
+              className="w-full flex items-center justify-center gap-2 premium-input hover:bg-white/5"
             >
               {isGoogleLoading ? (
                 "Signing up..."
@@ -125,10 +125,10 @@ export default function SignupPage() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t"></span>
+                <span className="w-full border-t border-white/10"></span>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card/70 px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-black/30 px-2 text-white/50">Or continue with</span>
               </div>
             </div>
             
@@ -139,13 +139,14 @@ export default function SignupPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-white/80">Email</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="name@company.com" 
                           type="email" 
                           {...field} 
                           autoComplete="email"
+                          className="premium-input bg-black/20 border-white/10 text-white placeholder-white/40"
                         />
                       </FormControl>
                       <FormMessage />
@@ -158,13 +159,14 @@ export default function SignupPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="text-white/80">Password</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="••••••••" 
                           type="password" 
                           {...field} 
                           autoComplete="new-password"
+                          className="premium-input bg-black/20 border-white/10 text-white placeholder-white/40"
                         />
                       </FormControl>
                       <FormMessage />
@@ -172,20 +174,20 @@ export default function SignupPage() {
                   )}
                 />
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" className="w-full premium-button" disabled={isLoading}>
                   {isLoading ? "Creating account..." : "Sign up"}
                 </Button>
               </form>
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <div className="text-center text-sm">
+            <div className="text-center text-sm text-white/70">
               Already have an account?{" "}
-              <Link to="/" className="text-primary hover:underline">
+              <Link to="/" className="text-indigo-300 hover:text-indigo-200 hover:underline">
                 Sign in
               </Link>
             </div>
-            <p className="text-center text-xs text-muted-foreground">
+            <p className="text-center text-xs text-white/50">
               By signing up, you agree to our Terms of Service and Privacy Policy.
             </p>
           </CardFooter>

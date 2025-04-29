@@ -5,7 +5,7 @@ import { MessageInput } from './MessageInput';
 import { MessagesSidebar } from './MessagesSidebar';
 import { useMessages } from '@/hooks/useMessages';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Bell, ChevronLeft, Loader2 } from 'lucide-react';
+import { Bell, ChevronLeft, Loader2, MessageSquare, Plus } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { toast } from '../ui/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -43,7 +43,7 @@ export function MessagesLayout() {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex">
+    <div className="h-[calc(100vh-5.5rem)] flex">
       {/* Left sidebar - hidden on mobile when viewing a conversation */}
       {(!isMobile || !conversationId) && (
         <div className={`${isMobile ? 'w-full' : 'w-72'} h-full overflow-hidden ${!isMobile ? 'rounded-l-2xl' : 'rounded-2xl'}`}>
@@ -53,20 +53,20 @@ export function MessagesLayout() {
       
       {/* Main content - only shown on desktop or when viewing a conversation on mobile */}
       {(!isMobile || conversationId) && (
-        <div className={`flex-1 flex flex-col glass-effect ${isMobile ? 'rounded-2xl' : 'rounded-r-2xl'} overflow-hidden shadow-lg`}>
+        <div className={`flex-1 flex flex-col glass-panel ${isMobile ? 'rounded-2xl' : 'rounded-r-2xl'} overflow-hidden shadow-lg`}>
           <div className="p-4 flex flex-col h-full">
             {isMobile && conversationId && (
               <Button 
                 variant="ghost" 
                 onClick={handleBackToContacts} 
-                className="mb-2 -ml-2"
+                className="mb-2 -ml-2 hover:bg-white/10"
                 size="sm"
               >
                 <ChevronLeft className="mr-1 h-4 w-4" /> Back
               </Button>
             )}
             
-            <h1 className="text-2xl tracking-[0.12em] font-zag mb-4">Messages</h1>
+            <h1 className="text-2xl text-gradient font-warp tracking-wide mb-4">Messages</h1>
             
             <Tabs 
               defaultValue="messages" 
@@ -77,8 +77,9 @@ export function MessagesLayout() {
               <TabsList className="bg-black/20 backdrop-blur-md mb-4">
                 <TabsTrigger 
                   value="messages" 
-                  className="relative data-[state=active]:bg-white/10 data-[state=active]:shadow-md"
+                  className="relative data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500/30 data-[state=active]:to-purple-600/30 data-[state=active]:shadow-md"
                 >
+                  <MessageSquare className="h-4 w-4 mr-2" />
                   Messages
                   {newMessageCount > 0 && activeTab !== "messages" && (
                     <Badge className="absolute -top-2 -right-2 bg-primary w-5 h-5 flex items-center justify-center p-0 text-xs">
@@ -88,16 +89,17 @@ export function MessagesLayout() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="campaigns" 
-                  className="data-[state=active]:bg-white/10 data-[state=active]:shadow-md"
+                  className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500/30 data-[state=active]:to-purple-600/30 data-[state=active]:shadow-md"
                 >
                   Campaigns
                 </TabsTrigger>
                 <TabsTrigger 
                   value="notifications" 
-                  className="data-[state=active]:bg-white/10 data-[state=active]:shadow-md"
+                  className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500/30 data-[state=active]:to-purple-600/30 data-[state=active]:shadow-md relative"
                 >
+                  <Bell className="h-4 w-4 mr-2" />
                   Notifications
-                  <span className="ml-2 h-2 w-2 bg-primary rounded-full"></span>
+                  <span className="absolute top-1 right-1 h-2 w-2 bg-primary rounded-full"></span>
                 </TabsTrigger>
               </TabsList>
               
@@ -115,14 +117,28 @@ export function MessagesLayout() {
               </TabsContent>
               
               <TabsContent value="campaigns">
-                <div className="flex flex-col items-center justify-center h-64 bg-black/10 backdrop-blur-md rounded-2xl p-6">
-                  <p className="text-muted-foreground">Your campaigns will appear here</p>
+                <div className="flex flex-col items-center justify-center h-64 glass-panel p-6">
+                  <div className="rounded-full bg-purple-500/20 p-4 mb-4">
+                    <Plus className="h-8 w-8 text-purple-400" />
+                  </div>
+                  <h3 className="text-xl font-medium text-gradient mb-2">Campaigns</h3>
+                  <p className="text-muted-foreground text-center mb-4">Create targeted message campaigns to reach your audience</p>
+                  <Button className="premium-button">
+                    <Plus className="h-4 w-4 mr-2" /> Create Campaign
+                  </Button>
                 </div>
               </TabsContent>
               
               <TabsContent value="notifications">
-                <div className="flex flex-col items-center justify-center h-64 bg-black/10 backdrop-blur-md rounded-2xl p-6">
-                  <p className="text-muted-foreground">Your notifications will appear here</p>
+                <div className="flex flex-col items-center justify-center h-64 glass-panel p-6">
+                  <div className="rounded-full bg-purple-500/20 p-4 mb-4">
+                    <Bell className="h-8 w-8 text-purple-400" />
+                  </div>
+                  <h3 className="text-xl font-medium text-gradient mb-2">Notifications</h3>
+                  <p className="text-muted-foreground text-center mb-4">Stay updated with important alerts and system messages</p>
+                  <Button className="premium-button">
+                    Manage Notifications
+                  </Button>
                 </div>
               </TabsContent>
             </Tabs>

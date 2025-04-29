@@ -15,7 +15,7 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Scroll to bottom when messages change, with a small delay
+    // Scroll to bottom when messages change
     const timer = setTimeout(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
@@ -37,7 +37,7 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
   // Loading or empty state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full p-6 glass-effect">
+      <div className="flex items-center justify-center h-full p-6 glass-panel">
         <div className="flex flex-col items-center space-y-3">
           <div className="w-8 h-8 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
           <p className="text-sm text-white/70">Loading messages...</p>
@@ -47,16 +47,19 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-6 glass-effect flex flex-col h-full">
+    <div className="flex-1 overflow-y-auto px-4 py-6 glass-panel flex flex-col h-full">
       {messages.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full space-y-4 p-8">
-          <div className="rounded-full bg-black/20 p-6 shadow-lg shadow-purple-900/10">
-            <MessageSquare className="h-16 w-16 text-white/30" />
+        <div className="flex flex-col items-center justify-center h-full space-y-6 p-8">
+          <div className="rounded-full bg-purple-500/20 p-6 shadow-lg shadow-purple-900/20">
+            <MessageSquare className="h-16 w-16 text-white/40" />
           </div>
-          <h3 className="text-xl font-medium text-white/90">No messages yet</h3>
-          <p className="text-white/60 text-center max-w-sm">
+          <h3 className="text-2xl font-medium text-gradient">No messages yet</h3>
+          <p className="text-white/70 text-center max-w-sm">
             Start a new conversation or select an existing one to see your messages here
           </p>
+          <button className="premium-button mt-4">
+            <MessageSquare className="h-4 w-4 mr-2" /> Start Conversation
+          </button>
         </div>
       ) : (
         <>
@@ -72,10 +75,9 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
               unread={message.unread}
             />
           ))}
+          <div ref={messagesEndRef} />
         </>
       )}
-      
-      <div ref={messagesEndRef} />
     </div>
   );
 }
