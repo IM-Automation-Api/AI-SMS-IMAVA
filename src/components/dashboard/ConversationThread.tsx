@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { format } from "date-fns";
-import { Avatar } from "@/components/ui/avatar";
+import { MessageCircle } from "lucide-react";
 
 export interface ConversationThreadProps {
   id: string;
@@ -15,13 +15,13 @@ export const ConversationThread = ({ thread }: { thread: ConversationThreadProps
   <div 
     className="flex items-start space-x-3 p-3 rounded-lg transition-colors hover:bg-slate-800/50"
   >
-    <div className="relative">
-      <Avatar className="h-10 w-10">
-        <span>{thread.lead_name.charAt(0)}</span>
-      </Avatar>
-      {thread.unread && (
-        <span className="absolute -top-1 -right-1 h-3 w-3 bg-primary rounded-full ring-2 ring-background"></span>
-      )}
+    <div className="relative w-6 flex items-center justify-center mt-1">
+      {thread.unread ? (
+        <div className="relative">
+          <MessageCircle className="h-5 w-5 text-primary animate-pulse" />
+          <span className="absolute -top-1 -right-1 h-2 w-2 bg-primary rounded-full"></span>
+        </div>
+      ) : null}
     </div>
     <div className="flex-1 space-y-1">
       <div className="flex items-center justify-between">
