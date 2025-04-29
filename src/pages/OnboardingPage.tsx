@@ -24,12 +24,14 @@ export default function OnboardingPage() {
   const [organizationName, setOrganizationName] = useState('');
   const [programmingLevel, setProgrammingLevel] = useState<'beginner' | 'proficient' | 'advanced'>('beginner');
   const [subdomainAvailable, setSubdomainAvailable] = useState(true);
+
   useEffect(() => {
     // If onboarding is completed, redirect to dashboard
     if (isOnboardingCompleted()) {
       navigate('/dashboard');
     }
   }, [isOnboardingCompleted, navigate]);
+  
   const handleNameStep = async () => {
     if (!fullName.trim()) {
       toast({
@@ -59,11 +61,13 @@ export default function OnboardingPage() {
       setLoading(false);
     }
   };
+  
   const checkSubdomainAvailability = (subdomain: string) => {
     // Simulate checking availability - in a real app, this would be an API call
     // For this example, we'll say the subdomain is available
     setSubdomainAvailable(true);
   };
+  
   const handleOrganizationStep = async () => {
     if (!organizationName.trim()) {
       toast({
@@ -93,6 +97,7 @@ export default function OnboardingPage() {
       setLoading(false);
     }
   };
+  
   const handleExperienceStep = async () => {
     setLoading(true);
     try {
@@ -119,70 +124,73 @@ export default function OnboardingPage() {
       setLoading(false);
     }
   };
+
   const renderNameStep = () => {
     return <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-semibold">Hi, {user?.email?.split('@')[0]}</h2>
-          <p className="text-muted-foreground">What's your full name?</p>
+          <h2 className="text-2xl font-semibold font-mono">Hi, {user?.email?.split('@')[0]}</h2>
+          <p className="text-muted-foreground font-mono">What's your full name?</p>
         </div>
         
-        <Input type="text" placeholder="Grace Hopper" value={fullName} onChange={e => setFullName(e.target.value)} className="w-full" disabled={loading} />
+        <Input type="text" placeholder="Grace Hopper" value={fullName} onChange={e => setFullName(e.target.value)} className="w-full font-mono" disabled={loading} />
         
         <Button className="w-full" onClick={handleNameStep} disabled={loading || !fullName.trim()}>
           {loading ? "Saving..." : "Continue"}
         </Button>
       </div>;
   };
+
   const renderOrganizationStep = () => {
     return <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-semibold">What's the name of your organization?</h2>
+          <h2 className="text-2xl font-semibold font-mono">What's the name of your organization?</h2>
         </div>
         
-        <div className="flex items-center gap-0">
-          <div className="relative flex-grow">
-            <Input type="text" placeholder="myorganization" value={organizationName} onChange={e => {
-            setOrganizationName(e.target.value);
-            if (e.target.value.length > 2) {
-              checkSubdomainAvailability(e.target.value);
-            }
-          }} className="w-full rounded-r-none" disabled={loading} />
-            {organizationName.length > 2 && <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                {subdomainAvailable && <CheckCircle className="h-5 w-5 text-green-500" />}
-              </div>}
-          </div>
+        <div className="w-full">
+          <Input 
+            type="text" 
+            placeholder="My Organization" 
+            value={organizationName} 
+            onChange={e => {
+              setOrganizationName(e.target.value);
+              if (e.target.value.length > 2) {
+                checkSubdomainAvailability(e.target.value);
+              }
+            }} 
+            className="w-full font-mono" 
+            disabled={loading} 
+          />
+          <p className="text-xs text-muted-foreground mt-2 font-mono">Letters and numbers only</p>
           
+          {organizationName.length > 2 && subdomainAvailable && <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 text-sm rounded-md p-2 mt-2 flex items-center font-mono">
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Organization name available
+            </div>}
         </div>
-        
-        <p className="text-xs text-muted-foreground">Letters and numbers only</p>
-        
-        {organizationName.length > 2 && subdomainAvailable && <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 text-sm rounded-md p-2 flex items-center">
-            <CheckCircle className="h-4 w-4 mr-2" />
-            Subdomain available
-          </div>}
         
         <Button className="w-full" onClick={handleOrganizationStep} disabled={loading || !organizationName.trim() || !subdomainAvailable}>
           {loading ? "Saving..." : "Continue"}
         </Button>
       </div>;
   };
+
   const renderExperienceStep = () => {
     return <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-semibold">How familiar are you with programming?</h2>
-          <p className="text-muted-foreground">Your answer here will help us craft the best setup experience</p>
+          <h2 className="text-2xl font-semibold font-mono">How familiar are you with programming?</h2>
+          <p className="text-muted-foreground font-mono">Your answer here will help us craft the best setup experience</p>
         </div>
         
         <RadioGroup value={programmingLevel} onValueChange={(value: any) => setProgrammingLevel(value)} className="space-y-0">
-          <label className="flex items-center space-x-2 border rounded-t-md p-4 cursor-pointer hover:bg-accent">
+          <label className="flex items-center space-x-2 border rounded-t-md p-4 cursor-pointer hover:bg-accent font-mono">
             <RadioGroupItem value="advanced" id="advanced" />
             <span className="text-sm">Advanced, I love building apps</span>
           </label>
-          <label className="flex items-center space-x-2 border border-t-0 p-4 cursor-pointer hover:bg-accent">
+          <label className="flex items-center space-x-2 border border-t-0 p-4 cursor-pointer hover:bg-accent font-mono">
             <RadioGroupItem value="proficient" id="proficient" />
             <span className="text-sm">Proficient, I can hack something together</span>
           </label>
-          <label className="flex items-center space-x-2 border border-t-0 rounded-b-md p-4 cursor-pointer hover:bg-accent">
+          <label className="flex items-center space-x-2 border border-t-0 rounded-b-md p-4 cursor-pointer hover:bg-accent font-mono">
             <RadioGroupItem value="beginner" id="beginner" />
             <span className="text-sm">Beginner, I've never written code before</span>
           </label>
@@ -193,6 +201,7 @@ export default function OnboardingPage() {
         </Button>
       </div>;
   };
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 'name':
@@ -205,10 +214,11 @@ export default function OnboardingPage() {
         return null;
     }
   };
+
   return <BeamsBackground>
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 font-mono">
             {renderCurrentStep()}
           </CardContent>
         </Card>

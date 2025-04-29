@@ -23,6 +23,7 @@ export default {
         zag: ['Zag', 'sans-serif'],
         railway: ['Raleway', 'sans-serif'],
         warp: ['__WarpSans_3502a2', '__WarpSans_Fallback_3502a2', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",

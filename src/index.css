@@ -19,6 +19,9 @@
   font-style: italic;
 }
 
+/* This is where we would add Matter Mono if it was available as a web font */
+/* Since Matter Mono is a commercial font, we'll use system monospace fonts instead */
+
 @layer base {
   :root {
     --background: 251 30% 12%;
@@ -84,6 +87,7 @@
 }
 
 @layer components {
+  /* ... keep existing code (component classes) */
   .glass-effect {
     @apply bg-black/10 backdrop-blur-md border border-white/10;
   }
