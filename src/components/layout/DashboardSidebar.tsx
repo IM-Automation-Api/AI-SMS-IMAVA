@@ -66,7 +66,7 @@ export function DashboardSidebar() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton 
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F] hover:shadow-lg hover:shadow-purple-900/20 hover:scale-105 transition-all duration-300 ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-br from-[#1B1B33] to-[#0F0F0F] hover:scale-105 transition-all duration-300 ${
                       location.pathname === item.path 
                         ? 'bg-gradient-to-br from-[#2A2A45] to-[#1A1A1A] text-gray-100 shadow-lg shadow-purple-900/20' 
                         : ''
