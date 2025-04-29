@@ -17,7 +17,7 @@ export function DashboardSidebar() {
   };
   return <aside className={cn("sidebar-gradient h-screen flex flex-col transition-all duration-300 ease-in-out relative z-20", expanded ? "w-60" : "w-20")}>
       <div className="flex items-center justify-between p-4 pb-8">
-        <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30 rounded-sm">
+        <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30 rounded-full">
           <img src="/lovable-uploads/aa250a01-2f1b-4e50-a1c8-f4cd432b282a.png" alt="Company Logo" className="h-12 w-auto" />
         </div>
         
