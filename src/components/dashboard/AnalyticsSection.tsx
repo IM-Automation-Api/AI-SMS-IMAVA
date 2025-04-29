@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { UserSatisfactionCard } from './UserSatisfactionCard';
 import { ConversationLengthCard } from './ConversationLengthCard';
@@ -33,34 +34,60 @@ const messageActivityData = [{
   total: 15
 }];
 
-// Components for the new analytics cards
+// Components for the analytics cards
 export const TotalMessagesSentCard = () => {
-  const {
-    messages
-  } = useMessages(500);
+  const { messages } = useMessages(500);
   const outboundMessages = messages.filter(msg => msg.direction === 'outbound');
   const count = outboundMessages.length;
-  return <StatsCard title="Total Messages Sent" value={count.toLocaleString()} icon={<MessageCircle size={20} />} trendValue="12%" trend="up" />;
+  
+  return (
+    <StatsCard 
+      title="Total Messages Sent" 
+      value={count.toLocaleString()} 
+      icon={<MessageCircle size={20} />} 
+      trendValue="12%" 
+      trend="up"
+      className="neo-blur hover:scale-105 transition-all duration-300" 
+    />
+  );
 };
+
 export const TotalRepliesCard = () => {
-  const {
-    messages
-  } = useMessages(500);
+  const { messages } = useMessages(500);
   const inboundMessages = messages.filter(msg => msg.direction === 'inbound');
   const outboundMessages = messages.filter(msg => msg.direction === 'outbound');
   const count = inboundMessages.length;
   const responseRate = outboundMessages.length > 0 ? Math.round(inboundMessages.length / outboundMessages.length * 100) : 0;
-  return <StatsCard title="Total Replies Received" value={count.toLocaleString()} icon={<Reply size={20} />} trendValue={`${responseRate}% response rate`} />;
+  
+  return (
+    <StatsCard 
+      title="Total Replies Received" 
+      value={count.toLocaleString()} 
+      icon={<Reply size={20} />} 
+      trendValue={`${responseRate}% response rate`}
+      className="neo-blur hover:scale-105 transition-all duration-300"
+    />
+  );
 };
+
 export const ResponseRateCard = () => {
-  const {
-    messages
-  } = useMessages(500);
+  const { messages } = useMessages(500);
   const inboundMessages = messages.filter(msg => msg.direction === 'inbound');
   const outboundMessages = messages.filter(msg => msg.direction === 'outbound');
   const responseRate = outboundMessages.length > 0 ? Math.round(inboundMessages.length / outboundMessages.length * 100) : 0;
-  return <StatsCard title="Response Rate" value={`${responseRate}%`} icon={<Share2 size={20} />} trend="up" trendValue="3.2%" />;
+  
+  return (
+    <StatsCard 
+      title="Response Rate" 
+      value={`${responseRate}%`} 
+      icon={<Share2 size={20} />} 
+      trend="up" 
+      trendValue="3.2%"
+      className="neo-blur hover:scale-105 transition-all duration-300"
+    />
+  );
 };
+
 const conversionData = [{
   name: "Leads",
   value: 1000
@@ -71,34 +98,36 @@ const conversionData = [{
   name: "Appointments",
   value: 30
 }];
+
 export const ConversionFunnelCard = () => {
-  return <Card className="col-span-1 my-[3px] mx-[29px]">
+  return (
+    <Card className="neo-blur border-white/5 transition-all duration-300 rounded-xl shadow-glow">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium mx-0 py-0 my-[2px]">Conversion Funnel</CardTitle>
-        <BarChart2 className="h-4 w-4 text-muted-foreground" />
+        <CardTitle className="text-sm font-medium">Conversion Funnel</CardTitle>
+        <BarChart2 className="h-4 w-4 text-indigo-400" />
       </CardHeader>
       <CardContent>
         <div className="h-[180px]">
           <ChartContainer config={{
-          leads: {
-            theme: {
-              light: "#4f46e5",
-              dark: "#818cf8"
+            leads: {
+              theme: {
+                light: "#4f46e5",
+                dark: "#818cf8"
+              }
+            },
+            responses: {
+              theme: {
+                light: "#8b5cf6",
+                dark: "#a78bfa"
+              }
+            },
+            appointments: {
+              theme: {
+                light: "#d946ef",
+                dark: "#e879f9"
+              }
             }
-          },
-          responses: {
-            theme: {
-              light: "#8b5cf6",
-              dark: "#a78bfa"
-            }
-          },
-          appointments: {
-            theme: {
-              light: "#d946ef",
-              dark: "#e879f9"
-            }
-          }
-        }}>
+          }}>
             <BarChart data={conversionData}>
               <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
               <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={value => `${value}`} />
@@ -111,17 +140,30 @@ export const ConversionFunnelCard = () => {
           1,000 leads → 200 replies → 30 appointments (3%)
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
+
 export const AppointmentsBookedCard = () => {
-  return <StatsCard title="Appointments Booked" value="30" icon={<Calendar size={20} />} trend="up" trendValue="12%" />;
+  return (
+    <StatsCard 
+      title="Appointments Booked" 
+      value="30" 
+      icon={<Calendar size={20} />} 
+      trend="up" 
+      trendValue="12%"
+      className="neo-blur hover:scale-105 transition-all duration-300"
+    />
+  );
 };
+
 export const MessageActivityCard = () => {
-  return <Card className="col-span-1">
+  return (
+    <Card className="neo-blur border-white/5 transition-all duration-300 rounded-xl shadow-glow">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Message Activity</CardTitle>
       </CardHeader>
-      <CardContent className="my-[6px] px-0 py-[6px] mx-small">
+      <CardContent>
         <div className="h-[180px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={messageActivityData}>
@@ -132,11 +174,13 @@ export const MessageActivityCard = () => {
           </ResponsiveContainer>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
+
 export const AnalyticsSection = () => {
-  return <div className="space-y-6">
-      <h2 className="text-2xl font-semibold tracking-tight">Analytics</h2>
+  return (
+    <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-4">
         <TotalMessagesSentCard />
         <TotalRepliesCard />
@@ -147,5 +191,6 @@ export const AnalyticsSection = () => {
         <ConversionFunnelCard />
         <MessageActivityCard />
       </div>
-    </div>;
+    </div>
+  );
 };
