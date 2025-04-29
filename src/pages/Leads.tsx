@@ -1,25 +1,50 @@
+
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash2, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useLeads } from "@/hooks/useLeads";
 import { useLeadTags } from "@/hooks/useLeadTags";
 import { CSVImportDialog } from "@/components/leads/CSVImportDialog";
-import { format } from "date-fns";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { LeadDetails } from "@/components/leads/LeadDetails";
+import { LeadsTable } from "@/components/leads/LeadsTable";
+import { HeroCard } from "@/components/ui/hero-card";
+
+interface Lead {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  notes: string;
+  last_contacted: string | null;
+  tags: string[];
+  client_id: string;
+}
+
 export default function Leads() {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const {
     leads,
     isLoading
   } = useLeads();
-  const isMobile = useIsMobile();
+  
   const clientId = leads[0]?.client_id; // Assuming all leads belong to the same client
   const {
     tags
   } = useLeadTags(clientId);
-  return <div className="space-y-6">
+
+  const handleViewLead = (lead: Lead) => {
+    setSelectedLead(lead);
+  };
+
+  const handleCloseLead = () => {
+    setSelectedLead(null);
+  };
+
+  return (
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="font-warp text-gradient font-medium text-xl text-zinc-100">Leads</h1>
         <Button onClick={() => setImportDialogOpen(true)}>
@@ -28,67 +53,30 @@ export default function Leads() {
         </Button>
       </div>
       
-      <div className="rounded-2xl border shadow-lg bg-card overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="min-w-[150px]">Name</TableHead>
-              <TableHead className="min-w-[150px]">Contact</TableHead>
-              {!isMobile && <TableHead className="min-w-[120px]">Tags</TableHead>}
-              <TableHead className="min-w-[120px]">Last Contacted</TableHead>
-              <TableHead className="text-right min-w-[100px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {leads.map(lead => <TableRow key={lead.id}>
-                <TableCell>
-                  <div>
-                    <div className="font-medium">
-                      {lead.first_name} {lead.last_name}
-                    </div>
-                    {lead.notes && <div className="text-sm text-muted-foreground">{lead.notes}</div>}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div>
-                    <div className="text-sm">{lead.email}</div>
-                    <div className="text-sm text-muted-foreground">{lead.phone}</div>
-                  </div>
-                </TableCell>
-                {!isMobile && <TableCell>
-                    <div className="flex gap-1 flex-wrap">
-                      {(lead.tags as string[])?.map(tagId => {
-                  const tag = tags.find(t => t.id === tagId);
-                  if (!tag) return null;
-                  return <Badge key={tag.id} style={{
-                    backgroundColor: tag.color
-                  }} className="text-white">
-                            {tag.name}
-                          </Badge>;
-                })}
-                    </div>
-                  </TableCell>}
-                <TableCell>
-                  {lead.last_contacted ? format(new Date(lead.last_contacted), 'MMM d, yyyy') : <span className="text-muted-foreground">Never</span>}
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>)}
-          </TableBody>
-        </Table>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className={selectedLead ? "md:col-span-2" : "md:col-span-3"}>
+          <HeroCard className="overflow-x-auto">
+            <LeadsTable 
+              leads={leads}
+              isLoading={isLoading}
+              tags={tags}
+              onViewLead={handleViewLead}
+            />
+          </HeroCard>
+        </div>
+        
+        {selectedLead && (
+          <div className="md:col-span-1">
+            <LeadDetails 
+              lead={selectedLead}
+              tags={tags}
+              onClose={handleCloseLead}
+            />
+          </div>
+        )}
       </div>
 
       <CSVImportDialog open={importDialogOpen} onOpenChange={setImportDialogOpen} clientId={clientId || ''} />
-    </div>;
+    </div>
+  );
 }
