@@ -33,7 +33,14 @@ export function DashboardLayout({
             {isMobile && (
               <div className="sticky top-0 z-10 px-4 py-3 bg-black/20 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-warp tracking-[0.12em]">Im Ava</h2>
+                  <div className="flex items-center gap-2">
+                    <img 
+                      src="/lovable-uploads/5ea85af7-0a44-4b29-bc40-6d45118c8482.png" 
+                      alt="Company Logo" 
+                      className="h-6 w-auto"
+                    />
+                    <h2 className="text-xl font-warp">Im Ava</h2>
+                  </div>
                   <Drawer>
                     <DrawerTrigger asChild>
                       <Button variant="ghost" size="icon">

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -138,7 +137,14 @@ export default function LoginPage() {
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-3xl font-bold tracking-[0.12em] text-center font-mono">
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/lovable-uploads/5ea85af7-0a44-4b29-bc40-6d45118c8482.png" 
+                alt="Company Logo" 
+                className="h-14 w-auto"
+              />
+            </div>
+            <CardTitle className="text-3xl font-bold font-warp text-center">
               AI SMS AUTOMATION
             </CardTitle>
             <CardDescription className="text-center font-mono">
