@@ -29,7 +29,7 @@ export function TopNavigation() {
                       'Account';
 
   return (
-    <div className="h-16 px-4 backdrop-blur-md">
+    <div className="h-16 px-4">
       <div className="h-full flex items-center justify-end">
         <div className="flex items-center justify-end space-x-6">
           <Link 

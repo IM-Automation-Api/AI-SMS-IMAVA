@@ -1,89 +1,170 @@
-
-import { LayoutDashboard, Brain, MessageSquare, ClipboardList, Wrench, Phone, Settings, MessageSquarePlus } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-
-const menuItems = [
-  {
-    icon: LayoutDashboard,
-    label: 'Dashboard',
-    path: '/dashboard'
-  },
-  {
-    icon: Brain,
-    label: 'Assistants',
-    path: '/assistants'
-  },
-  {
-    icon: MessageSquare,
-    label: 'Messages',
-    path: '/messages'
-  },
-  {
-    icon: MessageSquarePlus,
-    label: 'SMS Campaign',
-    path: '/campaigns'
-  },
-  {
-    icon: ClipboardList,
-    label: 'Leads',
-    path: '/leads'
-  },
-  {
-    icon: Wrench,
-    label: 'Agent Builder',
-    path: '/agent-builder'
-  },
-  {
-    icon: Phone,
-    label: 'Phone Numbers',
-    path: '/phone-numbers'
-  },
-  {
-    icon: Settings,
-    label: 'Settings',
-    path: '/settings'
-  }
-];
+import React, { useState } from 'react';
+import { 
+  LayoutDashboard, 
+  Users, 
+  BarChart, 
+  Settings, 
+  HelpCircle, 
+  ChevronLeft, 
+  ChevronRight,
+  Plus,
+  MessagesSquare,
+  KanbanSquare,
+  File,
+  Calendar
+} from 'lucide-react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useSidebar } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 export function DashboardSidebar() {
-  const location = useLocation();
+  const { expanded, toggleSidebar } = useSidebar();
+  const [activeItem, setActiveItem] = useState<string>("dashboard");
+  const navigate = useNavigate();
+  
+  const handleItemClick = (item: string, route: string) => {
+    setActiveItem(item);
+    navigate(route);
+  };
   
   return (
-    <Sidebar className="font-warp glass-effect my-4 ml-4 rounded-2xl shadow-lg">
-      <SidebarHeader className="p-8">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
-            <div className="text-3xl font-bold text-white">IA</div>
-          </div>
-          <h2 className="text-[36px] font-warp tracking-[0.12em] text-white whitespace-nowrap logo-text">IM AVA</h2>
+    <aside className={cn(
+      "sidebar-gradient h-screen flex flex-col transition-all duration-300 ease-in-out relative z-20",
+      expanded ? "w-60" : "w-20"
+    )}>
+      <div className="flex items-center justify-between p-4 pb-8">
+        <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-purple-700/50 shadow-lg shadow-purple-900/30">
+          <img 
+            src="/lovable-uploads/aa250a01-2f1b-4e50-a1c8-f4cd432b282a.png" 
+            alt="Company Logo" 
+            className="h-12 w-auto"
+          />
         </div>
-      </SidebarHeader>
-      <SidebarContent className="px-4">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
-              {menuItems.map(item => (
-                <SidebarMenuItem key={item.path}>
-                  <SidebarMenuButton 
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 transition-all duration-300 hover:bg-white/10 hover:shadow-md hover:shadow-purple-500/20 hover:text-white hover:translate-x-1 ${
-                      location.pathname === item.path 
-                        ? 'bg-gradient-to-br from-purple-500/20 to-indigo-500/10 text-white shadow-lg shadow-purple-900/20 border-l-2 border-purple-500' 
-                        : ''
-                    }`} 
-                    asChild
-                  >
-                    <Link to={item.path}>
-                      <item.icon className="w-5 h-5" />
-                      <span className="font-medium">{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+        
+        <button 
+          onClick={toggleSidebar}
+          className="text-gray-400 hover:text-white transition-colors"
+        >
+          {expanded ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+        </button>
+      </div>
+
+      <nav className="flex-grow px-4 flex flex-col space-y-1">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <LayoutDashboard className="h-5 w-5" />
+          {expanded && <span>Dashboard</span>}
+        </NavLink>
+
+        <NavLink
+          to="/users"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <Users className="h-5 w-5" />
+          {expanded && <span>Users</span>}
+        </NavLink>
+
+        <NavLink
+          to="/analytics"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <BarChart className="h-5 w-5" />
+          {expanded && <span>Analytics</span>}
+        </NavLink>
+
+        <NavLink
+          to="/projects"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <KanbanSquare className="h-5 w-5" />
+          {expanded && <span>Projects</span>}
+        </NavLink>
+
+        <NavLink
+          to="/documents"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <File className="h-5 w-5" />
+          {expanded && <span>Documents</span>}
+        </NavLink>
+
+        <NavLink
+          to="/calendar"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <Calendar className="h-5 w-5" />
+          {expanded && <span>Calendar</span>}
+        </NavLink>
+
+        <NavLink
+          to="/messages"
+          className={({ isActive }) =>
+            cn(
+              "sidebar-item-base",
+              "sidebar-item-hover",
+              isActive && "sidebar-item-active"
+            )
+          }
+        >
+          <MessagesSquare className="h-5 w-5" />
+          {expanded && <span>Messages</span>}
+        </NavLink>
+      </nav>
+
+      <div className="mt-auto p-4">
+        <Link to="/new" className="sidebar-item-base sidebar-item-hover">
+          <Plus className="h-5 w-5" />
+          {expanded && <span>New Task</span>}
+        </Link>
+        
+        <Link to="/settings" className="sidebar-item-base sidebar-item-hover">
+          <Settings className="h-5 w-5" />
+          {expanded && <span>Settings</span>}
+        </Link>
+        
+        <Link to="/help" className="sidebar-item-base sidebar-item-hover">
+          <HelpCircle className="h-5 w-5" />
+          {expanded && <span>Help</span>}
+        </Link>
+      </div>
+    </aside>
   );
 }
