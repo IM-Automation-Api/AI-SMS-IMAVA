@@ -34,7 +34,7 @@ export function TopNavigation() {
         <div className="flex-1"></div>
         
         <div className="flex-1 flex justify-center items-center">
-          <h2 className="font-mono text-sm tracking-wider text-gray-200">IM AVA</h2>
+          <h2 className="font-mono text-sm tracking-wider bg-gradient-to-r from-indigo-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text drop-shadow-[0_0_5px_rgba(129,140,248,0.5)]">IM AVA</h2>
         </div>
         
         <div className="flex-1 flex items-center justify-end space-x-6">
