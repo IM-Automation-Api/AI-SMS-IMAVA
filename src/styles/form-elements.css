@@ -1,0 +1,50 @@
+
+@layer components {
+  /* Form elements */
+  .form-container {
+    @apply space-y-6;
+  }
+  
+  .form-group {
+    @apply space-y-2;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-white;
+  }
+  
+  .form-input-standard {
+    @apply w-full rounded-md border-white/10 bg-white/5 px-4 py-2;
+  }
+  
+  .form-error {
+    @apply text-red-500 text-sm mt-1;
+  }
+  
+  /* Input styling extensions */
+  .input-search {
+    @apply pl-9 premium-input;
+  }
+  
+  .input-with-icon {
+    @apply pl-9;
+  }
+  
+  /* Button variations */
+  .button-icon {
+    @apply p-2 rounded-full;
+  }
+  
+  .button-action {
+    @apply flex items-center gap-2 px-4 py-2 rounded-lg;
+  }
+  
+  /* Checkbox and radio extensions */
+  .checkbox-container {
+    @apply flex items-center gap-2;
+  }
+  
+  .radio-group {
+    @apply space-y-2;
+  }
+}

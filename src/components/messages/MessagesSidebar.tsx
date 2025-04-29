@@ -17,7 +17,7 @@ const sampleConversations = [
   {
     id: '2',
     lead_name: 'Bob Smith',
-    last_message: 'I've sent you the report',
+    last_message: "I've sent you the report",
     timestamp: new Date(Date.now() - 86400000).toISOString(), // Yesterday
     unread: false
   },

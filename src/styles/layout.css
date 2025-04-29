@@ -1,0 +1,50 @@
+
+@layer components {
+  /* Layout classes */
+  .layout-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .layout-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+  
+  .layout-flex-center {
+    @apply flex items-center justify-center;
+  }
+  
+  .layout-responsive-padding {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  /* Dashboard layout specific */
+  .dashboard-container {
+    @apply flex flex-col w-full h-[calc(100vh-5rem)];
+  }
+  
+  .dashboard-content {
+    @apply flex-1 overflow-auto p-4 md:p-6;
+  }
+  
+  /* Sidebar layout */
+  .sidebar-layout {
+    @apply flex h-full;
+  }
+  
+  .sidebar-container {
+    @apply w-72 h-full overflow-hidden;
+  }
+  
+  .content-container {
+    @apply flex-1 overflow-auto;
+  }
+  
+  /* Messages layout */
+  .messages-container {
+    @apply h-full flex flex-col;
+  }
+  
+  .messages-content {
+    @apply flex-1 overflow-y-auto;
+  }
+}

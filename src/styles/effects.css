@@ -1,0 +1,46 @@
+
+@layer components {
+  /* Background effects */
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-indigo-950 via-purple-950 to-black;
+  }
+  
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-950;
+  }
+  
+  /* Glassmorphism */
+  .glass-effect {
+    @apply bg-black/10 backdrop-blur-md border border-white/10;
+  }
+  
+  .glass-panel {
+    @apply bg-black/10 backdrop-blur-md border border-white/10 shadow-lg rounded-2xl;
+  }
+  
+  .glass-panel-hover {
+    @apply glass-panel transition-all duration-300 hover:bg-black/15;
+  }
+  
+  /* Text effects */
+  .text-gradient {
+    @apply bg-gradient-to-r from-white via-indigo-200 to-white bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-br from-indigo-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text;
+  }
+  
+  /* Shadow effects */
+  .shadow-soft {
+    @apply shadow-[0_4px_20px_-2px_rgba(0,0,0,0.3)];
+  }
+  
+  .shadow-glow {
+    @apply shadow-lg shadow-purple-900/20;
+  }
+  
+  .shadow-glow-hover {
+    @apply hover:shadow-md hover:shadow-purple-500/20 transition-all duration-300;
+  }
+}

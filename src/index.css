@@ -1,18 +1,11 @@
 
-/* Base styles and Tailwind directives */
+/* Main CSS entry point */
 @import './styles/base.css';
-
-/* Theme variables */
 @import './styles/theme-variables.css';
-
-/* Typography styles */
 @import './styles/typography.css';
-
-/* Component styles */
 @import './styles/components.css';
-
-/* Animations and effects */
 @import './styles/animations.css';
-
-/* UI utilities */
 @import './styles/ui-utilities.css';
+@import './styles/layout.css';
+@import './styles/form-elements.css';
+@import './styles/effects.css';
