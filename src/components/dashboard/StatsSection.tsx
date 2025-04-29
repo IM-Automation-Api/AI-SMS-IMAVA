@@ -13,7 +13,6 @@ export const StatsSection = memo(() => {
         icon={<MessageSquare className="h-4 w-4" />} 
         trend="up" 
         trendValue="12%" 
-        className="hover:scale-105 transition-all duration-300"
       />
       <StatsCard 
         title="Active Users" 
@@ -21,7 +20,6 @@ export const StatsSection = memo(() => {
         icon={<Users className="h-4 w-4" />} 
         trend="up" 
         trendValue="8%" 
-        className="hover:scale-105 transition-all duration-300"
       />
       <StatsCard 
         title="Success Rate" 
@@ -29,7 +27,6 @@ export const StatsSection = memo(() => {
         icon={<TrendingUp className="h-4 w-4" />} 
         trend="up" 
         trendValue="2%" 
-        className="hover:scale-105 transition-all duration-300"
       />
       <StatsCard 
         title="Avg. Response Time" 
@@ -37,7 +34,6 @@ export const StatsSection = memo(() => {
         icon={<GaugeCircle className="h-4 w-4" />} 
         trend="down" 
         trendValue="3%" 
-        className="hover:scale-105 transition-all duration-300"
       />
     </div>
   );

@@ -43,9 +43,4 @@
   .shadow-glow-hover {
     @apply hover:shadow-md hover:shadow-purple-500/20 transition-all duration-300;
   }
-  
-  /* Neo brutalism style */
-  .neo-blur {
-    @apply backdrop-blur-lg bg-black/30 border border-white/10;
-  }
 }

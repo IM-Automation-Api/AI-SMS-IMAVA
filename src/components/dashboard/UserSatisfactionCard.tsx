@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const UserSatisfactionCard = () => {
   return (
-    <Card className="neo-blur border-white/5 transition-all duration-300 rounded-xl shadow-glow md:col-span-2">
+    <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow md:col-span-2">
       <CardHeader>
-        <CardTitle className="text-gradient-primary">User Satisfaction</CardTitle>
+        <CardTitle>User Satisfaction</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex justify-center items-center h-full">
@@ -24,7 +24,7 @@ export const UserSatisfactionCard = () => {
                 cy="50" 
               />
             </svg>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-gradient-primary">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-primary">
               90%
             </div>
           </div>

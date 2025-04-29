@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 
 export const ConversationLengthCard = () => {
   return (
-    <Card className="neo-blur border-white/5 transition-all duration-300 rounded-xl shadow-glow">
+    <Card className="border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-card hover:shadow-hover transition-shadow">
       <CardHeader>
-        <CardTitle className="text-gradient-primary">Conversation Length</CardTitle>
+        <CardTitle>Conversation Length</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
