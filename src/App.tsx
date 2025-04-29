@@ -29,11 +29,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!user) {
+    console.log("Protected route: No user, redirecting to login");
     return <Navigate to="/" replace />;
   }
   
   // If user hasn't completed onboarding, redirect them
   if (!isOnboardingCompleted()) {
+    console.log("Protected route: Onboarding not completed, redirecting to onboarding");
     return <Navigate to="/onboarding" replace />;
   }
   
@@ -41,14 +43,21 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, isOnboardingCompleted } = useAuth();
   
   if (loading) {
     return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
   }
   
   if (!user) {
+    console.log("Onboarding route: No user, redirecting to login");
     return <Navigate to="/" replace />;
+  }
+  
+  // If user has completed onboarding, redirect to dashboard
+  if (isOnboardingCompleted()) {
+    console.log("Onboarding route: Onboarding already completed, redirecting to dashboard");
+    return <Navigate to="/dashboard" replace />;
   }
   
   return <>{children}</>;

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/supabase/auth/auth-context";
@@ -8,7 +9,9 @@ import { toast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BeamsBackground } from "@/components/ui/beams-background";
 import { CheckCircle } from "lucide-react";
+
 type OnboardingStep = 'name' | 'organization' | 'experience';
+
 export default function OnboardingPage() {
   const {
     user,
@@ -18,6 +21,7 @@ export default function OnboardingPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>('name');
   const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   // Form states
   const [fullName, setFullName] = useState('');
@@ -25,11 +29,24 @@ export default function OnboardingPage() {
   const [programmingLevel, setProgrammingLevel] = useState<'beginner' | 'proficient' | 'advanced'>('beginner');
   const [subdomainAvailable, setSubdomainAvailable] = useState(true);
 
+  // Check onboarding status only once when component mounts
   useEffect(() => {
-    // If onboarding is completed, redirect to dashboard
-    if (isOnboardingCompleted()) {
-      navigate('/dashboard');
-    }
+    console.log("Onboarding: Checking if onboarding is completed");
+    
+    const checkOnboardingStatus = () => {
+      const completed = isOnboardingCompleted();
+      console.log("Onboarding: Onboarding completed status:", completed);
+      
+      if (completed) {
+        console.log("Onboarding: Redirecting to dashboard");
+        setRedirecting(true);
+        navigate('/dashboard', { replace: true });
+      }
+    };
+    
+    // Small delay to ensure auth context is fully initialized
+    const timer = setTimeout(checkOnboardingStatus, 300);
+    return () => clearTimeout(timer);
   }, [isOnboardingCompleted, navigate]);
   
   const handleNameStep = async () => {
@@ -43,15 +60,17 @@ export default function OnboardingPage() {
     }
     setLoading(true);
     try {
-      const {
-        error
-      } = await updateUserProfile({
-        full_name: fullName
-      });
-      if (error) throw error;
+      const { error } = await updateUserProfile({ full_name: fullName });
+      
+      if (error) {
+        console.error("Onboarding: Failed to update name:", error);
+        throw error;
+      }
+      
+      console.log("Onboarding: Name step completed successfully");
       setCurrentStep('organization');
     } catch (error) {
-      console.error("Failed to update name:", error);
+      console.error("Onboarding: Failed to update name:", error);
       toast({
         title: "Update failed",
         description: "Could not save your name. Please try again.",
@@ -64,7 +83,6 @@ export default function OnboardingPage() {
   
   const checkSubdomainAvailability = (subdomain: string) => {
     // Simulate checking availability - in a real app, this would be an API call
-    // For this example, we'll say the subdomain is available
     setSubdomainAvailable(true);
   };
   
@@ -79,15 +97,17 @@ export default function OnboardingPage() {
     }
     setLoading(true);
     try {
-      const {
-        error
-      } = await updateUserProfile({
-        organization_name: organizationName
-      });
-      if (error) throw error;
+      const { error } = await updateUserProfile({ organization_name: organizationName });
+      
+      if (error) {
+        console.error("Onboarding: Failed to update organization:", error);
+        throw error;
+      }
+      
+      console.log("Onboarding: Organization step completed successfully");
       setCurrentStep('experience');
     } catch (error) {
-      console.error("Failed to update organization:", error);
+      console.error("Onboarding: Failed to update organization:", error);
       toast({
         title: "Update failed",
         description: "Could not save your organization. Please try again.",
@@ -101,25 +121,35 @@ export default function OnboardingPage() {
   const handleExperienceStep = async () => {
     setLoading(true);
     try {
-      const {
-        error
-      } = await updateUserProfile({
+      console.log("Onboarding: Completing final step with programming level:", programmingLevel);
+      const { error } = await updateUserProfile({
         programming_level: programmingLevel,
         onboarding_completed: true
       });
-      if (error) throw error;
+      
+      if (error) {
+        console.error("Onboarding: Failed to update experience:", error);
+        throw error;
+      }
+      
+      console.log("Onboarding: Onboarding completed, redirecting to dashboard");
       toast({
         title: "Setup complete!",
         description: "Welcome to the platform."
       });
-      navigate('/dashboard');
+      
+      // Set redirecting state to prevent UI flicker
+      setRedirecting(true);
+      // Use replace to prevent back button returning to onboarding
+      navigate('/dashboard', { replace: true });
     } catch (error) {
-      console.error("Failed to update experience:", error);
+      console.error("Onboarding: Failed to update experience:", error);
       toast({
         title: "Update failed",
         description: "Could not save your experience level. Please try again.",
         variant: "destructive"
       });
+      setRedirecting(false);
     } finally {
       setLoading(false);
     }
@@ -214,6 +244,15 @@ export default function OnboardingPage() {
         return null;
     }
   };
+  
+  // Don't render if redirecting to prevent flickering
+  if (redirecting) {
+    return <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="text-center">
+        <p className="text-xl font-mono">Redirecting to dashboard...</p>
+      </div>
+    </div>;
+  }
 
   return <BeamsBackground>
       <div className="flex min-h-screen items-center justify-center p-4">

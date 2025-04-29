@@ -64,9 +64,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Function to safely fetch user profile outside of auth state change
   const loadUserProfile = async (userId: string) => {
+    console.log("Auth context: Loading user profile for:", userId);
     const { profile, error } = await fetchUserProfile(userId);
     
     if (profile && !error) {
+      console.log("Auth context: Profile loaded successfully:", profile);
       setUser(prev => {
         if (!prev) return null;
         return {
@@ -76,6 +78,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       
       return profile;
+    } else {
+      console.error("Auth context: Failed to load profile:", error);
     }
     
     return null;
@@ -86,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     // Set up auth state listener first to avoid missing events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, currentSession) => {
+      async (event, currentSession) => {
         console.log("Auth context: Auth state changed:", event, currentSession?.user?.id);
         
         // Update session state immediately
@@ -100,19 +104,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(currentUser);
           
           // Fetch profile separately to avoid blocking the auth state change
-          setTimeout(() => {
-            loadUserProfile(currentUser.id).then(profile => {
+          setTimeout(async () => {
+            try {
+              const profile = await loadUserProfile(currentUser.id);
               console.log("Auth context: Profile loaded:", profile ? "success" : "not found");
               
               if (profile?.onboarding_completed) {
                 console.log("Auth context: User has completed onboarding, redirecting to dashboard");
-                navigate('/dashboard');
+                navigate('/dashboard', { replace: true });
               } else {
                 console.log("Auth context: User needs onboarding, redirecting to onboarding");
-                navigate('/onboarding');
+                navigate('/onboarding', { replace: true });
               }
-            });
-          }, 0);
+            } catch (error) {
+              console.error("Auth context: Error loading user profile:", error);
+            }
+          }, 300);
         } else if (event === "SIGNED_OUT") {
           console.log("Auth context: User signed out");
           setUser(null);
@@ -137,14 +144,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(currentUser);
           
           // Fetch profile separately
-          const profile = await loadUserProfile(currentUser.id);
-          console.log("Auth context: Profile for existing session:", profile ? "loaded" : "not found");
+          try {
+            const profile = await loadUserProfile(currentUser.id);
+            console.log("Auth context: Profile for existing session:", profile ? "loaded" : "not found");
+          } catch (error) {
+            console.error("Auth context: Error loading existing user profile:", error);
+          } finally {
+            setLoading(false);
+          }
         } else {
           console.log("Auth context: No existing user session found");
+          setLoading(false);
         }
       } catch (error) {
         console.error("Auth context: Error checking existing session:", error);
-      } finally {
         setLoading(false);
       }
     };
@@ -159,7 +172,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     console.log("Auth context: Signing in with email:", email);
-    const { error } = await signInWithEmail(email, password);
+    const { user: signedInUser, session: newSession, error } = await signInWithEmail(email, password);
+    
+    if (!error && signedInUser) {
+      console.log("Auth context: Sign-in successful, setting session");
+      setSession(newSession);
+      setUser(signedInUser as ExtendedUser);
+    } else {
+      console.error("Auth context: Sign-in failed:", error);
+    }
+    
     return { error };
   };
 
@@ -173,7 +195,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log("Auth context: Signing out user");
     await signOutUser();
     setUser(null);
-    navigate('/');
+    setSession(null);
+    navigate('/', { replace: true });
   };
 
   const updateUserProfile = async (profile: Partial<UserProfile>) => {
@@ -182,7 +205,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: { message: "No user logged in" } };
     }
     
-    console.log("Auth context: Updating user profile");
+    console.log("Auth context: Updating user profile", profile);
     const { error } = await updateProfile(user.id, profile);
     
     if (!error) {
@@ -199,6 +222,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         };
       });
+    } else {
+      console.error("Auth context: Failed to update user profile:", error);
     }
       
     return { error };
