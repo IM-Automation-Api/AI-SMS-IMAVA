@@ -30,7 +30,8 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
     type: message.direction === 'inbound' ? 'user' as MessageType : 'bot' as MessageType,
     timestamp: new Date(message.created_at || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     name: message.direction === 'inbound' ? undefined : "Assistant",
-    status: message.status as "sent" | "delivered" | "read" | undefined
+    status: message.status as "sent" | "delivered" | "read" | undefined,
+    unread: message.direction === 'inbound' && message.status !== 'read'
   }));
 
   // Loading or empty state
@@ -70,6 +71,7 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
               timestamp={message.timestamp}
               name={message.name}
               status={message.status}
+              unread={message.unread}
             />
           ))}
         </>
