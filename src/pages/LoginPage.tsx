@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/lib/supabase/auth/auth-context";
@@ -25,6 +25,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [submitAttempts, setSubmitAttempts] = useState(0);
 
   // Pre-initialize form with resolver and default values
   const form = useForm<FormData>({
@@ -35,20 +36,36 @@ export default function LoginPage() {
     },
   });
 
+  // This effect will log diagnostic information when login errors occur
+  useEffect(() => {
+    if (loginError) {
+      console.log("LoginPage: Login error detected:", loginError);
+      console.log("LoginPage: Form values (email only):", form.getValues("email"));
+      console.log("LoginPage: Submit attempts:", submitAttempts);
+    }
+  }, [loginError, submitAttempts, form]);
+
   const onSubmit = async (data: FormData) => {
-    if (isLoading) return; // Prevent multiple submissions
+    if (isLoading) {
+      console.log("LoginPage: Submit blocked - already loading");
+      return;
+    }
     
     // Reset any previous errors
     setLoginError(null);
     setIsLoading(true);
+    setSubmitAttempts(prev => prev + 1);
     
-    console.log("Login attempt with email:", data.email);
+    console.log(`LoginPage: Login attempt ${submitAttempts + 1} with email:`, data.email);
+    console.log("LoginPage: Browser info:", navigator.userAgent);
     
     try {
+      console.time("LoginPage: signIn call duration");
       const { error } = await signIn(data.email, data.password);
+      console.timeEnd("LoginPage: signIn call duration");
 
       if (error) {
-        console.error("Login error from Supabase:", error);
+        console.error("LoginPage: Login error:", error);
         setLoginError(error.message || "Invalid email or password");
         toast({
           title: "Login failed",
@@ -56,7 +73,7 @@ export default function LoginPage() {
           variant: "destructive",
         });
       } else {
-        console.log("Login successful");
+        console.log("LoginPage: Login successful");
         toast({
           title: "Login successful",
           description: "Welcome back!",
@@ -64,7 +81,7 @@ export default function LoginPage() {
         // Auth context handles the redirect
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("LoginPage: Unexpected error:", error);
       setLoginError("An unexpected error occurred. Please try again.");
       toast({
         title: "Login failed",
@@ -77,21 +94,35 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
-    if (isGoogleLoading) return; // Prevent multiple submissions
+    if (isGoogleLoading) {
+      console.log("LoginPage: Google sign-in blocked - already in progress");
+      return;
+    }
+    
     setIsGoogleLoading(true);
+    setLoginError(null);
     
     try {
+      console.log("LoginPage: Initiating Google sign in");
+      console.time("LoginPage: Google sign-in duration");
       const { error } = await signInWithGoogle();
+      console.timeEnd("LoginPage: Google sign-in duration");
+      
       if (error) {
-        console.error("Google sign in error:", error);
+        console.error("LoginPage: Google sign in error:", error);
+        setLoginError(error.message || "Could not sign in with Google");
         toast({
           title: "Google Sign in failed",
           description: error.message || "Could not sign in with Google",
           variant: "destructive",
         });
+      } else {
+        // Google auth will redirect, so we don't need to do anything here
+        console.log("LoginPage: Google sign in initiated (redirecting)");
       }
     } catch (error) {
-      console.error("Google sign in error:", error);
+      console.error("LoginPage: Unexpected Google sign in error:", error);
+      setLoginError("An unexpected error occurred with Google sign in");
       toast({
         title: "Google Sign in failed",
         description: "Something went wrong. Please try again.",
@@ -107,8 +138,12 @@ export default function LoginPage() {
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-3xl font-bold tracking-[0.12em] text-center">AI SMS AUTOMATION</CardTitle>
-            <CardDescription className="text-center">Welcome back. Log in to your account below.</CardDescription>
+            <CardTitle className="text-3xl font-bold tracking-[0.12em] text-center font-mono">
+              AI SMS AUTOMATION
+            </CardTitle>
+            <CardDescription className="text-center font-mono">
+              Welcome back. Log in to your account below.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
@@ -116,7 +151,7 @@ export default function LoginPage() {
               type="button" 
               disabled={isGoogleLoading} 
               onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-2"
+              className="w-full flex items-center justify-center gap-2 font-mono"
             >
               {isGoogleLoading ? (
                 "Signing in..."
@@ -136,13 +171,13 @@ export default function LoginPage() {
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t"></span>
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
+              <div className="relative flex justify-center text-xs uppercase font-mono">
                 <span className="bg-card/70 px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
             
             {loginError && (
-              <div className="p-3 text-sm bg-red-50 text-red-600 rounded-md">
+              <div className="p-3 text-sm bg-red-50 text-red-600 rounded-md font-mono">
                 {loginError}
               </div>
             )}
@@ -154,16 +189,17 @@ export default function LoginPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="font-mono">Email</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="name@company.com" 
                           type="email" 
                           {...field} 
                           autoComplete="email"
+                          className="font-mono"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-mono" />
                     </FormItem>
                   )}
                 />
@@ -173,34 +209,40 @@ export default function LoginPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="font-mono">Password</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="••••••••" 
                           type="password" 
                           {...field} 
                           autoComplete="current-password"
+                          className="font-mono"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-mono" />
                     </FormItem>
                   )}
                 />
                 
                 <div className="flex items-center justify-end">
-                  <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                  <Link to="/forgot-password" className="text-sm text-primary hover:underline font-mono">
                     Reset your password
                   </Link>
                 </div>
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button 
+                  type="submit" 
+                  className="w-full font-mono" 
+                  disabled={isLoading}
+                  data-testid="login-button"
+                >
                   {isLoading ? "Signing in..." : "Sign in"}
                 </Button>
               </form>
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <div className="text-center text-sm">
+            <div className="text-center text-sm font-mono">
               Need to create a new organization?{" "}
               <Link to="/signup" className="text-primary hover:underline">
                 Sign up

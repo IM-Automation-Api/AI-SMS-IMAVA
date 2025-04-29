@@ -1,7 +1,18 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import {
+  signInWithEmail,
+  signInWithGoogle,
+  signUpWithEmail,
+  signOutUser,
+  resetPassword,
+  fetchUserProfile,
+  updateUserProfile as updateProfile,
+  AuthError
+} from "./auth-utils";
 
 interface UserProfile {
   id: string;
@@ -23,12 +34,12 @@ interface AuthContextType {
   user: ExtendedUser | null;
   session: Session | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithGoogle: () => Promise<{ error: any }>;
-  signUp: (email: string, password: string, userData: { company_name?: string; phone?: string }) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
+  signUp: (email: string, password: string, userData: { company_name?: string; phone?: string }) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: any }>;
-  updateUserProfile: (profile: Partial<UserProfile>) => Promise<{ error: any }>;
+  resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  updateUserProfile: (profile: Partial<UserProfile>) => Promise<{ error: AuthError | null }>;
   isOnboardingCompleted: () => boolean;
 }
 
@@ -51,57 +62,59 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchUserProfile = async (userId: string) => {
-    console.log("Fetching user profile for:", userId);
-    const { data, error } = await supabase
-      .from("user_profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
+  // Function to safely fetch user profile outside of auth state change
+  const loadUserProfile = async (userId: string) => {
+    const { profile, error } = await fetchUserProfile(userId);
+    
+    if (profile && !error) {
+      setUser(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          profile
+        };
+      });
       
-    if (error) {
-      console.error("Error fetching user profile:", error);
-      return null;
+      return profile;
     }
     
-    console.log("User profile data:", data);
-    return data as UserProfile;
+    return null;
   };
-  
+
   useEffect(() => {
-    console.log("Setting up auth state listener");
+    console.log("Auth context: Setting up auth state listener");
     
-    // Set up auth state listener first
+    // Set up auth state listener first to avoid missing events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log("Auth state changed:", event, session?.user?.id);
-        setSession(session);
+      (event, currentSession) => {
+        console.log("Auth context: Auth state changed:", event, currentSession?.user?.id);
         
-        if (event === "SIGNED_IN" && session) {
-          const userData = session.user as ExtendedUser;
-          console.log("User signed in:", userData.id);
+        // Update session state immediately
+        setSession(currentSession);
+        
+        if (event === "SIGNED_IN" && currentSession) {
+          const currentUser = currentSession.user as ExtendedUser;
+          console.log("Auth context: User signed in:", currentUser.id);
           
-          // Fetch user profile
-          const profile = await fetchUserProfile(userData.id);
-          if (profile) {
-            userData.profile = profile;
-            console.log("User profile fetched:", profile);
-          } else {
-            console.log("No user profile found or error fetching profile");
-          }
+          // Set user immediately without profile
+          setUser(currentUser);
           
-          setUser(userData);
-          
-          // Check if user needs onboarding
-          if (profile?.onboarding_completed) {
-            console.log("User has completed onboarding, redirecting to dashboard");
-            navigate('/dashboard');
-          } else {
-            console.log("User needs onboarding, redirecting to onboarding");
-            navigate('/onboarding');
-          }
+          // Fetch profile separately to avoid blocking the auth state change
+          setTimeout(() => {
+            loadUserProfile(currentUser.id).then(profile => {
+              console.log("Auth context: Profile loaded:", profile ? "success" : "not found");
+              
+              if (profile?.onboarding_completed) {
+                console.log("Auth context: User has completed onboarding, redirecting to dashboard");
+                navigate('/dashboard');
+              } else {
+                console.log("Auth context: User needs onboarding, redirecting to onboarding");
+                navigate('/onboarding');
+              }
+            });
+          }, 0);
         } else if (event === "SIGNED_OUT") {
-          console.log("User signed out");
+          console.log("Auth context: User signed out");
           setUser(null);
         }
       }
@@ -109,156 +122,71 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Then check for existing session
     const checkExistingSession = async () => {
-      console.log("Checking for existing session");
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log("Existing session:", session ? "found" : "not found");
-      
-      setSession(session);
-      
-      if (session?.user) {
-        const userData = session.user as ExtendedUser;
-        console.log("Found existing session for user:", userData.id);
+      console.log("Auth context: Checking for existing session");
+      try {
+        const { data: { session: existingSession } } = await supabase.auth.getSession();
+        console.log("Auth context: Existing session:", existingSession ? "found" : "not found");
         
-        // Fetch user profile
-        const profile = await fetchUserProfile(userData.id);
-        if (profile) {
-          userData.profile = profile;
-          console.log("User profile fetched for existing session:", profile);
+        setSession(existingSession);
+        
+        if (existingSession?.user) {
+          const currentUser = existingSession.user as ExtendedUser;
+          console.log("Auth context: Found existing session for user:", currentUser.id);
+          
+          // Set user immediately without profile
+          setUser(currentUser);
+          
+          // Fetch profile separately
+          const profile = await loadUserProfile(currentUser.id);
+          console.log("Auth context: Profile for existing session:", profile ? "loaded" : "not found");
         } else {
-          console.log("No user profile found for existing session");
+          console.log("Auth context: No existing user session found");
         }
-        
-        setUser(userData);
-      } else {
-        console.log("No existing user session found");
+      } catch (error) {
+        console.error("Auth context: Error checking existing session:", error);
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
     
     checkExistingSession();
 
     return () => {
-      console.log("Cleaning up auth state listener");
+      console.log("Auth context: Cleaning up auth state listener");
       subscription.unsubscribe();
     };
   }, [navigate]);
 
   const signIn = async (email: string, password: string) => {
-    console.log("Signing in with email:", email);
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error("Sign in error:", error);
-      } else {
-        console.log("Sign in successful:", data?.user?.id);
-      }
-
-      return { error };
-    } catch (e) {
-      console.error("Unexpected error during sign in:", e);
-      return { error: e };
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    console.log("Signing in with Google");
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/onboarding`,
-        },
-      });
-
-      if (error) {
-        console.error("Google sign in error:", error);
-      } else {
-        console.log("Google sign in initiated:", data);
-      }
-
-      return { error };
-    } catch (e) {
-      console.error("Unexpected error during Google sign in:", e);
-      return { error: e };
-    }
+    console.log("Auth context: Signing in with email:", email);
+    const { error } = await signInWithEmail(email, password);
+    return { error };
   };
 
   const signUp = async (email: string, password: string, userData: { company_name?: string; phone?: string }) => {
-    const { error, data } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: userData,
-      },
-    });
-
-    if (!error && data?.user) {
-      // Create user profile in users table
-      const { error: profileError } = await supabase
-        .from("users")
-        .insert([
-          {
-            id: data.user.id,
-            email,
-            company_name: userData.company_name,
-            phone: userData.phone,
-          },
-        ]);
-
-      // Also initialize user_profiles table for onboarding
-      const { error: onboardingError } = await supabase
-        .from("user_profiles")
-        .insert([{
-          id: data.user.id,
-          onboarding_completed: false,
-        }]);
-
-      if (profileError) {
-        console.error("Error creating user profile:", profileError);
-        return { error: profileError };
-      }
-
-      if (onboardingError) {
-        console.error("Error initializing onboarding:", onboardingError);
-      }
-    }
-
+    console.log("Auth context: Signing up with email:", email);
+    const { error } = await signUpWithEmail(email, password, userData);
     return { error };
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    console.log("Auth context: Signing out user");
+    await signOutUser();
     setUser(null);
     navigate('/');
   };
 
-  const resetPassword = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-
-    return { error };
-  };
-  
   const updateUserProfile = async (profile: Partial<UserProfile>) => {
-    if (!user) return { error: new Error("No user logged in") };
+    if (!user) {
+      console.error("Auth context: Cannot update profile - no user logged in");
+      return { error: { message: "No user logged in" } };
+    }
     
-    console.log("Updating user profile:", profile);
+    console.log("Auth context: Updating user profile");
+    const { error } = await updateProfile(user.id, profile);
     
-    const { error } = await supabase
-      .from("user_profiles")
-      .upsert({
-        id: user.id,
-        ...profile,
-      });
-      
     if (!error) {
-      console.log("User profile updated successfully");
+      console.log("Auth context: User profile updated successfully");
       
       // Update local user state
       setUser(prev => {
@@ -271,8 +199,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         };
       });
-    } else {
-      console.error("Error updating user profile:", error);
     }
       
     return { error };
@@ -280,7 +206,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   const isOnboardingCompleted = () => {
     const completed = !!user?.profile?.onboarding_completed;
-    console.log("Checking if onboarding is completed:", completed);
+    console.log("Auth context: Checking if onboarding is completed:", completed);
     return completed;
   };
 
