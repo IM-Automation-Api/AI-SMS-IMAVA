@@ -33,13 +33,13 @@ export function DashboardLayout({
             {isMobile && (
               <div className="sticky top-0 z-10 px-4 py-3 bg-black/20 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <img 
-                      src="/lovable-uploads/5ea85af7-0a44-4b29-bc40-6d45118c8482.png" 
+                      src="/lovable-uploads/aa250a01-2f1b-4e50-a1c8-f4cd432b282a.png" 
                       alt="Company Logo" 
-                      className="h-6 w-auto"
+                      className="h-10 w-auto"
                     />
-                    <h2 className="text-xl font-warp">Im Ava</h2>
+                    <h2 className="text-xl font-warp tracking-normal">IM AVA</h2>
                   </div>
                   <Drawer>
                     <DrawerTrigger asChild>

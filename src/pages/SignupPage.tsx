@@ -93,12 +93,12 @@ export default function SignupPage() {
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-4">
               <img 
-                src="/lovable-uploads/5ea85af7-0a44-4b29-bc40-6d45118c8482.png" 
+                src="/lovable-uploads/aa250a01-2f1b-4e50-a1c8-f4cd432b282a.png" 
                 alt="Company Logo" 
                 className="h-14 w-auto"
               />
             </div>
-            <CardTitle className="text-3xl font-bold font-warp text-center">AI SMS AUTOMATION</CardTitle>
+            <CardTitle className="text-3xl font-bold font-warp tracking-normal text-center">IM AVA</CardTitle>
             <CardDescription className="text-center">Create a new organization to get started</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

@@ -30,16 +30,7 @@ export function TopNavigation() {
 
   return (
     <div className="h-16 px-4 backdrop-blur-md">
-      <div className="h-full flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img 
-            src="/lovable-uploads/5ea85af7-0a44-4b29-bc40-6d45118c8482.png" 
-            alt="Company Logo" 
-            className="h-8 w-auto"
-          />
-          <span className="font-warp text-xl">Im Ava</span>
-        </div>
-        
+      <div className="h-full flex items-center justify-end">
         <div className="flex items-center justify-end space-x-6">
           <Link 
             to="/dashboard" 
