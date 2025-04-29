@@ -4,7 +4,7 @@ import { CommunicationsLogCard } from "@/components/dashboard/CommunicationsLogC
 import { AnalyticsSection } from "@/components/dashboard/AnalyticsSection";
 export default function Dashboard() {
   return <div className="space-y-8 fade-in">
-      <h1 className="font-mono tracking-font-warp text-gray-200">
+      <h1 className="font-warp flex items-center text-zinc-200 font-normal text-2xl">
         Dashboard
       </h1>
       

@@ -133,7 +133,7 @@ export const MessageActivityCard = () => {
 };
 export const AnalyticsSection = () => {
   return <div className="space-y-6">
-      <h2 className="font-warp text-xl text-gray-300 font-semibold">Analytics</h2>
+      <h2 className="font-warp flex items-center text-zinc-200 font-normal text-xl">Analytics</h2>
       <div className="grid gap-4 md:grid-cols-4">
         <TotalMessagesSentCard />
         <TotalRepliesCard />

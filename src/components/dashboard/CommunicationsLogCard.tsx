@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ThreadSkeleton } from './ThreadSkeleton';
 import { ConversationThread, ConversationThreadProps } from './ConversationThread';
-
 export const CommunicationsLogCard = () => {
   const [conversationThreads, setConversationThreads] = useState<ConversationThreadProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +14,6 @@ export const CommunicationsLogCard = () => {
   const {
     toast
   } = useToast();
-  
   useEffect(() => {
     // Immediately start fetching data
     fetchConversationThreads();
@@ -93,10 +91,9 @@ export const CommunicationsLogCard = () => {
     }
   };
   const resetNewThreadCount = () => setNewThreadCount(0);
-  
   return <Card className="modern-glass-card">
       <CardHeader className="pb-2 flex flex-row items-center justify-between p-0 mb-4">
-        <CardTitle className="font-warp text-xl font-medium text-white flex items-center">
+        <CardTitle className="font-warp text-white flex items-center font-medium text-lg">
           <MessageCircle className="mr-2 h-5 w-5 text-purple-500" />
           Communications Log
         </CardTitle>
