@@ -93,7 +93,7 @@ export const CommunicationsLogCard = () => {
   const resetNewThreadCount = () => setNewThreadCount(0);
   return <Card className="modern-glass-card">
       <CardHeader className="pb-2 flex flex-row items-center justify-between p-0 mb-4">
-        <CardTitle className="font-warp text-white flex items-center font-medium text-lg">
+        <CardTitle className="font-warp text-white flex items-center font-medium text-base">
           <MessageCircle className="mr-2 h-5 w-5 text-purple-500" />
           Communications Log
         </CardTitle>
