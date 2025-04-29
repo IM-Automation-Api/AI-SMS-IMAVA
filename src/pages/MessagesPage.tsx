@@ -1,7 +1,9 @@
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { MessagesLayout } from "@/components/messages/MessagesLayout";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 
 const MessagesLoadingSkeleton = () => (
   <div className="w-full h-full flex glass-effect rounded-2xl shadow-lg mx-auto my-4 max-w-7xl">
@@ -28,6 +30,19 @@ const MessagesLoadingSkeleton = () => (
 );
 
 export default function MessagesPage() {
+  const isMobile = useIsMobile();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const conversationId = searchParams.get('id');
+  
+  // If on mobile and not viewing a specific conversation, redirect to contacts list
+  useEffect(() => {
+    if (isMobile && !conversationId && location.pathname === '/messages') {
+      navigate('/messages/contacts');
+    }
+  }, [isMobile, conversationId, navigate, location]);
+
   return (
     <Suspense fallback={<MessagesLoadingSkeleton />}>
       <div className="max-w-7xl mx-auto">

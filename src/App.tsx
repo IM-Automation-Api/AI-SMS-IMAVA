@@ -22,6 +22,8 @@ import OnboardingPage from "./pages/OnboardingPage";
 import { useAuth } from "./lib/supabase/auth/auth-context";
 import { Suspense, lazy } from "react";
 import { Skeleton } from "./components/ui/skeleton";
+import { MessagesSidebar } from "./components/messages/MessagesSidebar";
+import { useIsMobile } from "./hooks/use-mobile";
 
 // Improved loading component with better visual feedback
 const PageLoader = () => (
@@ -45,6 +47,23 @@ const ContentLoader = () => (
   </div>
 );
 
+// Mobile message contacts page wrapper
+const MessagesContactsPage = () => {
+  const isMobile = useIsMobile();
+  
+  return (
+    <DashboardLayout>
+      <Suspense fallback={<ContentLoader />}>
+        <div className="max-w-7xl mx-auto h-[calc(100vh-10rem)]">
+          <div className={`${isMobile ? 'w-full' : 'w-72'} h-full overflow-hidden rounded-2xl`}>
+            <MessagesSidebar />
+          </div>
+        </div>
+      </Suspense>
+    </DashboardLayout>
+  );
+};
+
 // Authentication guard component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -63,6 +82,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const App = () => {
   const { loading } = useAuth();
   const location = useLocation();
+  const isMobile = useIsMobile();
   
   // Let auth provider handle complex redirection logic now
   
@@ -106,6 +126,7 @@ const App = () => {
           }
         />
         
+        {/* Messages routes - special handling for mobile */}
         <Route
           path="/messages"
           element={
@@ -113,6 +134,19 @@ const App = () => {
               <DashboardLayout>
                 <Suspense fallback={<ContentLoader />}>
                   <MessagesPage />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/messages/contacts"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <MessagesContactsPage />
                 </Suspense>
               </DashboardLayout>
             </ProtectedRoute>

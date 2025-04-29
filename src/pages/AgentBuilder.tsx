@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +18,7 @@ export default function AgentBuilder() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [agentName, setAgentName] = useState("");
   const [agentRole, setAgentRole] = useState("");
+  const [activeTab, setActiveTab] = useState("files");
 
   useEffect(() => {
     if (assistantId) {
@@ -58,6 +60,64 @@ export default function AgentBuilder() {
     }
   }, [assistantId]);
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "files":
+        return (
+          <Card className="p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">Files</h2>
+            <div className="border-2 border-dashed border-border rounded-lg p-4 md:p-8 text-center">
+              <div className="flex flex-col items-center gap-2">
+                <Upload className="w-8 h-8 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  {isMobile ? 'Tap to select files' : 'Drag & drop files here, or click to select files'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Supported: pdf, doc, docx, txt
+                </p>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              If you are uploading a PDF, make sure you can select/highlight the text.
+            </p>
+          </Card>
+        );
+      case "text":
+        return (
+          <Card className="p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">Text</h2>
+            <Textarea 
+              placeholder="Paste or type text knowledge here..." 
+              className="min-h-[200px]" 
+            />
+          </Card>
+        );
+      case "website":
+        return (
+          <Card className="p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">Website</h2>
+            <Input placeholder="Enter website URL" className="mb-4" />
+            <Button>Scrape Website</Button>
+          </Card>
+        );
+      case "faq":
+        return (
+          <Card className="p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">FAQs</h2>
+            <div className="space-y-4">
+              <div>
+                <Label>Question</Label>
+                <Input placeholder="Enter a question" className="mb-2" />
+                <Label>Answer</Label>
+                <Textarea placeholder="Enter the answer" className="min-h-[100px]" />
+              </div>
+              <Button variant="outline" className="w-full">+ Add Another FAQ</Button>
+            </div>
+          </Card>
+        );
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between items-start">
@@ -93,48 +153,94 @@ export default function AgentBuilder() {
         </div>
       </div>
 
-      <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-[240px_1fr_300px]'}`}>
-        {/* Left Sidebar */}
-        <div className={`flex ${isMobile ? 'overflow-x-auto pb-2 gap-2' : 'flex-col space-y-2'}`}>
-          <Button variant="ghost" className={`${isMobile ? 'flex-shrink-0' : 'w-full'} justify-start`} size="lg">
-            <FileText className="mr-2" />
-            Files
-          </Button>
-          <Button variant="ghost" className={`${isMobile ? 'flex-shrink-0' : 'w-full'} justify-start`} size="lg">
-            <Upload className="mr-2" />
-            Text
-          </Button>
-          <Button variant="ghost" className={`${isMobile ? 'flex-shrink-0' : 'w-full'} justify-start`} size="lg">
-            <Globe className="mr-2" />
-            Website
-          </Button>
-          <Button variant="ghost" className={`${isMobile ? 'flex-shrink-0' : 'w-full'} justify-start`} size="lg">
-            <HelpCircle className="mr-2" />
-            FAQ
-          </Button>
+      <div className="grid gap-6 grid-cols-1">
+        {/* Mobile Tabs Navigation */}
+        {isMobile && (
+          <div className="flex overflow-x-auto pb-2 gap-2 hide-scrollbar">
+            <Button 
+              variant={activeTab === "files" ? "default" : "ghost"} 
+              className="flex-shrink-0"
+              onClick={() => setActiveTab("files")}
+            >
+              <FileText className="mr-2" />
+              Files
+            </Button>
+            <Button 
+              variant={activeTab === "text" ? "default" : "ghost"} 
+              className="flex-shrink-0"
+              onClick={() => setActiveTab("text")}
+            >
+              <Upload className="mr-2" />
+              Text
+            </Button>
+            <Button 
+              variant={activeTab === "website" ? "default" : "ghost"} 
+              className="flex-shrink-0"
+              onClick={() => setActiveTab("website")}
+            >
+              <Globe className="mr-2" />
+              Website
+            </Button>
+            <Button 
+              variant={activeTab === "faq" ? "default" : "ghost"} 
+              className="flex-shrink-0"
+              onClick={() => setActiveTab("faq")}
+            >
+              <HelpCircle className="mr-2" />
+              FAQ
+            </Button>
+          </div>
+        )}
+
+        {/* Desktop Left Sidebar */}
+        {!isMobile && (
+          <div className="flex flex-col space-y-2 col-span-1">
+            <Button 
+              variant={activeTab === "files" ? "default" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveTab("files")}
+              size="lg"
+            >
+              <FileText className="mr-2" />
+              Files
+            </Button>
+            <Button 
+              variant={activeTab === "text" ? "default" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveTab("text")}
+              size="lg"
+            >
+              <Upload className="mr-2" />
+              Text
+            </Button>
+            <Button 
+              variant={activeTab === "website" ? "default" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveTab("website")}
+              size="lg"
+            >
+              <Globe className="mr-2" />
+              Website
+            </Button>
+            <Button 
+              variant={activeTab === "faq" ? "default" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveTab("faq")}
+              size="lg"
+            >
+              <HelpCircle className="mr-2" />
+              FAQ
+            </Button>
+          </div>
+        )}
+
+        {/* Main Content Area */}
+        <div className="col-span-1">
+          {renderTabContent()}
         </div>
 
-        {/* Main Content */}
-        <Card className="p-4 md:p-6">
-          <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">Files</h2>
-          <div className="border-2 border-dashed border-border rounded-lg p-4 md:p-8 text-center">
-            <div className="flex flex-col items-center gap-2">
-              <Upload className="w-8 h-8 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">
-                {isMobile ? 'Tap to select files' : 'Drag & drop files here, or click to select files'}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Supported: pdf, doc, docx, txt
-              </p>
-            </div>
-          </div>
-          <p className="text-sm text-muted-foreground mt-4">
-            If you are uploading a PDF, make sure you can select/highlight the text.
-          </p>
-        </Card>
-
-        {/* Right Sidebar */}
-        <div className="space-y-4 md:space-y-6">
+        {/* Right Panel */}
+        <div className="space-y-4 md:space-y-6 col-span-1">
           <div className="bg-card border border-border p-4 rounded-lg">
             <h3 className="font-semibold text-foreground mb-4">SOURCES</h3>
             <div className="flex justify-between text-sm">

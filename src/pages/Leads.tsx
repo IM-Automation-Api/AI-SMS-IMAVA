@@ -15,10 +15,12 @@ import { useLeads } from "@/hooks/useLeads";
 import { useLeadTags } from "@/hooks/useLeadTags";
 import { CSVImportDialog } from "@/components/leads/CSVImportDialog";
 import { format } from "date-fns";
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function Leads() {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const { leads, isLoading } = useLeads();
+  const isMobile = useIsMobile();
   const clientId = leads[0]?.client_id; // Assuming all leads belong to the same client
   const { tags } = useLeadTags(clientId);
 
@@ -32,15 +34,15 @@ export default function Leads() {
         </Button>
       </div>
       
-      <div className="rounded-2xl border shadow-lg bg-card">
+      <div className="rounded-2xl border shadow-lg bg-card overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Tags</TableHead>
-              <TableHead>Last Contacted</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="min-w-[150px]">Name</TableHead>
+              <TableHead className="min-w-[150px]">Contact</TableHead>
+              {!isMobile && <TableHead className="min-w-[120px]">Tags</TableHead>}
+              <TableHead className="min-w-[120px]">Last Contacted</TableHead>
+              <TableHead className="text-right min-w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -62,23 +64,25 @@ export default function Leads() {
                     <div className="text-sm text-muted-foreground">{lead.phone}</div>
                   </div>
                 </TableCell>
-                <TableCell>
-                  <div className="flex gap-1 flex-wrap">
-                    {(lead.tags as string[])?.map((tagId) => {
-                      const tag = tags.find(t => t.id === tagId);
-                      if (!tag) return null;
-                      return (
-                        <Badge 
-                          key={tag.id}
-                          style={{ backgroundColor: tag.color }}
-                          className="text-white"
-                        >
-                          {tag.name}
-                        </Badge>
-                      );
-                    })}
-                  </div>
-                </TableCell>
+                {!isMobile && (
+                  <TableCell>
+                    <div className="flex gap-1 flex-wrap">
+                      {(lead.tags as string[])?.map((tagId) => {
+                        const tag = tags.find(t => t.id === tagId);
+                        if (!tag) return null;
+                        return (
+                          <Badge 
+                            key={tag.id}
+                            style={{ backgroundColor: tag.color }}
+                            className="text-white"
+                          >
+                            {tag.name}
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  </TableCell>
+                )}
                 <TableCell>
                   {lead.last_contacted ? (
                     format(new Date(lead.last_contacted), 'MMM d, yyyy')
