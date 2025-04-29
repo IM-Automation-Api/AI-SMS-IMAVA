@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
@@ -9,49 +8,35 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-
 export default function AssistantsPage() {
-  const { assistants, isLoading } = useAssistants();
+  const {
+    assistants,
+    isLoading
+  } = useAssistants();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredAssistants = assistants.filter(assistant => 
-    assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    assistant.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+  const filteredAssistants = assistants.filter(assistant => assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) || assistant.role.toLowerCase().includes(searchQuery.toLowerCase()));
   const handleAssistantClick = (assistantId: string) => {
     navigate(`/messages?assistant=${assistantId}`);
   };
-
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
+    return <div className="flex items-center justify-center h-full">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-mono tracking-[0.12em] font-warp">AI Assistants</h1>
+  return <div className="space-y-6">
+      <h1 className="font-warp flex items-center text-zinc-200 font-normal text-xl">AI Assistants</h1>
       
       <div className="flex items-center justify-between gap-4 mb-6">
         <div className="relative w-full max-w-md">
-          <Input
-            className="pr-8 premium-input"
-            placeholder="Search assistants..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <Input className="pr-8 premium-input" placeholder="Search assistants..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         </div>
         <Button variant="outline" className="premium-button">
           <Plus className="h-4 w-4 mr-2" /> Create Assistant
         </Button>
       </div>
       
-      {filteredAssistants.length === 0 ? (
-        <Card className="p-12 text-center glass-effect shadow-soft">
+      {filteredAssistants.length === 0 ? <Card className="p-12 text-center glass-effect shadow-soft">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="p-4 rounded-full bg-purple-500/20">
               <MessageSquare className="h-10 w-10 text-purple-400" />
@@ -64,15 +49,8 @@ export default function AssistantsPage() {
               <Plus className="h-4 w-4 mr-2" /> Create Assistant
             </Button>
           </div>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAssistants.map((assistant) => (
-            <Card 
-              key={assistant.id} 
-              className="p-6 space-y-4 glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1"
-              onClick={() => handleAssistantClick(assistant.id)}
-            >
+        </Card> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredAssistants.map(assistant => <Card key={assistant.id} className="p-6 space-y-4 glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" onClick={() => handleAssistantClick(assistant.id)}>
               <div className="flex items-center space-x-4">
                 <Avatar className="h-12 w-12 ring-2 ring-purple-500/30 glow-box">
                   <AvatarImage src={assistant.avatar || undefined} />
@@ -95,9 +73,7 @@ export default function AssistantsPage() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <div className={`w-2 h-2 rounded-full ${
-                    assistant.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
-                  }`} />
+                  <div className={`w-2 h-2 rounded-full ${assistant.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`} />
                   <span className="text-xs text-muted-foreground capitalize">
                     {assistant.status}
                   </span>
@@ -106,10 +82,7 @@ export default function AssistantsPage() {
                   AI Assistant
                 </Badge>
               </div>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            </Card>)}
+        </div>}
+    </div>;
 }
