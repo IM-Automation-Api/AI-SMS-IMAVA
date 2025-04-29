@@ -3,9 +3,12 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings, Key, Bot, Bell } from "lucide-react";
+import { Settings, Key, Bot, Bell, Phone } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
 export default function SettingsPage() {
   const { toast } = useToast();
@@ -22,15 +25,41 @@ export default function SettingsPage() {
     browser: true,
   });
 
+  const [twilioData, setTwilioData] = useState({
+    accountSid: "",
+    authToken: "",
+    phoneNumber: "",
+  });
+
+  const twilioForm = useForm({
+    defaultValues: {
+      accountSid: "",
+      authToken: "",
+      phoneNumber: "",
+    }
+  });
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleTwilioInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTwilioData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSaveChanges = () => {
     toast({
       title: "Settings saved",
       description: "Your changes have been saved successfully.",
+    });
+  };
+
+  const handleSaveTwilioCredentials = () => {
+    toast({
+      title: "Twilio credentials saved",
+      description: "Your Twilio credentials have been saved successfully.",
     });
   };
 
@@ -52,6 +81,10 @@ export default function SettingsPage() {
           <TabsTrigger value="account" className="mr-2 mb-2">
             <Settings className="h-4 w-4 mr-2" />
             Account
+          </TabsTrigger>
+          <TabsTrigger value="twilio" className="mr-2 mb-2">
+            <Phone className="h-4 w-4 mr-2" />
+            Twilio
           </TabsTrigger>
           <TabsTrigger value="api-keys" className="mr-2 mb-2">
             <Key className="h-4 w-4 mr-2" />
@@ -123,6 +156,58 @@ export default function SettingsPage() {
                 </div>
               </div>
               <Button onClick={handleSaveChanges} className="mt-4">Save Changes</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="twilio">
+          <Card>
+            <CardHeader>
+              <CardTitle>Twilio Credentials</CardTitle>
+              <CardDescription>
+                Configure your Twilio credentials for SMS messaging services
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-sm">
+                These credentials are required to send and receive SMS messages through the application.
+              </p>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Twilio Account SID</label>
+                  <Input
+                    type="text"
+                    name="accountSid"
+                    value={twilioData.accountSid}
+                    onChange={handleTwilioInputChange}
+                    className="w-full"
+                    placeholder="Enter your Twilio Account SID"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Twilio Auth Token</label>
+                  <Input
+                    type="password"
+                    name="authToken"
+                    value={twilioData.authToken}
+                    onChange={handleTwilioInputChange}
+                    className="w-full"
+                    placeholder="Enter your Twilio Auth Token"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Twilio Phone Number</label>
+                  <Input
+                    type="text"
+                    name="phoneNumber"
+                    value={twilioData.phoneNumber}
+                    onChange={handleTwilioInputChange}
+                    className="w-full"
+                    placeholder="+1234567890"
+                  />
+                </div>
+                <Button onClick={handleSaveTwilioCredentials} className="mt-4">Save Credentials</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
