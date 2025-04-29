@@ -1,75 +1,14 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Settings, Key, Bot, Bell, Phone } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { AccountSettings } from "@/components/settings/AccountSettings";
+import { TwilioSettings } from "@/components/settings/TwilioSettings";
+import { ApiKeysSettings } from "@/components/settings/ApiKeysSettings";
+import { AISettings } from "@/components/settings/AISettings";
+import { NotificationSettings } from "@/components/settings/NotificationSettings";
 
 export default function SettingsPage() {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    phone: "",
-  });
-
-  const [notifications, setNotifications] = useState({
-    email: false,
-    sms: false,
-    browser: true,
-  });
-
-  const [twilioData, setTwilioData] = useState({
-    accountSid: "",
-    authToken: "",
-    phoneNumber: "",
-  });
-
-  const twilioForm = useForm({
-    defaultValues: {
-      accountSid: "",
-      authToken: "",
-      phoneNumber: "",
-    }
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleTwilioInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setTwilioData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSaveChanges = () => {
-    toast({
-      title: "Settings saved",
-      description: "Your changes have been saved successfully.",
-    });
-  };
-
-  const handleSaveTwilioCredentials = () => {
-    toast({
-      title: "Twilio credentials saved",
-      description: "Your Twilio credentials have been saved successfully.",
-    });
-  };
-
-  const handleNotificationToggle = (type: keyof typeof notifications) => {
-    setNotifications(prev => ({
-      ...prev,
-      [type]: !prev[type],
-    }));
-  };
-
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
@@ -101,218 +40,23 @@ export default function SettingsPage() {
         </TabsList>
 
         <TabsContent value="account">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account Settings</CardTitle>
-              <CardDescription>
-                Manage your account information and preferences.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full p-2 rounded-md border border-border bg-background"
-                    placeholder="Your Name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full p-2 rounded-md border border-border bg-background"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Company</label>
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    className="w-full p-2 rounded-md border border-border bg-background"
-                    placeholder="Your Company"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full p-2 rounded-md border border-border bg-background"
-                    placeholder="+1 (555) 123-4567"
-                  />
-                </div>
-              </div>
-              <Button onClick={handleSaveChanges} className="mt-4">Save Changes</Button>
-            </CardContent>
-          </Card>
+          <AccountSettings />
         </TabsContent>
 
         <TabsContent value="twilio">
-          <Card>
-            <CardHeader>
-              <CardTitle>Twilio Credentials</CardTitle>
-              <CardDescription>
-                Configure your Twilio credentials for SMS messaging services
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-sm">
-                These credentials are required to send and receive SMS messages through the application.
-              </p>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Twilio Account SID</label>
-                  <Input
-                    type="text"
-                    name="accountSid"
-                    value={twilioData.accountSid}
-                    onChange={handleTwilioInputChange}
-                    className="w-full"
-                    placeholder="Enter your Twilio Account SID"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Twilio Auth Token</label>
-                  <Input
-                    type="password"
-                    name="authToken"
-                    value={twilioData.authToken}
-                    onChange={handleTwilioInputChange}
-                    className="w-full"
-                    placeholder="Enter your Twilio Auth Token"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Twilio Phone Number</label>
-                  <Input
-                    type="text"
-                    name="phoneNumber"
-                    value={twilioData.phoneNumber}
-                    onChange={handleTwilioInputChange}
-                    className="w-full"
-                    placeholder="+1234567890"
-                  />
-                </div>
-                <Button onClick={handleSaveTwilioCredentials} className="mt-4">Save Credentials</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <TwilioSettings />
         </TabsContent>
 
         <TabsContent value="api-keys">
-          <Card>
-            <CardHeader>
-              <CardTitle>API Keys</CardTitle>
-              <CardDescription>
-                Manage your API keys for different AI providers.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4">
-                Configure your API keys for different AI providers to use with your SMS automation.
-              </p>
-              <div className="space-y-4">
-                <Button onClick={() => toast({
-                  title: "Coming Soon",
-                  description: "API key management will be available soon."
-                })}>
-                  Manage API Keys
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <ApiKeysSettings />
         </TabsContent>
 
         <TabsContent value="ai-settings">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Settings</CardTitle>
-              <CardDescription>
-                Configure your AI behavior and preferences.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4">
-                Customize how your AI assistant interacts with leads and handles conversations.
-              </p>
-              <div className="space-y-4">
-                <Button onClick={() => toast({
-                  title: "Coming Soon",
-                  description: "AI settings configuration will be available soon."
-                })}>
-                  Configure AI Settings
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <AISettings />
         </TabsContent>
 
         <TabsContent value="notifications">
-          <Card>
-            <CardHeader>
-              <CardTitle>Notification Settings</CardTitle>
-              <CardDescription>
-                Configure how and when you receive notifications.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4">
-                Set up notifications for new messages, lead activities, and system alerts.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Email Notifications</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications via email
-                    </p>
-                  </div>
-                  <Switch
-                    checked={notifications.email}
-                    onCheckedChange={() => handleNotificationToggle('email')}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">SMS Notifications</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications via SMS
-                    </p>
-                  </div>
-                  <Switch
-                    checked={notifications.sms}
-                    onCheckedChange={() => handleNotificationToggle('sms')}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Browser Notifications</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications in your browser
-                    </p>
-                  </div>
-                  <Switch
-                    checked={notifications.browser}
-                    onCheckedChange={() => handleNotificationToggle('browser')}
-                  />
-                </div>
-              </div>
-              <Button onClick={handleSaveChanges} className="mt-6">Save Preferences</Button>
-            </CardContent>
-          </Card>
+          <NotificationSettings />
         </TabsContent>
       </Tabs>
     </div>
