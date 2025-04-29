@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Input } from '@/components/ui/input';
-import { BellDot, MessageSquare, Search } from 'lucide-react';
+import { BellDot, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
 
@@ -25,20 +25,11 @@ export function MessagesSidebar() {
       </div>
       <div className="flex-1 overflow-auto p-2">
         {/* Sample conversations */}
-        <ConversationItem name="Alice Johnson" message="Hey, can you check the latest updates?" time="12:45 PM" active={true} />
+        <ConversationItem name="Alice Johnson" message="Hey, can you check the latest updates?" time="12:45 PM" active={true} unread={true} />
         <ConversationItem name="Bob Smith" message="I've sent you the report" time="Yesterday" />
         <ConversationItem name="Carol White" message="Thanks for your help!" time="2d ago" />
-        <ConversationItem name="David Brown" message="When is the next meeting?" time="3d ago" />
+        <ConversationItem name="David Brown" message="When is the next meeting?" time="3d ago" unread={true} />
         <ConversationItem name="Eva Green" message="Please review this ASAP" time="1w ago" />
-      </div>
-      <div className="p-4 border-t border-white/10">
-        <Button 
-          variant="outline" 
-          className="w-full py-2 border border-white/20 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 hover:from-indigo-500/30 hover:to-purple-500/30 hover:scale-105 transition-all duration-300 shadow-md shadow-purple-900/10"
-        >
-          <MessageSquare className="mr-2 h-4 w-4 text-indigo-300" />
-          <span className="text-white/90">New Conversation</span>
-        </Button>
       </div>
     </div>
   );
@@ -49,13 +40,15 @@ interface ConversationItemProps {
   message: string;
   time: string;
   active?: boolean;
+  unread?: boolean;
 }
 
 function ConversationItem({
   name,
   message,
   time,
-  active
+  active = false,
+  unread = false
 }: ConversationItemProps) {
   return (
     <div className={`flex items-center gap-3 p-3 cursor-pointer rounded-xl transition-all duration-300 mb-1
@@ -63,15 +56,16 @@ function ConversationItem({
         ? 'bg-gradient-to-r from-indigo-500/20 to-purple-600/10 shadow-md shadow-purple-900/10 border-l-2 border-indigo-500' 
         : 'hover:bg-white/5 hover:shadow-md hover:translate-x-1'}`}
     >
-      <Avatar className="h-10 w-10 border-2 border-white/10 bg-gradient-to-br from-indigo-500/30 to-purple-600/30">
+      <Avatar className={`h-10 w-10 border-2 ${unread ? 'border-primary' : 'border-white/10'} bg-gradient-to-br from-indigo-500/30 to-purple-600/30 ${unread ? 'ring-2 ring-primary/30' : ''}`}>
         <span className="text-white font-medium">{name.charAt(0)}</span>
+        {unread && <span className="absolute top-0 right-0 h-3 w-3 bg-primary rounded-full"></span>}
       </Avatar>
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-center">
-          <p className="font-medium text-white/90 truncate">{name}</p>
+          <p className={`${unread ? 'font-semibold' : 'font-medium'} text-white/90 truncate`}>{name}</p>
           <span className="text-xs text-white/50 whitespace-nowrap">{time}</span>
         </div>
-        <p className="text-sm text-white/70 truncate">{message}</p>
+        <p className={`text-sm ${unread ? 'text-white/90' : 'text-white/70'} truncate`}>{message}</p>
       </div>
     </div>
   );

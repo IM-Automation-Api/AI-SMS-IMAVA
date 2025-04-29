@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { MessageCircle } from 'lucide-react';
 import { Check } from 'lucide-react';
 
 export type MessageType = 'user' | 'bot' | 'system';
@@ -33,10 +32,9 @@ export function MessageBubble({
       isUser ? 'self-end flex-row-reverse' : 'self-start',
       isSystem ? 'self-center' : ''
     )}>
-      {!isUser && !isSystem && unread && (
+      {!isUser && !isSystem && (
         <div className="relative mt-1">
-          <MessageCircle className="h-5 w-5 text-primary animate-pulse" />
-          <span className="absolute -top-1 -right-1 h-2 w-2 bg-primary rounded-full"></span>
+          {unread && <span className="absolute -top-1 -right-1 h-3 w-3 bg-primary rounded-full animate-pulse"></span>}
         </div>
       )}
       

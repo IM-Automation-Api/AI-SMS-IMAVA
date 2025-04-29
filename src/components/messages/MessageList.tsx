@@ -47,9 +47,7 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 glass-effect flex flex-col">
-      <div className="flex-1" /> {/* Spacer to push content to the bottom */}
-      
+    <div className="flex-1 overflow-y-auto px-4 py-6 glass-effect flex flex-col h-full">
       {messages.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-full space-y-4 p-8">
           <div className="rounded-full bg-black/20 p-6 shadow-lg shadow-purple-900/10">
@@ -59,10 +57,10 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
           <p className="text-white/60 text-center max-w-sm">
             Start a new conversation or select an existing one to see your messages here
           </p>
-          <div className="h-16 w-full bg-gradient-to-r from-transparent via-white/5 to-transparent my-4" />
         </div>
       ) : (
         <>
+          <div className="flex-1" /> {/* Spacer to push content to the bottom */}
           {displayMessages.map((message) => (
             <MessageBubble
               key={message.id}

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { format } from "date-fns";
-import { MessageCircle } from "lucide-react";
 
 export interface ConversationThreadProps {
   id: string;
@@ -18,8 +17,7 @@ export const ConversationThread = ({ thread }: { thread: ConversationThreadProps
     <div className="relative w-6 flex items-center justify-center mt-1">
       {thread.unread ? (
         <div className="relative">
-          <MessageCircle className="h-5 w-5 text-primary animate-pulse" />
-          <span className="absolute -top-1 -right-1 h-2 w-2 bg-primary rounded-full"></span>
+          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-primary rounded-full"></span>
         </div>
       ) : null}
     </div>
