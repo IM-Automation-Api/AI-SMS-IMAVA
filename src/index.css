@@ -84,6 +84,12 @@
     font-weight: 600;
     letter-spacing: 0.02em;
   }
+  
+  /* Add mono font styling for h2, h3, and h4 elements */
+  h2, h3, h4 {
+    @apply font-mono;
+    letter-spacing: 0;
+  }
 }
 
 @layer components {

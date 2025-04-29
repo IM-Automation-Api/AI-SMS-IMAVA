@@ -109,7 +109,7 @@ export const CommunicationsLogCard = () => {
   return (
     <Card className="bg-card/50 border-border backdrop-blur-sm">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle className="text-foreground flex items-center text-base">
+        <CardTitle className="text-foreground flex items-center text-base font-mono">
           <MessageSquare className="mr-2 h-5 w-5 text-primary" />
           Communications Log
         </CardTitle>
