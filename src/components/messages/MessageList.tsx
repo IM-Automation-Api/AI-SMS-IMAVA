@@ -7,9 +7,10 @@ type Message = Database['public']['Tables']['sms_messages']['Row'];
 
 interface MessageListProps {
   messages: Message[];
+  isLoading?: boolean;
 }
 
-export function MessageList({ messages }: MessageListProps) {
+export function MessageList({ messages, isLoading = false }: MessageListProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -30,6 +31,18 @@ export function MessageList({ messages }: MessageListProps) {
     name: message.direction === 'inbound' ? undefined : "Assistant",
     status: message.status as "sent" | "delivered" | "read" | undefined
   }));
+
+  // Loading or empty state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full p-6 bg-gradient-to-br from-background to-background/95">
+        <div className="flex flex-col items-center space-y-3">
+          <div className="w-8 h-8 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+          <p className="text-sm text-muted-foreground">Loading messages...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-background to-background/95 flex flex-col">

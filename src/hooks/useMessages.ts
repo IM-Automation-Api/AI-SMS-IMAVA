@@ -10,11 +10,15 @@ export function useMessages(limit = 30, leadId?: string) {
   const [newMessageCount, setNewMessageCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [isInitialFetch, setIsInitialFetch] = useState(true);
 
   const fetchMessages = useCallback(async () => {
     try {
-      setIsLoading(true);
       setError(null);
+      // Only show loading state on initial fetch to prevent flicker
+      if (isInitialFetch) {
+        setIsLoading(true);
+      }
       
       let query = supabase
         .from('sms_messages')
@@ -38,17 +42,15 @@ export function useMessages(limit = 30, leadId?: string) {
       if (data) {
         // Sort in ascending order for display (oldest first)
         setMessages(data.reverse());
+        setIsInitialFetch(false);
       }
     } catch (err) {
       console.error('Exception fetching messages:', err);
       setError(err instanceof Error ? err : new Error('Unknown error fetching messages'));
     } finally {
-      // Small delay before removing loading state to prevent UI flicker
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
+      setIsLoading(false);
     }
-  }, [limit, leadId]);
+  }, [limit, leadId, isInitialFetch]);
 
   useEffect(() => {
     // Initial fetch of messages

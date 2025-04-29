@@ -20,7 +20,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SMSCampaignPage from "./pages/SMSCampaignPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import { useAuth } from "./lib/supabase/auth/auth-context";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
 import { Skeleton } from "./components/ui/skeleton";
 
 // Improved loading component with better visual feedback
@@ -45,8 +45,9 @@ const ContentLoader = () => (
   </div>
 );
 
+// Authentication guard component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading, isOnboardingCompleted } = useAuth();
+  const { user, loading } = useAuth();
   
   if (loading) {
     return <PageLoader />;
@@ -54,41 +55,16 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   
   if (!user) {
     return <Navigate to="/" replace />;
-  }
-  
-  if (!isOnboardingCompleted()) {
-    return <Navigate to="/onboarding" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
-const OnboardingProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading, isOnboardingCompleted } = useAuth();
-  
-  if (loading) {
-    return <PageLoader />;
-  }
-  
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-  
-  if (isOnboardingCompleted()) {
-    return <Navigate to="/dashboard" replace />;
   }
   
   return <>{children}</>;
 };
 
 const App = () => {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   const location = useLocation();
   
-  // Scroll to top on route change
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+  // Let auth provider handle complex redirection logic now
   
   return (
     <TooltipProvider>
@@ -96,101 +72,117 @@ const App = () => {
       <Sonner />
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={
-          loading ? <PageLoader /> : (user ? <Navigate to="/dashboard" replace /> : <LoginPage />)
-        } />
-        
-        <Route path="/signup" element={
-          loading ? <PageLoader /> : (user ? <Navigate to="/dashboard" replace /> : <SignupPage />)
-        } />
-        
+        <Route path="/" element={loading ? <PageLoader /> : <LoginPage />} />
+        <Route path="/signup" element={loading ? <PageLoader /> : <SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         
-        {/* Onboarding route - protected but doesn't require completed onboarding */}
-        <Route path="/onboarding" element={
-          <OnboardingProtectedRoute>
-            <OnboardingPage />
-          </OnboardingProtectedRoute>
-        } />
+        {/* Onboarding route */}
+        <Route path="/onboarding" element={loading ? <PageLoader /> : <OnboardingPage />} />
         
-        {/* Protected routes - require completed onboarding */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <Dashboard />
-              </Suspense>
-            </DashboardLayout>
-          </ProtectedRoute>
-        } />
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <Dashboard />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/assistants" element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <AssistantsPage />
-              </Suspense>
-            </DashboardLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/assistants"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <AssistantsPage />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/messages" element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <MessagesPage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <MessagesPage />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/leads" element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <Leads />
-              </Suspense>
-            </DashboardLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/leads"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <Leads />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/campaigns" element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <SMSCampaignPage />
-              </Suspense>
-            </DashboardLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/campaigns"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <SMSCampaignPage />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/agent-builder" element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <AgentBuilder />
-              </Suspense>
-            </DashboardLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/agent-builder"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <AgentBuilder />
+                </Suspense>
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/settings" element={
-          <ProtectedRoute>
-            <SettingsLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <SettingsPage />
-              </Suspense>
-            </SettingsLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <SettingsPage />
+                </Suspense>
+              </SettingsLayout>
+            </ProtectedRoute>
+          }
+        />
         
-        <Route path="/settings/ai-settings" element={
-          <ProtectedRoute>
-            <SettingsLayout>
-              <Suspense fallback={<ContentLoader />}>
-                <AISettingsPage />
-              </Suspense>
-            </SettingsLayout>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/settings/ai-settings"
+          element={
+            <ProtectedRoute>
+              <SettingsLayout>
+                <Suspense fallback={<ContentLoader />}>
+                  <AISettingsPage />
+                </Suspense>
+              </SettingsLayout>
+            </ProtectedRoute>
+          }
+        />
         
         <Route path="*" element={<NotFound />} />
       </Routes>

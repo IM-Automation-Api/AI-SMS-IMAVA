@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   signInWithEmail,
   signInWithGoogle,
@@ -59,7 +59,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<ExtendedUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [profileLoaded, setProfileLoaded] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Function to safely fetch user profile outside of auth state change
   const loadUserProfile = async (userId: string) => {
@@ -75,18 +77,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           profile
         };
       });
-      
+      setProfileLoaded(true);
       return profile;
     } else {
       console.error("Auth context: Failed to load profile:", error);
+      setProfileLoaded(true);
     }
     
     return null;
   };
 
+  // Handling navigation based on auth state and current location
+  useEffect(() => {
+    // Skip navigation logic during initial loading or if user/profile is not yet loaded
+    if (loading || !profileLoaded) return;
+
+    const isAuthRoute = location.pathname === '/' || 
+                        location.pathname === '/signup' || 
+                        location.pathname === '/forgot-password';
+    const isOnboardingRoute = location.pathname === '/onboarding';
+    
+    if (!user) {
+      // If no user and not on auth route, redirect to login
+      if (!isAuthRoute) {
+        console.log("Auth context: No user, redirecting to login");
+        navigate('/', { replace: true });
+      }
+    } else {
+      // User exists
+      const onboardingCompleted = isOnboardingCompleted();
+      
+      if (!onboardingCompleted) {
+        // If onboarding is not completed and not on onboarding route, redirect to onboarding
+        if (!isOnboardingRoute) {
+          console.log("Auth context: Onboarding not completed, redirecting to onboarding");
+          navigate('/onboarding', { replace: true });
+        }
+      } else if (isOnboardingRoute || isAuthRoute) {
+        // If onboarding is completed and on onboarding or auth routes, redirect to dashboard
+        console.log("Auth context: Onboarding completed, redirecting from auth/onboarding to dashboard");
+        navigate('/dashboard', { replace: true });
+      }
+      // Otherwise, stay on the current route (non-auth routes for authenticated users with completed onboarding)
+    }
+  }, [user, loading, profileLoaded, location.pathname, navigate]);
+
   useEffect(() => {
     console.log("Auth context: Setting up auth state listener");
-    let isInitialLoad = true;
     
     // Set up auth state listener first to avoid missing events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -106,22 +143,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Fetch profile separately to avoid blocking the auth state change
           setTimeout(async () => {
             try {
-              const profile = await loadUserProfile(currentUser.id);
-              console.log("Auth context: Profile loaded:", profile ? "success" : "not found");
-              
-              // Only handle navigation during initial load or explicit sign-in
-              if (isInitialLoad || event === "SIGNED_IN") {
-                if (profile?.onboarding_completed) {
-                  console.log("Auth context: User has completed onboarding, redirecting to dashboard");
-                  navigate('/dashboard', { replace: true });
-                } else {
-                  console.log("Auth context: User needs onboarding, redirecting to onboarding");
-                  navigate('/onboarding', { replace: true });
-                }
-                isInitialLoad = false;
-              }
+              await loadUserProfile(currentUser.id);
+              console.log("Auth context: Profile loaded after sign-in");
             } catch (error) {
-              console.error("Auth context: Error loading user profile:", error);
+              console.error("Auth context: Error loading user profile after sign-in:", error);
             } finally {
               // Ensure loading is set to false after profile is fetched
               setLoading(false);
@@ -130,6 +155,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         } else if (event === "SIGNED_OUT") {
           console.log("Auth context: User signed out");
           setUser(null);
+          setProfileLoaded(true);
           setLoading(false);
         }
       }
@@ -151,8 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Set user immediately without profile
           setUser(currentUser);
           
-          // Fetch profile separately but don't navigate here
-          // The onAuthStateChange will handle navigation
+          // Fetch profile separately
           try {
             await loadUserProfile(currentUser.id);
           } catch (error) {
@@ -165,10 +190,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         } else {
           console.log("Auth context: No existing user session found");
+          setProfileLoaded(true);
           setLoading(false);
         }
       } catch (error) {
         console.error("Auth context: Error checking existing session:", error);
+        setProfileLoaded(true);
         setLoading(false);
       }
     };
@@ -177,10 +204,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       console.log("Auth context: Cleaning up auth state listener");
-      isInitialLoad = false;
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, []);
 
   const signIn = async (email: string, password: string) => {
     console.log("Auth context: Signing in with email:", email);
