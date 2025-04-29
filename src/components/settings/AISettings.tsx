@@ -17,15 +17,15 @@ export function AISettings() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>AI Settings</CardTitle>
-        <CardDescription>
+    <div className="bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md rounded-2xl p-6 text-white">
+      <div className="mb-4">
+        <h2 className="text-white text-xl font-semibold">AI Settings</h2>
+        <p className="text-gray-400 text-sm">
           Configure your AI behavior and preferences.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="mb-4">
+        </p>
+      </div>
+      <div>
+        <p className="mb-4 text-gray-300">
           Customize how your AI assistant interacts with leads and handles conversations.
         </p>
         <div className="space-y-4">
@@ -33,7 +33,7 @@ export function AISettings() {
             Configure AI Settings
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
@@ -36,21 +37,25 @@ export default function AssistantsPage() {
         </Button>
       </div>
       
-      {filteredAssistants.length === 0 ? <Card className="p-12 text-center glass-effect shadow-soft">
+      {filteredAssistants.length === 0 ? <div className="bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md rounded-2xl p-6 text-white">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="p-4 rounded-full bg-purple-500/20">
               <MessageSquare className="h-10 w-10 text-purple-400" />
             </div>
-            <h3 className="font-semibold text-xl font-warp">No assistants found</h3>
-            <p className="text-muted-foreground max-w-md">
+            <h3 className="font-semibold text-xl font-warp text-white">No assistants found</h3>
+            <p className="text-gray-400 max-w-md">
               {searchQuery ? "Try a different search term" : "Create your first AI assistant to get started"}
             </p>
             <Button className="mt-4 premium-button">
               <Plus className="h-4 w-4 mr-2" /> Create Assistant
             </Button>
           </div>
-        </Card> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAssistants.map(assistant => <Card key={assistant.id} className="p-6 space-y-4 glass-effect hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" onClick={() => handleAssistantClick(assistant.id)}>
+        </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredAssistants.map(assistant => <div 
+              key={assistant.id} 
+              className="bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md rounded-2xl p-6 text-white space-y-4 hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" 
+              onClick={() => handleAssistantClick(assistant.id)}
+            >
               <div className="flex items-center space-x-4">
                 <Avatar className="h-12 w-12 ring-2 ring-purple-500/30 glow-box">
                   <AvatarImage src={assistant.avatar || undefined} />
@@ -59,14 +64,14 @@ export default function AssistantsPage() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-semibold font-warp">{assistant.name}</h3>
-                  <p className="text-sm text-muted-foreground">{assistant.role}</p>
+                  <h3 className="font-semibold font-warp text-white">{assistant.name}</h3>
+                  <p className="text-sm text-gray-400">{assistant.role}</p>
                 </div>
               </div>
               
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Description</Label>
-                <p className="text-sm">
+                <Label className="text-xs text-gray-400">Description</Label>
+                <p className="text-sm text-gray-200">
                   {assistant.role || 'AI Assistant'}
                 </p>
               </div>
@@ -74,7 +79,7 @@ export default function AssistantsPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <div className={`w-2 h-2 rounded-full ${assistant.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`} />
-                  <span className="text-xs text-muted-foreground capitalize">
+                  <span className="text-xs text-gray-400 capitalize">
                     {assistant.status}
                   </span>
                 </div>
@@ -82,7 +87,7 @@ export default function AssistantsPage() {
                   AI Assistant
                 </Badge>
               </div>
-            </Card>)}
+            </div>)}
         </div>}
     </div>;
 }
