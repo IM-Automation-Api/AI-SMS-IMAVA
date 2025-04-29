@@ -1,17 +1,112 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { StatsCard } from "@/components/analytics/StatsCard";
 import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
-import { ActivitiesCard } from "@/components/analytics/ActivitiesCard";
-import { CommunicationItem } from "@/components/analytics/CommunicationItem";
 import { CircleDot, TrendingUp, MessageSquare, Users, GaugeCircle, Mic } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useMessages } from "@/hooks/useMessages";
 import { format } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import { Avatar } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
+
+interface ConversationThread {
+  id: string;
+  lead_name: string;
+  last_message: string;
+  timestamp: string;
+  unread: boolean;
+}
 
 export default function Dashboard() {
-  const { messages, newMessageCount } = useMessages(4);
+  const [conversationThreads, setConversationThreads] = useState<ConversationThread[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [newThreadCount, setNewThreadCount] = useState(0);
+  const { toast } = useToast();
+  
+  useEffect(() => {
+    fetchConversationThreads();
+    
+    // Set up real-time subscription for new messages
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'sms_messages',
+        },
+        () => {
+          fetchConversationThreads();
+          setNewThreadCount(prev => prev + 1);
+          
+          // Show toast notification
+          toast({
+            title: "New message received",
+            description: "A new message has arrived in your inbox",
+          });
+        }
+      )
+      .subscribe();
+      
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [toast]);
+  
+  // Function to fetch most recent conversation threads
+  const fetchConversationThreads = async () => {
+    setIsLoading(true);
+    
+    try {
+      // Get the 5 most recent messages grouped by lead
+      const { data: messages, error } = await supabase
+        .from('sms_messages')
+        .select('id, lead_id, content, created_at, direction, status')
+        .order('created_at', { ascending: false })
+        .limit(20); // Fetch more to ensure we get enough unique threads
+      
+      if (error) {
+        console.error('Error fetching messages:', error);
+        return;
+      }
+      
+      // Process messages to get unique conversation threads
+      const threads: Record<string, ConversationThread> = {};
+      
+      for (const message of messages || []) {
+        // Skip if we already have this lead in our threads
+        if (threads[message.lead_id]) continue;
+        
+        // Create a new thread entry
+        threads[message.lead_id] = {
+          id: message.lead_id,
+          lead_name: `Lead ${message.lead_id.slice(0, 5)}...`, // Simplified name for now
+          last_message: message.content,
+          timestamp: message.created_at,
+          unread: message.direction === 'inbound' && message.status !== 'read'
+        };
+        
+        // Stop once we have 5 threads
+        if (Object.keys(threads).length >= 5) break;
+      }
+      
+      setConversationThreads(Object.values(threads));
+      
+      // Count unread threads
+      const unreadCount = Object.values(threads).filter(thread => thread.unread).length;
+      setNewThreadCount(unreadCount);
+      
+    } catch (err) {
+      console.error('Error processing conversation threads:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const resetNewThreadCount = () => setNewThreadCount(0);
   
   return (
     <div className="space-y-6 fade-in">
@@ -30,36 +125,54 @@ export default function Dashboard() {
             <MessageSquare className="mr-2 h-5 w-5 text-primary" />
             Communications Log
           </CardTitle>
-          {newMessageCount > 0 && (
-            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/50">
-              {newMessageCount} New {newMessageCount === 1 ? 'Message' : 'Messages'}
+          {newThreadCount > 0 && (
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/50"
+                  onClick={resetNewThreadCount}>
+              {newThreadCount} New {newThreadCount === 1 ? 'Thread' : 'Threads'}
             </Badge>
           )}
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {messages.map((message) => (
-              <CommunicationItem
-                key={message.id}
-                sender={message.direction === 'inbound' ? 'Customer' : 'System'}
-                time={format(new Date(message.created_at!), 'HH:mm:ss')}
-                message={message.content}
-                avatar="/placeholder.svg?height=40&width=40"
-                unread
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="h-64 flex items-center justify-center">
+              <div className="animate-spin h-6 w-6 border-t-2 border-primary border-r-2 rounded-full"></div>
+            </div>
+          ) : conversationThreads.length === 0 ? (
+            <div className="h-64 flex flex-col items-center justify-center text-center">
+              <MessageSquare className="h-12 w-12 text-muted-foreground mb-4 opacity-40" />
+              <p className="text-muted-foreground">No conversation threads yet</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {conversationThreads.map((thread) => (
+                <div key={thread.id} 
+                     className="flex items-start space-x-3 p-3 rounded-lg transition-colors hover:bg-slate-800/50">
+                  <div className="relative">
+                    <Avatar className="h-10 w-10">
+                      <span>{thread.lead_name.charAt(0)}</span>
+                    </Avatar>
+                    {thread.unread && (
+                      <span className="absolute -top-1 -right-1 h-3 w-3 bg-primary rounded-full ring-2 ring-background"></span>
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-slate-100">{thread.lead_name}</p>
+                      <span className="text-xs text-slate-400">
+                        {format(new Date(thread.timestamp), 'HH:mm')}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-300 line-clamp-1">{thread.last_message}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
         <CardFooter className="border-t border-border pt-4">
-          <div className="flex items-center w-full space-x-2">
-            <input type="text" placeholder="Type a message..." className="flex-1 bg-card border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-            <Button size="icon" className="bg-primary hover:bg-primary/90">
-              <Mic className="h-4 w-4" />
-            </Button>
-            <Button size="icon" className="bg-primary hover:bg-primary/90">
-              <MessageSquare className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button variant="outline" className="w-full text-primary hover:bg-primary/10 hover:text-primary">
+            View All Messages
+          </Button>
         </CardFooter>
       </Card>
 
@@ -95,9 +208,7 @@ export default function Dashboard() {
                   <Badge variant="outline" className="bg-primary/10 text-primary">45%</Badge>
                 </div>
                 <div className="w-full bg-muted/50 rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{
-                  width: '45%'
-                }}></div>
+                  <div className="bg-primary h-1.5 rounded-full" style={{width: '45%'}}></div>
                 </div>
               </div>
               <div>
@@ -106,9 +217,7 @@ export default function Dashboard() {
                   <Badge variant="outline" className="bg-primary/10 text-primary">30%</Badge>
                 </div>
                 <div className="w-full bg-muted/50 rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{
-                  width: '30%'
-                }}></div>
+                  <div className="bg-primary h-1.5 rounded-full" style={{width: '30%'}}></div>
                 </div>
               </div>
               <div>
@@ -117,9 +226,7 @@ export default function Dashboard() {
                   <Badge variant="outline" className="bg-primary/10 text-primary">25%</Badge>
                 </div>
                 <div className="w-full bg-muted/50 rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{
-                  width: '25%'
-                }}></div>
+                  <div className="bg-primary h-1.5 rounded-full" style={{width: '25%'}}></div>
                 </div>
               </div>
             </div>
