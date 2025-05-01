@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, Brain, MessageSquare, Settings, HelpCircle, ChevronLeft, ChevronRight, MessageSquarePlus, ClipboardList, Wrench } from 'lucide-react';
+import { LayoutDashboard, Brain, MessageSquare, Settings, HelpCircle, ChevronLeft, ChevronRight, MessageSquarePlus, ClipboardList, Wrench, Send } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
@@ -47,13 +47,6 @@ export function DashboardSidebar() {
       }) => cn("sidebar-item-base", "sidebar-item-hover", isActive && "sidebar-item-active")}>
           <MessageSquare className="h-5 w-5" />
           {expanded && <span>Messages</span>}
-        </NavLink>
-
-        <NavLink to="/campaigns" className={({
-        isActive
-      }) => cn("sidebar-item-base", "sidebar-item-hover", isActive && "sidebar-item-active")}>
-          <MessageSquarePlus className="h-5 w-5" />
-          {expanded && <span>SMS Campaign</span>}
         </NavLink>
 
         <NavLink to="/leads" className={({

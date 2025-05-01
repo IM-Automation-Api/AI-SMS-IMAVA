@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Eye, Edit, Trash2 } from "lucide-react";
@@ -8,16 +8,35 @@ import { format } from "date-fns";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/components/ui/use-toast';
 import { Lead } from '@/hooks/useLeads';
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface LeadsTableProps {
   leads: Lead[];
   isLoading: boolean;
   tags: LeadTag[];
   onViewLead?: (lead: Lead) => void;
+  selectedLeadIds: string[];
+  onSelectLeads: (selectedIds: string[]) => void;
 }
 
-export function LeadsTable({ leads, isLoading, tags, onViewLead }: LeadsTableProps) {
+export function LeadsTable({ leads, isLoading, tags, onViewLead, selectedLeadIds, onSelectLeads }: LeadsTableProps) {
   const isMobile = useIsMobile();
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      onSelectLeads(leads.map(lead => lead.id));
+    } else {
+      onSelectLeads([]);
+    }
+  };
+
+  const handleSelectLead = (leadId: string, checked: boolean) => {
+    if (checked) {
+      onSelectLeads([...selectedLeadIds, leadId]);
+    } else {
+      onSelectLeads(selectedLeadIds.filter(id => id !== leadId));
+    }
+  };
 
   const handleEdit = (lead: Lead) => {
     toast({
@@ -60,6 +79,13 @@ export function LeadsTable({ leads, isLoading, tags, onViewLead }: LeadsTablePro
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead className="w-[50px]">
+            <Checkbox
+              checked={selectedLeadIds.length === leads.length && leads.length > 0}
+              onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
+              disabled={leads.length === 0}
+            />
+          </TableHead>
           <TableHead className="min-w-[150px]">Name</TableHead>
           <TableHead className="min-w-[150px]">Contact</TableHead>
           {!isMobile && <TableHead className="min-w-[120px]">Tags</TableHead>}
@@ -70,6 +96,12 @@ export function LeadsTable({ leads, isLoading, tags, onViewLead }: LeadsTablePro
       <TableBody>
         {leads.map(lead => (
           <TableRow key={lead.id}>
+            <TableCell>
+              <Checkbox
+                checked={selectedLeadIds.includes(lead.id)}
+                onCheckedChange={(checked) => handleSelectLead(lead.id, checked as boolean)}
+              />
+            </TableCell>
             <TableCell>
               <div>
                 <div className="font-medium">
@@ -91,11 +123,11 @@ export function LeadsTable({ leads, isLoading, tags, onViewLead }: LeadsTablePro
                     const tag = tags.find(t => t.id === tagId);
                     if (!tag) return null;
                     return (
-                      <Badge 
-                        key={tag.id} 
+                      <Badge
+                        key={tag.id}
                         style={{
                           backgroundColor: tag.color
-                        }} 
+                        }}
                         className="text-white"
                       >
                         {tag.name}
@@ -106,28 +138,28 @@ export function LeadsTable({ leads, isLoading, tags, onViewLead }: LeadsTablePro
               </TableCell>
             )}
             <TableCell>
-              {lead.last_contacted ? format(new Date(lead.last_contacted), 'MMM d, yyyy') : 
+              {lead.last_contacted ? format(new Date(lead.last_contacted), 'MMM d, yyyy') :
                 <span className="text-muted-foreground">Never</span>}
             </TableCell>
             <TableCell className="text-right">
               <div className="flex justify-end gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => onViewLead && onViewLead(lead)}
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => handleEdit(lead)}
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => handleDelete(lead)}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" />

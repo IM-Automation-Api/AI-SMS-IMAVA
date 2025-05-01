@@ -4,22 +4,33 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAssistants } from "@/hooks/useAssistants";
-import { Loader2, MessageSquare, Plus } from "lucide-react";
+import { Loader2, MessageSquare, Plus } from "lucide-react"; // Removed Send icon
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 export default function AssistantsPage() {
   const {
     assistants,
     isLoading
   } = useAssistants();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredAssistants = assistants.filter(assistant => assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) || assistant.role.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Removed addingToSMS state
+  
+  const filteredAssistants = assistants.filter(assistant => 
+    assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    assistant.role.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
   const handleAssistantClick = (assistantId: string) => {
-    navigate(`/messages?assistant=${assistantId}`);
+    // Changed navigation target to Leads page
+    navigate(`/leads`); 
+    // Note: Assistant ID is not currently passed to the Leads page in this navigation
   };
+  
   if (isLoading) {
     return <div className="flex items-center justify-center h-full">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -51,7 +62,8 @@ export default function AssistantsPage() {
             </Button>
           </div>
         </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAssistants.map(assistant => <div 
+          {filteredAssistants.map(assistant => (
+            <div 
               key={assistant.id} 
               className="bg-gradient-to-br from-[#0a0a0f] via-[#121018] to-[#1b1226] border border-[#4b2a78]/40 shadow-[inset_0_0_0.5px_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-md rounded-2xl p-6 text-white space-y-4 hover-glow cursor-pointer transition-all duration-300 hover:-translate-y-1" 
               onClick={() => handleAssistantClick(assistant.id)}
@@ -83,11 +95,19 @@ export default function AssistantsPage() {
                     {assistant.status}
                   </span>
                 </div>
-                <Badge variant="outline" className="bg-black/20 text-xs">
-                  AI Assistant
-                </Badge>
+                {assistant.isPremade ? (
+                  // Removed Add to SMS button
+                  <Badge variant="outline" className="bg-black/20 text-xs">
+                    Premade Assistant
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="bg-black/20 text-xs">
+                    AI Assistant
+                  </Badge>
+                )}
               </div>
-            </div>)}
+            </div>
+          ))}
         </div>}
     </div>;
 }

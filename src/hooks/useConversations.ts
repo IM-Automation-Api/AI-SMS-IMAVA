@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import useSWR from "swr";
 
-interface ConversationWithMessages {
+export interface ConversationWithMessages {
   id: string;
   lead_id: string;
   created_at: string;

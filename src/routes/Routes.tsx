@@ -10,7 +10,6 @@ import Dashboard from "@/pages/Dashboard";
 import AssistantsPage from "@/pages/AssistantsPage";
 import MessagesPage from "@/pages/MessagesPage";
 import Leads from "@/pages/Leads";
-import SMSCampaignPage from "@/pages/SMSCampaignPage";
 import AgentBuilder from "@/pages/AgentBuilder";
 import SettingsPage from "@/pages/SettingsPage";
 import AISettingsPage from "@/pages/AISettingsPage";
@@ -104,19 +103,6 @@ export const Routes = () => {
           user ? (
             <DashboardLayout>
               <Leads />
-            </DashboardLayout>
-          ) : (
-            <Navigate to="/" replace />
-          )
-        }
-      />
-      
-      <Route
-        path="/campaigns"
-        element={
-          user ? (
-            <DashboardLayout>
-              <SMSCampaignPage />
             </DashboardLayout>
           ) : (
             <Navigate to="/" replace />

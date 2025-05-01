@@ -3,17 +3,27 @@ import React from 'react';
 import { format } from "date-fns";
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { ConversationWithMessages } from '@/hooks/useConversations'; // Import the interface
 
 export interface ConversationThreadProps {
   id: string;
-  lead_name: string;
-  last_message: string;
-  timestamp: string;
-  unread: boolean;
+  lead_id: string;
+  created_at: string;
+  messages: {
+    id: string;
+    conversation_id: string;
+    role: 'user' | 'assistant';
+    content: string;
+    created_at: string;
+  }[];
 }
 
 export const ConversationThread = ({ thread }: { thread: ConversationThreadProps }) => {
   const navigate = useNavigate();
+
+  const lastMessage = thread.messages[thread.messages.length - 1];
+  // Note: Unread status logic is not available in the current data structure
+  // Lead name is also not directly available, using lead_id as placeholder
 
   const handleClick = () => {
     navigate(`/messages?id=${thread.id}`);
@@ -27,22 +37,20 @@ export const ConversationThread = ({ thread }: { thread: ConversationThreadProps
       <div className="flex-1 space-y-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {thread.unread && (
-              <span className="h-2.5 w-2.5 bg-primary rounded-full mr-2"></span>
-            )}
+            {/* Removed unread indicator */}
             <p className={cn(
               "text-sm font-medium",
-              thread.unread ? "text-white" : "text-white/80"
-            )}>{thread.lead_name}</p>
+              "text-white" // Assuming always read for now
+            )}>{`Lead ID: ${thread.lead_id}`}</p> {/* Using lead_id as placeholder */}
           </div>
           <span className="text-xs text-white/60">
-            {format(new Date(thread.timestamp), 'HH:mm')}
+            {format(new Date(thread.created_at), 'HH:mm')} {/* Using created_at */}
           </span>
         </div>
         <p className={cn(
           "text-sm line-clamp-1",
-          thread.unread ? "text-white/90" : "text-white/60"
-        )}>{thread.last_message}</p>
+          "text-white/90" // Assuming always read for now
+        )}>{lastMessage?.content || 'No messages yet'}</p> {/* Displaying last message content */}
       </div>
     </div>
   );

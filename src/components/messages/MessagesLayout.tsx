@@ -91,14 +91,6 @@ export function MessagesLayout() {
                 >
                   Campaigns
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="notifications" 
-                  className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500/30 data-[state=active]:to-purple-600/30 data-[state=active]:shadow-md relative"
-                >
-                  <Bell className="h-4 w-4 mr-2" />
-                  Notifications
-                  <span className="absolute top-1 right-1 h-2 w-2 bg-primary rounded-full"></span>
-                </TabsTrigger>
               </TabsList>
               
               <TabsContent value="messages" className="flex-1 flex flex-col h-full overflow-hidden">
@@ -121,21 +113,8 @@ export function MessagesLayout() {
                   </div>
                   <h3 className="text-xl font-medium text-gradient mb-2">Campaigns</h3>
                   <p className="text-muted-foreground text-center mb-4">Create targeted message campaigns to reach your audience</p>
-                  <Button className="premium-button">
+                  <Button className="premium-button" onClick={() => navigate('/campaigns')}> {/* Added onClick handler */}
                     <Plus className="h-4 w-4 mr-2" /> Create Campaign
-                  </Button>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="notifications">
-                <div className="flex flex-col items-center justify-center h-64 glass-panel p-6">
-                  <div className="rounded-full bg-purple-500/20 p-4 mb-4">
-                    <Bell className="h-8 w-8 text-purple-400" />
-                  </div>
-                  <h3 className="text-xl font-medium text-gradient mb-2">Notifications</h3>
-                  <p className="text-muted-foreground text-center mb-4">Stay updated with important alerts and system messages</p>
-                  <Button className="premium-button">
-                    Manage Notifications
                   </Button>
                 </div>
               </TabsContent>

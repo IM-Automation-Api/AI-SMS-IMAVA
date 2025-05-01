@@ -1,50 +1,31 @@
 
 import React from 'react';
 import { Input } from '@/components/ui/input';
-import { BellDot, Plus, Search } from 'lucide-react';
+import { BellDot, Plus, Search, Loader2 } from 'lucide-react'; // Added Loader2
 import { Button } from '@/components/ui/button';
 import { ConversationThread } from '@/components/dashboard/ConversationThread';
-
-// Sample conversation data - in a real app this would come from an API or database
-const sampleConversations = [
-  {
-    id: '1',
-    lead_name: 'Alice Johnson',
-    last_message: 'Hey, can you check the latest updates?',
-    timestamp: new Date().toISOString(),
-    unread: true
-  },
-  {
-    id: '2',
-    lead_name: 'Bob Smith',
-    last_message: "I've sent you the report",
-    timestamp: new Date(Date.now() - 86400000).toISOString(), // Yesterday
-    unread: false
-  },
-  {
-    id: '3',
-    lead_name: 'Carol White',
-    last_message: 'Thanks for your help!',
-    timestamp: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
-    unread: false
-  },
-  {
-    id: '4',
-    lead_name: 'David Brown',
-    last_message: 'When is the next meeting?',
-    timestamp: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
-    unread: true
-  },
-  {
-    id: '5',
-    lead_name: 'Eva Green',
-    last_message: 'Please review this ASAP',
-    timestamp: new Date(Date.now() - 604800000).toISOString(), // 1 week ago
-    unread: false
-  }
-];
+import { useConversations } from '@/hooks/useConversations'; // Import the hook
 
 export function MessagesSidebar() {
+  const { conversations, isLoading, isError } = useConversations(); // Use the hook
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col h-full glass-panel items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-sm text-muted-foreground mt-2">Loading conversations...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex flex-col h-full glass-panel items-center justify-center text-red-500">
+        Error loading conversations.
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-full glass-panel">
       <div className="p-4 border-b border-white/10 flex items-center justify-between">
@@ -69,9 +50,15 @@ export function MessagesSidebar() {
       </div>
       <div className="flex-1 overflow-auto p-2">
         {/* Render conversations using ConversationThread component */}
-        {sampleConversations.map((conversation) => (
-          <ConversationThread key={conversation.id} thread={conversation} />
-        ))}
+        {conversations && conversations.length > 0 ? (
+          conversations.map((conversation) => (
+            <ConversationThread key={conversation.id} thread={conversation} />
+          ))
+        ) : (
+          <div className="text-center text-muted-foreground mt-8">
+            No conversations found.
+          </div>
+        )}
       </div>
     </div>
   );

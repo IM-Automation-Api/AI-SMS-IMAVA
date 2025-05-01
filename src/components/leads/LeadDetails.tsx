@@ -8,19 +8,47 @@ import {
   HeroCardContent 
 } from '@/components/ui/hero-card';
 import { Button } from '@/components/ui/button';
-import { Mail, Phone, Calendar, X } from 'lucide-react';
+import { Mail, Phone, Calendar, X, MessageSquarePlus, Send } from 'lucide-react'; // Added icons
 import { LeadTag } from '@/hooks/useLeadTags';
 import { Lead } from '@/hooks/useLeads';
+import { useSMSQueue } from '@/hooks/useSMSQueue'; // Added SMS Queue hook
+import { toast } from '@/components/ui/use-toast'; // Added toast
+import { useNavigate } from 'react-router-dom'; // Added useNavigate
 
 interface LeadDetailsProps {
   lead: Lead | null;
   tags: LeadTag[];
   onClose: () => void;
-}
+} // Added missing closing brace
 
 export function LeadDetails({ lead, tags, onClose }: LeadDetailsProps) {
+  const navigate = useNavigate();
+  // Removed useSMSQueue hook as we navigate instead
+
   if (!lead) return null;
-  
+
+  // Updated function to navigate to SMS Queue page
+  const handleAddToQueue = () => {
+    if (!lead) return;
+    navigate('/sms-queue', { state: { selectedLead: lead } }); // Pass lead info
+    toast({
+      title: 'Navigate',
+      description: `Navigating to SMS Queue page. Select an assistant to send SMS to ${lead.first_name}.`,
+    });
+    onClose(); // Optionally close details pane after navigating
+  };
+
+  const handleAddToCampaign = () => {
+    if (!lead) return;
+    // Navigate to campaign page, potentially passing lead info later
+    navigate('/sms-campaign', { state: { selectedLeadId: lead.id } });
+     toast({
+        title: 'Navigate',
+        description: `Navigating to SMS Campaign page. Select a campaign to add ${lead.first_name}.`,
+      });
+     onClose(); // Optionally close details pane after navigating
+  };
+
   return (
     <HeroCard className="relative">
       <Button 
@@ -92,6 +120,30 @@ export function LeadDetails({ lead, tags, onClose }: LeadDetailsProps) {
           ) : (
             <p className="text-sm text-gray-500">No tags</p>
           )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="border-t border-white/10 pt-4 mt-4 space-y-3">
+           <h3 className="text-sm font-medium text-gray-400">Actions</h3>
+         <div className="flex flex-col sm:flex-row gap-2">
+           {/* Updated Button Text and removed disabled state */}
+           <Button
+             onClick={handleAddToQueue}
+             className="flex-1"
+             variant="outline"
+           >
+             <MessageSquarePlus className="mr-2 h-4 w-4" />
+             Add to SMS Queue
+           </Button>
+           <Button
+             onClick={handleAddToCampaign}
+               className="flex-1"
+               variant="outline"
+              >
+               <Send className="mr-2 h-4 w-4" />
+               Add to SMS Campaign
+             </Button>
+           </div>
         </div>
       </HeroCardContent>
     </HeroCard>
